@@ -1,0 +1,107 @@
+#home-page {
+    margin-bottom: 30px;
+
+    .cartoon {
+        margin: 30px auto;
+        display: flex;
+        height: 470px;
+        justify-content: center;
+
+        .arrow-left,
+        .arrow-right {
+            background-color: lightgray;
+            width: 40px;
+        }
+
+        .main-image {
+            width: 710px;
+            height: 100%;
+            background-color: turquoise;
+        }
+    }
+
+    .user-input {
+        max-width: 790px;
+        margin: 0 auto;
+
+        .caption-details {
+            display: grid;
+            grid-template-columns: auto 200px;
+        }
+
+        .add-your-caption {
+            font-size: 14px;
+            display: grid;
+            grid-template-columns: 80% auto;
+
+            input {
+                padding: 5px;
+                font-size: 14px;
+            }
+        }
+
+        .caption-details {
+            margin: 30px 0;
+
+            .user {
+                span {
+                    font-size: 14px;
+                }
+
+                span:first-child {
+                    display: block;
+                    font-weight: 600;
+                }
+
+                span:not(:first-child) {
+                    margin-right: 5px;
+                }
+
+                span:not(:last-child) {
+                    margin-bottom: 5px;
+                }
+            }
+
+            .votes {
+                display: grid;
+                grid-template-columns: 50px 100px 50px;
+            }
+        }
+
+        form {
+            input {
+                padding: 5px;
+                font-size: 14px;
+            }
+
+            .caption {
+                width: 100%;
+                margin-bottom: 10px;
+                box-sizing: border-box;
+            }
+
+            .email-first-last {
+                display: grid;
+                grid-template-columns: calc(60% - 20px) 20% 20%;
+                grid-column-gap: 10px;
+                margin-bottom: 10px;
+            }
+
+            .city-state-submit {
+                display: grid;
+                grid-column-gap: 10px;
+                grid-template-columns: repeat(2, calc(30% - 15px)) auto;
+
+                .submit-caption {
+                    text-align: right;
+
+                    button {
+                        outline: none;
+                        padding: 8px 15px;
+                        font-weight: 600;
+                    }
+                }
+            }
+        }
+    }
+}
