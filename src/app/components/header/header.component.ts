@@ -1,4 +1,5 @@
-import { Component, OnInit } from "@angular/core";
+import { Component, OnDestroy, OnInit } from "@angular/core";
+import { Subject, takeUntil } from "rxjs";
 import { WindowWidthService } from "src/app/services/window-width.service";
 
 @Component({
@@ -6,14 +7,23 @@ import { WindowWidthService } from "src/app/services/window-width.service";
   templateUrl: "./header.component.html",
   styleUrls: ["./header.component.scss"],
 })
-export class HeaderComponent implements OnInit {
+export class HeaderComponent implements OnInit, OnDestroy {
+  destroy$: Subject<boolean> = new Subject<boolean>();
   windowWidth?: number;
 
   constructor(private _windowWidthService: WindowWidthService) {
-    this._windowWidthService.currentWidth$.subscribe((val) => {
-      this.windowWidth = val;
-    });
+    this._windowWidthService.currentWidth$
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((val) => {
+        this.windowWidth = val;
+      });
   }
 
   ngOnInit(): void {}
+
+  ngOnDestroy(): void {
+    // Kill Subscriptions
+    this.destroy$.next(true);
+    this.destroy$.complete();
+  }
 }
