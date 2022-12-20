@@ -10,17 +10,16 @@ header {
         overflow: auto;
 
         img {
-            width: 250px;
-            height: 50px;
-            background-color: white;
             float: left;
             margin-right: 20px;
         }
 
         >div {
             font: normal 16px sans-serif;
-            float: left;
-            line-height: 50px;
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            left: 150px;
         }
     }
 
@@ -32,13 +31,3 @@ header {
         right: 30px;
     }
 }
-
-// @media screen and (max-width: 768px) {
-//     header {
-//         .logo-tagline {
-//             > div {
-
-//             }
-//         }
-//     }
-// }

@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, OnDestroy } from "@angular/core";
+import { AfterViewInit, Component } from "@angular/core";
 import { WindowWidthService } from "./services/window-width.service";
 
 @Component({
@@ -9,7 +9,7 @@ import { WindowWidthService } from "./services/window-width.service";
     "(window:resize)": "onWindowResize($event)",
   },
 })
-export class AppComponent implements AfterViewInit, OnDestroy {
+export class AppComponent implements AfterViewInit {
   // Mobile Vars
   mobileWidth: number = 760;
   width: number = window.innerWidth;
@@ -29,9 +29,5 @@ export class AppComponent implements AfterViewInit, OnDestroy {
     this.height = event.target.innerHeight;
     this.isMobile = this.width < this.mobileWidth;
     this._windowWidthService.changeValue(this.width);
-  }
-
-  ngOnDestroy(): void {
-    // Kill Subscriptions Here
   }
 }
