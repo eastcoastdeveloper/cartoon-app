@@ -4,12 +4,24 @@ header {
     background-color: $cream;
     position: relative;
 
-    .logo {
-        width: 250px;
-        height: 50px;
-        background-color: white;
+    .logo-tagline {
         display: inline-block;
         margin: 10px 0 10px 20px;
+        overflow: auto;
+
+        img {
+            width: 250px;
+            height: 50px;
+            background-color: white;
+            float: left;
+            margin-right: 20px;
+        }
+
+        >div {
+            font: normal 16px sans-serif;
+            float: left;
+            line-height: 50px;
+        }
     }
 
     nav {
@@ -20,3 +32,13 @@ header {
         right: 30px;
     }
 }
+
+// @media screen and (max-width: 768px) {
+//     header {
+//         .logo-tagline {
+//             > div {
+
+//             }
+//         }
+//     }
+// }

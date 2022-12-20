@@ -1,22 +1,59 @@
 #home-page {
     margin-bottom: 30px;
 
+    h2 {
+        font: normal 16px sans-serif;
+        text-align: center;
+        margin-top: 30px;
+    }
+
     .cartoon {
         margin: 30px auto;
-        display: flex;
-        height: 470px;
-        justify-content: center;
+        display: grid;
+        grid-template-columns: 40px auto 40px;
+        max-width: 710px;
+        grid-column-gap: 15px;
 
         .arrow-left,
         .arrow-right {
-            background-color: lightgray;
             width: 40px;
+            display: flex;
+            cursor: pointer;
+
+            span {
+                font-size: 40px;
+                display: block;
+                margin: auto;
+                transition: transform .25s;
+            }
+        }
+
+        .arrow-left {
+            span {
+                transform: rotate(-180deg);
+            }
+        }
+
+        .arrow-left:hover span {
+            transform: rotate(-175deg) scale(.8);
+        }
+
+        .arrow-right:hover span {
+            transform: rotate(-5deg) scale(.8);
         }
 
         .main-image {
-            width: 710px;
-            height: 100%;
+            max-width: 710px;
+            width: 100%;
             background-color: turquoise;
+            border: 1px solid black;
+            border-radius: 6px;
+
+            img {
+                display: block;
+                width: 100%;
+                height: auto;
+            }
         }
     }
 
@@ -27,17 +64,6 @@
         .caption-details {
             display: grid;
             grid-template-columns: auto 200px;
-        }
-
-        .add-your-caption {
-            font-size: 14px;
-            display: grid;
-            grid-template-columns: 80% auto;
-
-            input {
-                padding: 5px;
-                font-size: 14px;
-            }
         }
 
         .caption-details {
@@ -72,6 +98,8 @@
             input {
                 padding: 5px;
                 font-size: 14px;
+                border: 1px solid black;
+                border-radius: 3px;
             }
 
             .caption {
@@ -99,9 +127,23 @@
                         outline: none;
                         padding: 8px 15px;
                         font-weight: 600;
+                        border-radius: 3px;
+                        border: 1px solid black;
                     }
                 }
             }
+        }
+    }
+}
+
+@media screen and (max-width: 800px) {
+    #home-page {
+        .cartoon {
+            margin: 30px 20px;
+        }
+
+        .user-input {
+            margin: 0 30px;
         }
     }
 }

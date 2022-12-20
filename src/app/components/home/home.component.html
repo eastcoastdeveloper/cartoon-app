@@ -1,20 +1,20 @@
 <div id="home-page">
 
-    <h2>Summary Statement....</h2>
+    <h2 *ngIf="windowWidth != undefined && windowWidth < 769">Clever Cartoon Caption</h2>
     <div class="cartoon">
-        <div class="arrow-left"></div>
-        <div class="main-image">
-            <img src="" />
+        <div class="arrow-left">
+            <span>&#10148;</span>
         </div>
-        <div class="arrow-right"></div>
+        <div class="main-image">
+            <img src="https://blog-www.pods.com/wp-content/uploads/2019/08/MG_6_1_Miami.jpg" />
+        </div>
+        <div class="arrow-right">
+            <span>&#10148;</span>
+        </div>
     </div>
 
 
     <div class="user-input">
-        <div class="add-your-caption">
-            <input placeholder="Add your caption..." type="text" />
-            <button type="submit">Submit</button>
-        </div>
 
         <div class="caption-details">
             <div class="user">
