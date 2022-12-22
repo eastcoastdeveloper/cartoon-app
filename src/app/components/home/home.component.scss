@@ -22,6 +22,8 @@
 
             div {
                 margin: auto;
+                width: 30px;
+                overflow-x: hidden;
 
                 span {
                     font-size: 40px;
@@ -31,12 +33,28 @@
             }
         }
 
-        .arrow-left:hover span {
-            transform: scale(.8);
+        .arrow-right {
+            div {
+                span {
+                    transform: translateX(-9px);
+                }
+            }
         }
 
-        .arrow-right:hover span {
-            transform: scale(.8);
+        .arrow-left:hover {
+            div {
+                span {
+                    transform: scale(.8);
+                }
+            }
+        }
+
+        .arrow-right:hover {
+            div {
+                span {
+                    transform: translateX(-9px) scale(.8);
+                }
+            }
         }
 
         .main-image {
