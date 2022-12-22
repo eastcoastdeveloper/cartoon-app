@@ -1,3 +1,5 @@
+@import '../../style/color.scss';
+
 #home-page {
     margin-bottom: 30px;
 
@@ -29,6 +31,7 @@
                     font-size: 40px;
                     display: block;
                     transition: transform .25s;
+                    color: $midnight;
                 }
             }
         }

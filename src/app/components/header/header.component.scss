@@ -2,7 +2,7 @@
 
 header {
     background-color: white;
-    border-bottom: 1px solid black;
+    border-bottom: 1px solid $midnight;
     position: relative;
     padding: 10px;
 
@@ -20,6 +20,7 @@ header {
             top: 50%;
             transform: translateY(-50%);
             left: 150px;
+            color: $midnight;
         }
     }
 
