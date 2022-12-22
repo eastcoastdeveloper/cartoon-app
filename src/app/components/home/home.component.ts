@@ -1,5 +1,6 @@
 import { Component, OnDestroy, OnInit } from "@angular/core";
 import { Subject, takeUntil } from "rxjs";
+import { DummyDataInterface } from "src/app/interfaces/dummyData";
 import { HttpService } from "src/app/services/http.service";
 import { WindowWidthService } from "src/app/services/window-width.service";
 
@@ -11,6 +12,7 @@ import { WindowWidthService } from "src/app/services/window-width.service";
 export class HomeComponent implements OnInit, OnDestroy {
   destroy$: Subject<boolean> = new Subject<boolean>();
   windowWidth?: number;
+  dummyDataArray: DummyDataInterface[] = [];
 
   constructor(
     private _windowWidthService: WindowWidthService,
@@ -34,7 +36,9 @@ export class HomeComponent implements OnInit, OnDestroy {
   doSomething() {
     this._httpService.responseSubject
       .pipe(takeUntil(this.destroy$))
-      .subscribe((val) => console.log(val));
+      .subscribe((val) => {
+        this.dummyDataArray = val;
+      });
   }
 
   ngOnDestroy(): void {

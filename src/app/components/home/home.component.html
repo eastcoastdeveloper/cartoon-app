@@ -1,6 +1,6 @@
 <div id="home-page">
 
-    <h2 *ngIf="windowWidth != undefined && windowWidth < 769">Clever Cartoon Caption</h2>
+    <h2 *ngIf="windowWidth != undefined && windowWidth < 769">Clever Cartoon Caption Contest</h2>
     <div class="cartoon">
         <div class="arrow-left ">
             <div>
@@ -19,7 +19,7 @@
 
     <div class="user-input">
 
-        <div class="caption-details">
+        <!-- <div class="caption-details">
             <div class="user">
                 <span>Submitted Caption</span>
                 <span>Full Name</span>
@@ -31,7 +31,7 @@
                 <span class="total-votes"></span>
                 <span id="vote-up"></span>
             </div>
-        </div>
+        </div> -->
 
         <form>
             <input placeholder="Caption" class=" caption" />
@@ -48,6 +48,21 @@
                 </div>
             </div>
         </form>
+    </div>
+
+    <div class="published-content">
+        <div *ngFor="let data of dummyDataArray" class="repeating-block">
+            <p>{{data.caption}}</p>
+            <div class="full-name">
+                <span>{{data.firstName}}</span>
+                <span>{{data.lastName}}</span>
+            </div>
+            <div class="location">
+                <span>{{data.city}}</span>
+                <span>{{data.state}}</span>
+                <span>{{data.country}}</span>
+            </div>
+        </div>
     </div>
 
 </div>
