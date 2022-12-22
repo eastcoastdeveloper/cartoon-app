@@ -2,9 +2,9 @@
     margin-bottom: 30px;
 
     h2 {
-        font: normal 16px sans-serif;
+        font: normal 20px sans-serif;
         text-align: center;
-        margin-top: 30px;
+        margin-top: 20px;
     }
 
     .cartoon {
@@ -20,26 +20,23 @@
             display: flex;
             cursor: pointer;
 
-            span {
-                font-size: 40px;
-                display: block;
+            div {
                 margin: auto;
-                transition: transform .25s;
-            }
-        }
 
-        .arrow-left {
-            span {
-                transform: rotate(-180deg);
+                span {
+                    font-size: 40px;
+                    display: block;
+                    transition: transform .25s;
+                }
             }
         }
 
         .arrow-left:hover span {
-            transform: rotate(-175deg) scale(.8);
+            transform: scale(.8);
         }
 
         .arrow-right:hover span {
-            transform: rotate(-5deg) scale(.8);
+            transform: scale(.8);
         }
 
         .main-image {
@@ -139,11 +136,15 @@
 @media screen and (max-width: 800px) {
     #home-page {
         .cartoon {
-            margin: 30px 20px;
+            margin: 20px;
         }
 
         .user-input {
             margin: 0 30px;
+
+            .caption-details {
+                margin: 20px 0;
+            }
         }
     }
 }

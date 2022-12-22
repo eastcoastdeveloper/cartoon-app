@@ -1,13 +1,13 @@
 @import '../../style/color.scss';
 
 header {
-    background-color: $cream;
+    background-color: white;
+    border-bottom: 1px solid black;
     position: relative;
+    padding: 10px;
 
     .logo-tagline {
         display: inline-block;
-        margin: 10px 0 10px 20px;
-        overflow: auto;
 
         img {
             float: left;
@@ -15,7 +15,7 @@ header {
         }
 
         >div {
-            font: normal 16px sans-serif;
+            font: normal 26px sans-serif;
             position: absolute;
             top: 50%;
             transform: translateY(-50%);
