@@ -18,8 +18,9 @@ export class HttpService {
     };
 
     return this._http
-      .get<DummyDataInterface[]>("assets/dummyData.json", httpOptions)
+      .get<DummyDataInterface[]>("/api", httpOptions)
       .subscribe((data) => {
+        console.log('data received from http service')
         this.responseSubject.next(data);
       });
   }
