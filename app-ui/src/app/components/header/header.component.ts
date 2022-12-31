@@ -16,6 +16,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
       .pipe(takeUntil(this.destroy$))
       .subscribe((val) => {
         this.windowWidth = val;
+        console.log(this.windowWidth)
       });
   }
 

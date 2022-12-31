@@ -5,10 +5,9 @@ const projectData = require('../dummy-data.json');
 // Populate UI
 function populateUI(model) {
   return (req, res, next) => {
-    const results = {};
-    results.results = model;
+    // const results = {};
+    results = model;
     res.populateUI = results;
-    console.log(results)
     next();
   }
 }

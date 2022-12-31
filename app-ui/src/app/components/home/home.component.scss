@@ -10,7 +10,7 @@
     }
 
     .cartoon {
-        margin: 30px auto;
+        margin: 155px auto 30px auto;
         display: grid;
         grid-template-columns: 40px auto 40px;
         max-width: 710px;
@@ -60,11 +60,25 @@
             }
         }
 
+        .arrow-buttons {
+            display: flex;
+            max-width: 710px;
+            margin: 15px auto 0 auto;
+            grid-column-gap: 10px;
+            justify-content: center;
+
+            button {
+                padding: 7px 0;
+                width: 100%;
+            }
+        }
+
         .main-image {
             max-width: 710px;
+            margin: 0 auto;
             width: 100%;
-            background-color: turquoise;
-            border: 1px solid black;
+            background-color: transparent;
+            border: 1px solid $midnight;
             border-radius: 6px;
 
             img {
@@ -116,7 +130,7 @@
             input {
                 padding: 5px;
                 font-size: 14px;
-                border: 1px solid black;
+                border: 1px solid $midnight;
                 border-radius: 3px;
             }
 
@@ -146,7 +160,14 @@
                         padding: 8px 15px;
                         font-weight: 600;
                         border-radius: 3px;
-                        border: 1px solid black;
+                        border: 1px solid $midnight;
+                        cursor: pointer;
+                        transition: all .25s;
+
+                        &:hover {
+                            color: $white;
+                            background-color: $midnight;
+                        }
                     }
                 }
             }
@@ -154,12 +175,19 @@
     }
 
     .published-content {
-        margin: 30px auto;
-        max-width: 800px;
         font: normal 14px sans-serif;
+        margin: 5px auto 30px auto;
+        max-width: 790px;
+        padding: 0 20px;
+        max-height: 55vh;
+        overflow: auto;
 
         .repeating-block {
             margin: 20px 0;
+
+            >p {
+                font-style: italic;
+            }
 
             .full-name,
             .location {
@@ -200,24 +228,22 @@
     }
 }
 
-@media screen and (max-width: 800px) {
-    #home-page {
-        .cartoon {
-            margin: 20px auto;
-        }
-
-        .user-input {
-            margin: 0 30px;
-
-            .caption-details {
-                margin: 20px 0;
-            }
-        }
-    }
-}
-
 @media screen and (max-width: 768px) {
     #home-page {
+        margin-top: 70px;
+
+        .cartoon {
+            display: block;
+            padding: 0 20px;
+            margin: 30px 0;
+            max-width: unset;
+
+            .main-image {
+                border-bottom-left-radius: 0;
+                border-bottom-right-radius: 0;
+            }
+        }
+
         .user-input {
             form {
                 .city-state-submit {
@@ -235,6 +261,48 @@
 
                     .submit-caption {
                         margin-top: 15px;
+                    }
+                }
+            }
+        }
+    }
+}
+
+@media screen and (max-width: 550px) {
+    #home-page {
+        .user-input {
+            form {
+                .email-first-last {
+                    display: block;
+
+                    input {
+                        width: calc(100% - 12px);
+                    }
+
+                    input:nth-child(2) {
+                        margin: 15px 0;
+                    }
+                }
+            }
+        }
+    }
+}
+
+@media screen and (max-width: 475px) {
+    #home-page {
+        .user-input {
+            form {
+                .city-state-submit {
+                    input {
+                        width: calc(100% - 12px) !important;
+                    }
+
+                    input:nth-child(2) {
+                        margin: 15px 0;
+                    }
+
+                    .submit-caption {
+                        margin: 0;
                     }
                 }
             }
