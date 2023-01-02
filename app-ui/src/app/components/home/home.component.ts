@@ -2,6 +2,7 @@ import { Component, OnDestroy, OnInit } from "@angular/core";
 import { Subject, takeUntil } from "rxjs";
 import { DummyDataInterface } from "src/app/interfaces/dummyData";
 import { HttpService } from "src/app/services/http.service";
+import { LoaderService } from "src/app/services/loader.service";
 import { WindowWidthService } from "src/app/services/window-width.service";
 
 @Component({
@@ -16,7 +17,8 @@ export class HomeComponent implements OnInit, OnDestroy {
 
   constructor(
     private _windowWidthService: WindowWidthService,
-    private _httpService: HttpService
+    private _httpService: HttpService,
+    private _loaderService: LoaderService
   ) {}
 
   ngOnInit(): void {

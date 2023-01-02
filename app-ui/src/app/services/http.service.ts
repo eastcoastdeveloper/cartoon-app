@@ -21,21 +21,23 @@ export class HttpService implements OnDestroy {
 
     return this._http
       .get<DummyDataInterface[]>("/api", httpOptions)
-      .pipe(map((responseData) => {
-        let allProjects:any = [];
+      .pipe(
+        map((responseData) => {
+          let allProjects: any = [];
           Object.keys(responseData).filter((currentVal, index) => {
             if (currentVal === "data") {
               allProjects = Object.values(responseData)[index];
-              allProjects.map((val:any) => {
+              allProjects.map((val: any) => {
                 val.cached = true;
               });
             }
           });
-          allProjects.map((val:any) => {
+          allProjects.map((val: any) => {
             this.captionsArray.push(val);
           });
-        }))
-        .subscribe(() => {
+        })
+      )
+      .subscribe(() => {
         this.responseSubject.next(this.captionsArray);
       });
   }

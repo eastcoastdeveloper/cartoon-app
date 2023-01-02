@@ -7,7 +7,7 @@ import { WindowWidthService } from "src/app/services/window-width.service";
   templateUrl: "./header.component.html",
   styleUrls: ["./header.component.scss"],
 })
-export class HeaderComponent implements OnInit, OnDestroy {
+export class HeaderComponent implements OnDestroy {
   destroy$: Subject<boolean> = new Subject<boolean>();
   windowWidth?: number;
 
@@ -16,11 +16,8 @@ export class HeaderComponent implements OnInit, OnDestroy {
       .pipe(takeUntil(this.destroy$))
       .subscribe((val) => {
         this.windowWidth = val;
-        console.log(this.windowWidth)
       });
   }
-
-  ngOnInit(): void {}
 
   ngOnDestroy(): void {
     // Kill Subscriptions

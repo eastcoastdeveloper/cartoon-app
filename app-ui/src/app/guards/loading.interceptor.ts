@@ -25,7 +25,6 @@ export class LoadingInterceptor implements HttpInterceptor {
       finalize(() => {
         this.totalRequests--;
         if (this.totalRequests == 0) {
-          console.log('intercetor...fires loader');
           this.loadingService.setLoading(false);
         }
       })
