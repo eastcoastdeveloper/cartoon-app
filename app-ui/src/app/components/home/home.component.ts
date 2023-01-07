@@ -42,6 +42,14 @@ export class HomeComponent implements OnInit, OnDestroy {
       });
   }
 
+  voteUp() {
+    console.log("vote up");
+  }
+
+  voteDown() {
+    console.log("vote up");
+  }
+
   ngOnDestroy(): void {
     // Kill Subscriptions
     this.destroy$.next(true);

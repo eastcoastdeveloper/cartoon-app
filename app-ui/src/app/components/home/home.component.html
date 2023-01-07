@@ -22,19 +22,13 @@
   </div>
 
   <div class="user-input">
-    <!-- <div class="caption-details">
-            <div class="user">
-                <span>Submitted Caption</span>
-                <span>Full Name</span>
-                <span>City,&nbsp;</span>
-                <span>State</span>
-            </div>
-            <div class="votes">
-                <span id="vote-down"></span>
-                <span class="total-votes"></span>
-                <span id="vote-up"></span>
-            </div>
-        </div> -->
+    <div class="caption-details">
+      <div class="votes">
+        <span id="vote-down"></span>
+        <span class="total-votes"></span>
+        <span id="vote-up"></span>
+      </div>
+    </div>
 
     <form>
       <input placeholder="Caption" class="caption" />
@@ -55,15 +49,29 @@
 
   <div class="published-content">
     <div *ngFor="let data of dummyDataArray" class="repeating-block">
-      <p>{{ data.caption }}</p>
-      <div class="full-name">
-        <span>{{ data.firstName }}</span>
-        <span>{{ data.lastName }}</span>
+      <div class="submission">
+        <p>{{ data.caption }}</p>
+        <div class="full-name">
+          <span>{{ data.firstName }}</span>
+          <span>{{ data.lastName }}</span>
+        </div>
+        <div class="location">
+          <span>{{ data.city }}</span>
+          <span>{{ data.state }}</span>
+          <span>{{ data.country }}</span>
+        </div>
       </div>
-      <div class="location">
-        <span>{{ data.city }}</span>
-        <span>{{ data.state }}</span>
-        <span>{{ data.country }}</span>
+
+      <div class="votes">
+        <div (click)="voteUp()" class="vote-up">
+          <span>&#43;</span>
+        </div>
+        <div class="vote-total">
+          <span class="vote-total">{{ data.votes }}</span>
+        </div>
+        <div (click)="voteDown()" class="vote-down">
+          <span class="vote-total">&#45;</span>
+        </div>
       </div>
     </div>
   </div>

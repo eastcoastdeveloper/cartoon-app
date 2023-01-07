@@ -6,4 +6,5 @@ export class DummyDataInterface {
   city?: string;
   state?: string;
   country?: string;
+  votes?: number;
 }

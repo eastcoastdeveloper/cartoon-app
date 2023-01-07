@@ -1,311 +1,318 @@
-@import '../../style/color.scss';
+@import "../../style/color.scss";
 
 #home-page {
-    margin-bottom: 30px;
+  margin-bottom: 30px;
 
-    h2 {
-        font: normal 20px sans-serif;
-        text-align: center;
-        margin-top: 20px;
+  h2 {
+    font: normal 20px sans-serif;
+    text-align: center;
+    margin-top: 20px;
+  }
+
+  .cartoon {
+    margin: 155px auto 30px auto;
+    display: grid;
+    grid-template-columns: 40px auto 40px;
+    max-width: 710px;
+    grid-column-gap: 15px;
+
+    .arrow-left,
+    .arrow-right {
+      width: 40px;
+      display: flex;
+      cursor: pointer;
+
+      div {
+        margin: auto;
+        width: 30px;
+        overflow-x: hidden;
+
+        span {
+          font-size: 40px;
+          display: block;
+          transition: transform 0.25s;
+          color: $midnight;
+        }
+      }
     }
 
-    .cartoon {
-        margin: 155px auto 30px auto;
+    .arrow-right {
+      div {
+        span {
+          transform: translateX(-9px);
+        }
+      }
+    }
+
+    .arrow-left:hover {
+      div {
+        span {
+          transform: scale(0.8);
+        }
+      }
+    }
+
+    .arrow-right:hover {
+      div {
+        span {
+          transform: translateX(-9px) scale(0.8);
+        }
+      }
+    }
+
+    .arrow-buttons {
+      display: flex;
+      max-width: 710px;
+      margin: 15px auto 0 auto;
+      grid-column-gap: 10px;
+      justify-content: center;
+
+      button {
+        padding: 7px 0;
+        width: 100%;
+      }
+    }
+
+    .main-image {
+      max-width: 710px;
+      margin: 0 auto;
+      width: 100%;
+      background-color: transparent;
+      border: 1px solid $midnight;
+      border-radius: 6px;
+
+      img {
+        display: block;
+        width: 100%;
+        height: auto;
+      }
+    }
+  }
+
+  .user-input {
+    max-width: 790px;
+    margin: 0 auto;
+
+    .caption-details {
+      display: grid;
+      grid-template-columns: auto 200px;
+    }
+
+    form {
+      input {
+        padding: 5px;
+        font-size: 14px;
+        border: 1px solid $midnight;
+        border-radius: 3px;
+      }
+
+      .caption {
+        width: 100%;
+        margin-bottom: 10px;
+        box-sizing: border-box;
+      }
+
+      .email-first-last {
         display: grid;
-        grid-template-columns: 40px auto 40px;
-        max-width: 710px;
-        grid-column-gap: 15px;
+        grid-template-columns: calc(60% - 20px) 20% 20%;
+        grid-column-gap: 10px;
+        margin-bottom: 10px;
+      }
 
-        .arrow-left,
-        .arrow-right {
-            width: 40px;
-            display: flex;
-            cursor: pointer;
+      .city-state-submit {
+        display: grid;
+        grid-column-gap: 10px;
+        grid-template-columns: repeat(2, calc(30% - 15px)) auto;
 
-            div {
-                margin: auto;
-                width: 30px;
-                overflow-x: hidden;
+        .submit-caption {
+          text-align: right;
 
-                span {
-                    font-size: 40px;
-                    display: block;
-                    transition: transform .25s;
-                    color: $midnight;
-                }
-            }
-        }
-
-        .arrow-right {
-            div {
-                span {
-                    transform: translateX(-9px);
-                }
-            }
-        }
-
-        .arrow-left:hover {
-            div {
-                span {
-                    transform: scale(.8);
-                }
-            }
-        }
-
-        .arrow-right:hover {
-            div {
-                span {
-                    transform: translateX(-9px) scale(.8);
-                }
-            }
-        }
-
-        .arrow-buttons {
-            display: flex;
-            max-width: 710px;
-            margin: 15px auto 0 auto;
-            grid-column-gap: 10px;
-            justify-content: center;
-
-            button {
-                padding: 7px 0;
-                width: 100%;
-            }
-        }
-
-        .main-image {
-            max-width: 710px;
-            margin: 0 auto;
-            width: 100%;
-            background-color: transparent;
+          button {
+            outline: none;
+            padding: 8px 15px;
+            font-weight: 600;
+            border-radius: 3px;
             border: 1px solid $midnight;
-            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.25s;
 
-            img {
-                display: block;
-                width: 100%;
-                height: auto;
+            &:hover {
+              color: $white;
+              background-color: $midnight;
             }
+          }
         }
+      }
     }
+  }
 
-    .user-input {
-        max-width: 790px;
-        margin: 0 auto;
+  .published-content {
+    font: normal 14px sans-serif;
+    margin: 5px auto 30px auto;
+    max-width: 790px;
+    padding: 0 20px;
+    max-height: 55vh;
+    overflow: auto;
 
-        .caption-details {
-            display: grid;
-            grid-template-columns: auto 200px;
+    .repeating-block {
+      margin: 20px 0;
+      position: relative;
+
+      .submission {
+        > p {
+          font-style: italic;
         }
 
-        .caption-details {
-            margin: 30px 0;
-
-            .user {
-                span {
-                    font-size: 14px;
-                }
-
-                span:first-child {
-                    display: block;
-                    font-weight: 600;
-                }
-
-                span:not(:first-child) {
-                    margin-right: 5px;
-                }
-
-                span:not(:last-child) {
-                    margin-bottom: 5px;
-                }
-            }
-
-            .votes {
-                display: grid;
-                grid-template-columns: 50px 100px 50px;
-            }
+        .full-name,
+        .location {
+          display: flex;
+          grid-column-gap: 5px;
+          margin: 5px 0;
         }
-
-        form {
-            input {
-                padding: 5px;
-                font-size: 14px;
-                border: 1px solid $midnight;
-                border-radius: 3px;
-            }
-
-            .caption {
-                width: 100%;
-                margin-bottom: 10px;
-                box-sizing: border-box;
-            }
-
-            .email-first-last {
-                display: grid;
-                grid-template-columns: calc(60% - 20px) 20% 20%;
-                grid-column-gap: 10px;
-                margin-bottom: 10px;
-            }
-
-            .city-state-submit {
-                display: grid;
-                grid-column-gap: 10px;
-                grid-template-columns: repeat(2, calc(30% - 15px)) auto;
-
-                .submit-caption {
-                    text-align: right;
-
-                    button {
-                        outline: none;
-                        padding: 8px 15px;
-                        font-weight: 600;
-                        border-radius: 3px;
-                        border: 1px solid $midnight;
-                        cursor: pointer;
-                        transition: all .25s;
-
-                        &:hover {
-                            color: $white;
-                            background-color: $midnight;
-                        }
-                    }
-                }
-            }
+      }
+      .votes {
+        display: grid;
+        grid-template-columns: 30px 50px 30px;
+        position: absolute;
+        top: 50%;
+        right: 0;
+        transform: translateY(-50%);
+        .vote-up,
+        .vote-down {
+          background-color: $midnight;
+          color: $white;
+          cursor: pointer;
+          position: relative;
+          width: 30px;
+          height: 30px;
+          border-radius: 50%;
+          span {
+            font-size: 30px;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, calc(-50% - 2px));
+          }
         }
+        .vote-total {
+          display: flex;
+          span {
+            margin: auto;
+            font-size: 20px;
+          }
+        }
+      }
     }
-
-    .published-content {
-        font: normal 14px sans-serif;
-        margin: 5px auto 30px auto;
-        max-width: 790px;
-        padding: 0 20px;
-        max-height: 55vh;
-        overflow: auto;
-
-        .repeating-block {
-            margin: 20px 0;
-
-            >p {
-                font-style: italic;
-            }
-
-            .full-name,
-            .location {
-                display: flex;
-                grid-column-gap: 5px;
-                margin: 5px 0;
-            }
-        }
-    }
+  }
 }
 
 @media screen and (max-width: 992px) {
-    #home-page {
-        .user-input {
-            padding: 0 20px;
+  #home-page {
+    .user-input {
+      padding: 0 20px;
 
-            form {
-                .email-first-last {
-                    grid-template-columns: repeat(2, calc(50% - 5px));
-                    grid-row-gap: 10px;
+      form {
+        .email-first-last {
+          grid-template-columns: repeat(2, calc(50% - 5px));
+          grid-row-gap: 10px;
 
-                    input:first-child {
-                        grid-column: 1/-1;
-                    }
-                }
-
-                .city-state-submit {
-                    grid-template-columns: repeat(2, calc(25% - 7px)) auto;
-
-                    .submit-caption {
-                        button {
-                            width: 100%;
-                        }
-                    }
-                }
-            }
+          input:first-child {
+            grid-column: 1/-1;
+          }
         }
+
+        .city-state-submit {
+          grid-template-columns: repeat(2, calc(25% - 7px)) auto;
+
+          .submit-caption {
+            button {
+              width: 100%;
+            }
+          }
+        }
+      }
     }
+  }
 }
 
 @media screen and (max-width: 768px) {
-    #home-page {
-        margin-top: 70px;
+  #home-page {
+    margin-top: 70px;
 
-        .cartoon {
-            display: block;
-            padding: 0 20px;
-            margin: 30px 0;
-            max-width: unset;
+    .cartoon {
+      display: block;
+      padding: 0 20px;
+      margin: 30px 0;
+      max-width: unset;
 
-            .main-image {
-                border-bottom-left-radius: 0;
-                border-bottom-right-radius: 0;
-            }
-        }
-
-        .user-input {
-            form {
-                .city-state-submit {
-                    display: block;
-
-                    input:first-child {
-                        width: calc(50% - 17px);
-                        margin-right: 10px;
-                        display: inline-block;
-                    }
-
-                    input:not(:first-child) {
-                        width: calc(50% - 18px);
-                    }
-
-                    .submit-caption {
-                        margin-top: 15px;
-                    }
-                }
-            }
-        }
+      .main-image {
+        border-bottom-left-radius: 0;
+        border-bottom-right-radius: 0;
+      }
     }
+
+    .user-input {
+      form {
+        .city-state-submit {
+          display: block;
+
+          input:first-child {
+            width: calc(50% - 17px);
+            margin-right: 10px;
+            display: inline-block;
+          }
+
+          input:not(:first-child) {
+            width: calc(50% - 18px);
+          }
+
+          .submit-caption {
+            margin-top: 15px;
+          }
+        }
+      }
+    }
+  }
 }
 
 @media screen and (max-width: 550px) {
-    #home-page {
-        .user-input {
-            form {
-                .email-first-last {
-                    display: block;
+  #home-page {
+    .user-input {
+      form {
+        .email-first-last {
+          display: block;
 
-                    input {
-                        width: calc(100% - 12px);
-                    }
+          input {
+            width: calc(100% - 12px);
+          }
 
-                    input:nth-child(2) {
-                        margin: 15px 0;
-                    }
-                }
-            }
+          input:nth-child(2) {
+            margin: 15px 0;
+          }
         }
+      }
     }
+  }
 }
 
 @media screen and (max-width: 475px) {
-    #home-page {
-        .user-input {
-            form {
-                .city-state-submit {
-                    input {
-                        width: calc(100% - 12px) !important;
-                    }
+  #home-page {
+    .user-input {
+      form {
+        .city-state-submit {
+          input {
+            width: calc(100% - 12px) !important;
+          }
 
-                    input:nth-child(2) {
-                        margin: 15px 0;
-                    }
+          input:nth-child(2) {
+            margin: 15px 0;
+          }
 
-                    .submit-caption {
-                        margin: 0;
-                    }
-                }
-            }
+          .submit-caption {
+            margin: 0;
+          }
         }
+      }
     }
+  }
 }
