@@ -1,8 +1,7 @@
 import { Component, OnDestroy, OnInit } from "@angular/core";
 import { Subject, takeUntil } from "rxjs";
-import { DummyDataInterface } from "src/app/interfaces/dummyData";
+import { UserDataInterface } from "src/app/interfaces/dummyData";
 import { HttpService } from "src/app/services/http.service";
-import { LoaderService } from "src/app/services/loader.service";
 import { WindowWidthService } from "src/app/services/window-width.service";
 
 @Component({
@@ -13,7 +12,7 @@ import { WindowWidthService } from "src/app/services/window-width.service";
 export class HomeComponent implements OnInit, OnDestroy {
   destroy$: Subject<boolean> = new Subject<boolean>();
   windowWidth?: number;
-  dummyDataArray: DummyDataInterface[] = [];
+  dummyDataArray: UserDataInterface[] = [];
 
   constructor(
     private _windowWidthService: WindowWidthService,
@@ -23,7 +22,7 @@ export class HomeComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     new Promise<void>((resolve, reject) => {
       this._httpService.populateCaptions(1, 10);
-      resolve(this.doSomething());
+      resolve(this.captureCaptionResponse());
     });
 
     // Subscribe to Window Width
@@ -34,7 +33,8 @@ export class HomeComponent implements OnInit, OnDestroy {
       });
   }
 
-  doSomething() {
+  // Set Caption Response to Array
+  captureCaptionResponse() {
     this._httpService.responseSubject
       .pipe(takeUntil(this.destroy$))
       .subscribe((val) => {
@@ -42,16 +42,19 @@ export class HomeComponent implements OnInit, OnDestroy {
       });
   }
 
-  voteUp(data: DummyDataInterface) {
+  // Up Vote
+  voteUp(data: UserDataInterface) {
     data.votes!++;
     this._httpService.updateVoteCount(data);
   }
 
-  voteDown(data: DummyDataInterface) {
+  // Down Vote
+  voteDown(data: UserDataInterface) {
     data.votes! === 0 ? (data.votes = 0) : data.votes!--;
     console.log(data.votes);
   }
 
+  // Kill Subscriptions
   ngOnDestroy(): void {
     // Kill Subscriptions
     this.destroy$.next(true);

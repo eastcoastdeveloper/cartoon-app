@@ -19,8 +19,8 @@ export class HeaderComponent implements OnDestroy {
       });
   }
 
+  // Kill Subscriptions
   ngOnDestroy(): void {
-    // Kill Subscriptions
     this.destroy$.next(true);
     this.destroy$.complete();
   }

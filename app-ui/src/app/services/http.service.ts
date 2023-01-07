@@ -1,14 +1,14 @@
 import { HttpClient, HttpHeaders } from "@angular/common/http";
 import { Injectable, OnDestroy } from "@angular/core";
 import { BehaviorSubject, Subject, map } from "rxjs";
-import { DummyDataInterface } from "../interfaces/dummyData";
+import { UserDataInterface } from "../interfaces/dummyData";
 
 @Injectable({
   providedIn: "root",
 })
 export class HttpService implements OnDestroy {
   // Broadcaster
-  responseSubject = new BehaviorSubject<DummyDataInterface[]>([]);
+  responseSubject = new BehaviorSubject<UserDataInterface[]>([]);
   unsubscribe$: Subject<boolean> = new Subject<boolean>();
   captionsArray: any = [];
 
@@ -23,7 +23,7 @@ export class HttpService implements OnDestroy {
     };
 
     return this._http
-      .get<DummyDataInterface[]>(
+      .get<UserDataInterface[]>(
         `/api/getCaptions/?page=${pageNum}?&limit=${pageLimit}`,
         httpOptions
       )
@@ -51,9 +51,9 @@ export class HttpService implements OnDestroy {
   /* ############################## */
   /*         Post New Vote          */
   /* ############################## */
-  updateVoteCount(data: DummyDataInterface) {
+  updateVoteCount(data: UserDataInterface) {
     this._http
-      .post<DummyDataInterface>("/api/updateVoteCount", {
+      .post<UserDataInterface>("/api/updateVoteCount", {
         title: "User Up or Down Voted",
       })
       .subscribe((data) => {

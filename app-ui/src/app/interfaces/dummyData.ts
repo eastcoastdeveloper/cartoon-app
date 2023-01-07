@@ -1,5 +1,4 @@
-// Representation of the Data Object
-export class DummyDataInterface {
+export class UserDataInterface {
   caption?: string;
   firstName?: string;
   lastName?: string;

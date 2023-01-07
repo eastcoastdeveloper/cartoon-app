@@ -4,7 +4,6 @@ import { WindowWidthService } from "./services/window-width.service";
 @Component({
   selector: "app-root",
   templateUrl: "./app.component.html",
-  styleUrls: ["./app.component.scss"],
   host: {
     "(window:resize)": "onWindowResize($event)",
   },
