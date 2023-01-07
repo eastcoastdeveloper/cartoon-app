@@ -42,12 +42,14 @@ export class HomeComponent implements OnInit, OnDestroy {
       });
   }
 
-  voteUp() {
-    console.log("vote up");
+  voteUp(data: DummyDataInterface) {
+    data.votes!++;
+    this._httpService.updateVoteCount(data);
   }
 
-  voteDown() {
-    console.log("vote up");
+  voteDown(data: DummyDataInterface) {
+    data.votes! === 0 ? (data.votes = 0) : data.votes!--;
+    console.log(data.votes);
   }
 
   ngOnDestroy(): void {

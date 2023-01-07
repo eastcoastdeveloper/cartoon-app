@@ -14,6 +14,9 @@ export class HttpService implements OnDestroy {
 
   constructor(private _http: HttpClient) {}
 
+  /* ############################## */
+  /*        Get Captions            */
+  /* ############################## */
   populateCaptions(pageNum: number, pageLimit: number) {
     const httpOptions = {
       headers: new HttpHeaders(),
@@ -42,6 +45,19 @@ export class HttpService implements OnDestroy {
       )
       .subscribe(() => {
         this.responseSubject.next(this.captionsArray);
+      });
+  }
+
+  /* ############################## */
+  /*         Post New Vote          */
+  /* ############################## */
+  updateVoteCount(data: DummyDataInterface) {
+    this._http
+      .post<DummyDataInterface>("/api/updateVoteCount", {
+        title: "User Up or Down Voted",
+      })
+      .subscribe((data) => {
+        console.log(data);
       });
   }
 
