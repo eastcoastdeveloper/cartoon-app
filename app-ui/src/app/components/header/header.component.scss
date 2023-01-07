@@ -1,43 +1,59 @@
-@import '../../style/color.scss';
+@import "../../style/color.scss";
 
 header {
-    background-color: $white;
-    border-bottom: 1px solid $midnight;
-    position: fixed;
-    padding: 10px;
-    width: 100%;
-    z-index: 1;
-    top: 0;
+  background-color: $white;
+  border-bottom: 1px solid $midnight;
+  position: fixed;
+  padding: 10px;
+  width: 100%;
+  z-index: 1;
+  top: 0;
 
-    .logo-tagline {
-        display: inline-block;
+  .logo-tagline {
+    display: inline-block;
 
-        img {
-            float: left;
-            margin-right: 20px;
-        }
-
-        >div {
-            font: normal 26px sans-serif;
-            position: absolute;
-            top: 50%;
-            transform: translateY(-50%);
-            left: 150px;
-            color: $midnight;
-        }
+    img {
+      float: left;
+      margin-right: 20px;
     }
 
-    nav {
-        transform: translateY(-50%);
-        font-size: 14px;
-        position: absolute;
-        top: 50%;
-        right: 30px;
+    > div {
+      font: normal 26px sans-serif;
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      left: 150px;
+      color: $midnight;
     }
+  }
+
+  nav {
+    transform: translateY(-50%);
+    font-size: 14px;
+    position: absolute;
+    top: 50%;
+    right: 30px;
+  }
 }
 
-@media screen and (max-width:768px) {
-    header {
-        padding: 20px 0;
+@media screen and (max-width: 768px) {
+  header {
+    padding: 20px 0;
+    .logo-tagline {
+      > div {
+        left: 20px;
+        font-size: 1.5em;
+      }
     }
+  }
+}
+
+@media screen and (max-width: 600px) {
+  header {
+    .logo-tagline {
+      > div {
+        font-size: 1em;
+      }
+    }
+  }
 }

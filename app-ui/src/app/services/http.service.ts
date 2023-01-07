@@ -27,7 +27,6 @@ export class HttpService implements OnDestroy {
       .pipe(
         map((responseData) => {
           let allProjects: any = [];
-          console.log(responseData);
           Object.keys(responseData).filter((currentVal, index) => {
             if (currentVal === "results") {
               allProjects = Object.values(responseData)[index];

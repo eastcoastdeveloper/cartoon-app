@@ -17,8 +17,7 @@ export class HomeComponent implements OnInit, OnDestroy {
 
   constructor(
     private _windowWidthService: WindowWidthService,
-    private _httpService: HttpService,
-    private _loaderService: LoaderService
+    private _httpService: HttpService
   ) {}
 
   ngOnInit(): void {

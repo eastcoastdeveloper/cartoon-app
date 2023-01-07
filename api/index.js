@@ -9,7 +9,7 @@ app.use(helmet());
 /* ############################## */
 /*        Get Captions            */
 /* ############################## */
-function paginatedResults(model) {
+function captionsRequest(model) {
   return (req, res, next) => {
     const page = parseInt(req.query.page);
     const limit = parseInt(req.query.limit);
@@ -18,13 +18,13 @@ function paginatedResults(model) {
     const results = {};
 
     results.results = model.data.slice(startIndex, endIndex);
-    res.paginatedResults = results;
+    res.captionsRequest = results;
     next();
   }
 }
 
-app.use('/api/getCaptions', paginatedResults(projectData), (req, res) => {
-  res.json(res.paginatedResults);
+app.use('/api/getCaptions', captionsRequest(projectData), (req, res) => {
+  res.json(res.captionsRequest);
 })
 
 app.listen(port, (err) => {
