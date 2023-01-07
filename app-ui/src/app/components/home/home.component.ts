@@ -23,7 +23,7 @@ export class HomeComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     new Promise<void>((resolve, reject) => {
-      this._httpService.fetchDummyData();
+      this._httpService.populateCaptions(1, 10);
       resolve(this.doSomething());
     });
 

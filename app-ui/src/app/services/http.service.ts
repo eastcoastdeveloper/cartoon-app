@@ -14,18 +14,22 @@ export class HttpService implements OnDestroy {
 
   constructor(private _http: HttpClient) {}
 
-  fetchDummyData() {
+  populateCaptions(pageNum: number, pageLimit: number) {
     const httpOptions = {
       headers: new HttpHeaders(),
     };
 
     return this._http
-      .get<DummyDataInterface[]>("/api", httpOptions)
+      .get<DummyDataInterface[]>(
+        `/api/getCaptions/?page=${pageNum}?&limit=${pageLimit}`,
+        httpOptions
+      )
       .pipe(
         map((responseData) => {
           let allProjects: any = [];
+          console.log(responseData);
           Object.keys(responseData).filter((currentVal, index) => {
-            if (currentVal === "data") {
+            if (currentVal === "results") {
               allProjects = Object.values(responseData)[index];
               allProjects.map((val: any) => {
                 val.cached = true;
