@@ -48,7 +48,8 @@
   </div>
 
   <div class="published-content">
-    <div *ngFor="let data of dummyDataArray" class="repeating-block">
+    <div *ngFor="let data of userDataArray" class="repeating-block">
+      <!-- Captions ... -->
       <div class="submission">
         <p>{{ data.caption }}</p>
         <div class="full-name">
@@ -62,6 +63,7 @@
         </div>
       </div>
 
+      <!-- Voting -->
       <div class="votes">
         <div (click)="voteUp(data)" class="vote-up">
           <span>&#43;</span>

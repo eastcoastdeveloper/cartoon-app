@@ -1,6 +1,6 @@
 import { Component, OnDestroy, OnInit } from "@angular/core";
 import { Subject, takeUntil } from "rxjs";
-import { UserDataInterface } from "src/app/interfaces/dummyData";
+import { UserDataInterface } from "src/app/interfaces/user-data.interface";
 import { HttpService } from "src/app/services/http.service";
 import { WindowWidthService } from "src/app/services/window-width.service";
 
@@ -12,7 +12,7 @@ import { WindowWidthService } from "src/app/services/window-width.service";
 export class HomeComponent implements OnInit, OnDestroy {
   destroy$: Subject<boolean> = new Subject<boolean>();
   windowWidth?: number;
-  dummyDataArray: UserDataInterface[] = [];
+  userDataArray: UserDataInterface[] = [];
 
   constructor(
     private _windowWidthService: WindowWidthService,
@@ -38,7 +38,7 @@ export class HomeComponent implements OnInit, OnDestroy {
     this._httpService.responseSubject
       .pipe(takeUntil(this.destroy$))
       .subscribe((val) => {
-        this.dummyDataArray = val;
+        this.userDataArray = val;
       });
   }
 
@@ -56,7 +56,6 @@ export class HomeComponent implements OnInit, OnDestroy {
 
   // Kill Subscriptions
   ngOnDestroy(): void {
-    // Kill Subscriptions
     this.destroy$.next(true);
     this.destroy$.complete();
   }

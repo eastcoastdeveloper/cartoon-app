@@ -1,7 +1,7 @@
 import { HttpClient, HttpHeaders } from "@angular/common/http";
 import { Injectable, OnDestroy } from "@angular/core";
 import { BehaviorSubject, Subject, map } from "rxjs";
-import { UserDataInterface } from "../interfaces/dummyData";
+import { UserDataInterface } from "../interfaces/user-data.interface";
 
 @Injectable({
   providedIn: "root",
