@@ -14,6 +14,9 @@ export class HomeComponent implements OnInit, OnDestroy {
   windowWidth?: number;
   userDataArray: UserDataInterface[] = [];
 
+  currentImage: string =
+    "https://blog-www.pods.com/wp-content/uploads/2019/08/MG_6_1_Miami.jpg";
+
   constructor(
     private _windowWidthService: WindowWidthService,
     private _httpService: HttpService
