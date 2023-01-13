@@ -14,6 +14,7 @@ export class HomeComponent implements OnInit, OnDestroy {
   destroy$: Subject<boolean> = new Subject<boolean>();
   windowWidth?: number;
   userDataArray: UserDataInterface[] = [];
+  hover: boolean = false;
   caption?: string;
   firstName?: string;
   lastName?: string;

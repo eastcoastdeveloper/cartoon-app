@@ -171,15 +171,15 @@
             border: 1px solid $midnight;
             cursor: pointer;
             transition: all 0.25s;
-
-            &:hover {
-              color: $white;
-              background-color: $midnight;
-            }
           }
         }
       }
     }
+  }
+
+  .form-active-btn-hover {
+    color: $white;
+    background-color: $midnight;
   }
 
   .published-content {

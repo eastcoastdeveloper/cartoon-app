@@ -86,7 +86,6 @@
               #lName="ngModel"
               placeholder="Last name"
               ngModel
-              required
             />
           </div>
         </div>
@@ -120,8 +119,17 @@
           </div>
 
           <!-- Submit -->
-          <div class="submit-caption">
-            <button type="submit" tabindex="7" [disabled]="!myForm.valid">
+          <div
+            class="submit-caption"
+            (mouseover)="hover = true"
+            (mouseleave)="hover = false"
+          >
+            <button
+              type="submit"
+              tabindex="7"
+              [ngClass]="{ 'form-active-btn-hover': myForm.valid && hover }"
+              [disabled]="!myForm.valid"
+            >
               Submit
             </button>
           </div>
