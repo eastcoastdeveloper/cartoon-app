@@ -89,6 +89,18 @@
     }
   }
 
+  input.ng-invalid.ng-touched {
+    background-color: $warningRed;
+  }
+
+  input.ng-invalid.ng-touched::placeholder {
+    color: $white;
+  }
+
+  small {
+    color: $warningRed;
+  }
+
   .user-input {
     max-width: 790px;
     margin: 0 auto;
@@ -110,6 +122,7 @@
         border: 1px solid $midnight;
         border-radius: 3px;
         width: calc(100% - 12px);
+        outline: none;
       }
 
       .caption {
@@ -173,6 +186,11 @@
             transition: all 0.25s;
           }
         }
+      }
+      .required-fields-error {
+        font: 600 12px sans-serif;
+        margin-top: 10px;
+        font-style: italic;
       }
     }
   }

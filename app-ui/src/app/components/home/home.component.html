@@ -135,6 +135,11 @@
           </div>
         </div>
       </div>
+      <div class="required-fields-error">
+        <small *ngIf="requiredFields.invalid && requiredFields.touched"
+          >Some of the required fields does not have valid value.</small
+        >
+      </div>
     </form>
   </div>
 
