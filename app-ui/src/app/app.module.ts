@@ -8,6 +8,7 @@ import { HeaderComponent } from "./components/header/header.component";
 import { LoadingInterceptor } from "./guards/loading.interceptor";
 import { FooterComponent } from "./components/footer/footer.component";
 import { LoaderComponent } from "./components/loader/loader.component";
+import { FormsModule } from "@angular/forms";
 
 @NgModule({
   declarations: [
@@ -17,7 +18,7 @@ import { LoaderComponent } from "./components/loader/loader.component";
     FooterComponent,
     LoaderComponent,
   ],
-  imports: [HttpClientModule, BrowserModule, AppRoutingModule],
+  imports: [HttpClientModule, BrowserModule, AppRoutingModule, FormsModule],
   providers: [
     HttpClientModule,
     {

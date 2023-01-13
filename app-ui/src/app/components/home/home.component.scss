@@ -99,11 +99,17 @@
     }
 
     form {
+      label {
+        font: normal 13px sans-serif;
+        display: block;
+        margin-bottom: 3px;
+      }
       input {
         padding: 5px;
         font-size: 14px;
         border: 1px solid $midnight;
         border-radius: 3px;
+        width: calc(100% - 12px);
       }
 
       .caption {
@@ -114,9 +120,28 @@
 
       .email-first-last {
         display: grid;
-        grid-template-columns: calc(60% - 20px) 20% 20%;
         grid-column-gap: 10px;
+        div:nth-child(1) {
+          grid-area: email;
+        }
+        div:nth-child(2) {
+          grid-area: fName;
+        }
+        div:nth-child(3) {
+          grid-area: lName;
+        }
+      }
+
+      .email-first-last {
+        grid-template-columns: repeat(2, calc(50% - 5px));
+        grid-template-areas:
+          "email email"
+          "fName lName";
+        grid-row-gap: 10px;
         margin-bottom: 10px;
+        input:first-child {
+          grid-column: 1/-1;
+        }
       }
 
       .city-state-submit {
@@ -125,11 +150,22 @@
         grid-template-columns: repeat(2, calc(30% - 15px)) auto;
 
         .submit-caption {
+          position: relative;
+          button {
+            position: absolute;
+            bottom: 0;
+            width: 100%;
+            left: 0;
+            padding: 5px 15px;
+          }
+        }
+
+        .submit-caption {
           text-align: right;
+          margin-top: 12px;
 
           button {
             outline: none;
-            padding: 8px 15px;
             font-weight: 600;
             border-radius: 3px;
             border: 1px solid $midnight;
@@ -212,23 +248,8 @@
       padding: 0 20px;
 
       form {
-        .email-first-last {
-          grid-template-columns: repeat(2, calc(50% - 5px));
-          grid-row-gap: 10px;
-
-          input:first-child {
-            grid-column: 1/-1;
-          }
-        }
-
         .city-state-submit {
           grid-template-columns: repeat(2, calc(25% - 7px)) auto;
-
-          .submit-caption {
-            button {
-              width: 100%;
-            }
-          }
         }
       }
     }
@@ -254,18 +275,10 @@
     .user-input {
       form {
         .city-state-submit {
-          display: block;
-
           input:first-child {
-            width: calc(50% - 17px);
             margin-right: 10px;
             display: inline-block;
           }
-
-          input:not(:first-child) {
-            width: calc(50% - 18px);
-          }
-
           .submit-caption {
             margin-top: 15px;
           }
@@ -281,35 +294,36 @@
       form {
         .email-first-last {
           display: block;
+          margin: 0;
 
           input {
             width: calc(100% - 12px);
           }
 
-          input:nth-child(2) {
-            margin: 15px 0;
+          > div {
+            margin-bottom: 15px;
           }
         }
-      }
-    }
-  }
-}
-
-@media screen and (max-width: 475px) {
-  #home-page {
-    .user-input {
-      form {
+        .caption {
+          margin-bottom: 15px;
+        }
         .city-state-submit {
-          input {
-            width: calc(100% - 12px) !important;
+          grid-template-areas:
+            "city state"
+            "submit submit";
+          grid-template-columns: repeat(2, 50%);
+          div:nth-child(1) {
+            grid-area: city;
           }
-
-          input:nth-child(2) {
-            margin: 15px 0;
+          div:nth-child(2) {
+            grid-area: state;
           }
-
-          .submit-caption {
-            margin: 0;
+          div:nth-child(3) {
+            grid-area: submit;
+            margin-top: 20px;
+            button {
+              position: unset;
+            }
           }
         }
       }

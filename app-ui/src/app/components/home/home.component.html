@@ -29,17 +29,82 @@
     </div>
 
     <form>
-      <input placeholder="Caption" class="caption" />
-      <div class="email-first-last">
-        <input placeholder="Email address" />
-        <input placeholder="First name" />
-        <input placeholder="Last name" />
-      </div>
-      <div class="city-state-submit">
-        <input placeholder="City" />
-        <input placeholder="State/ Province" />
-        <div class="submit-caption">
-          <button type="submit">Submit</button>
+      <div ngModelGroup="requiredFields" #requiredFields="ngModelGroup">
+        <div>
+          <label for="caption">Caption</label>
+          <input
+            type="text"
+            id="caption"
+            placeholder="Caption"
+            class="caption"
+            ngModel
+            required
+            #caption="ngModel"
+          />
+        </div>
+        <div class="email-first-last">
+          <!-- Email Address -->
+          <div>
+            <label for="email">Email Address</label>
+            <input
+              type="text"
+              id="email"
+              #email="ngModel"
+              placeholder="Email address"
+              ngModel
+              required
+            />
+          </div>
+
+          <!-- First Name -->
+          <div>
+            <label for="fName">First Name</label>
+            <input
+              type="text"
+              id="fName"
+              #fName="ngModel"
+              placeholder="First name"
+              ngModel
+              required
+            />
+          </div>
+
+          <!-- Last Name -->
+          <div>
+            <label for="lName">Last Name</label>
+            <input
+              type="text"
+              id="lName"
+              #lName="ngModel"
+              placeholder="Last name"
+              ngModel
+              required
+            />
+          </div>
+        </div>
+        <div class="city-state-submit">
+          <div>
+            <label for="city">City</label>
+            <input
+              type="text"
+              id="city"
+              #city="ngModel"
+              placeholder="City"
+              ngModel
+            />
+          </div>
+          <div>
+            <label for="state">State/ Province</label>
+            <input
+              type="text"
+              id="state"
+              placeholder="State/ Province"
+              ngModel
+            />
+          </div>
+          <div class="submit-caption">
+            <button type="submit">Submit</button>
+          </div>
         </div>
       </div>
     </form>
