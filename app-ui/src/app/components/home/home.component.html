@@ -35,6 +35,7 @@
           <input
             type="text"
             id="caption"
+            tabindex="1"
             name="caption"
             placeholder="Caption"
             class="caption"
@@ -50,6 +51,7 @@
             <input
               type="text"
               id="email"
+              tabindex="2"
               name="email"
               #email="ngModel"
               placeholder="Email address"
@@ -64,6 +66,7 @@
             <input
               type="text"
               id="fName"
+              tabindex="3"
               name="fName"
               #fName="ngModel"
               placeholder="First name"
@@ -78,6 +81,7 @@
             <input
               type="text"
               id="lName"
+              tabindex="4"
               name="lName"
               #lName="ngModel"
               placeholder="Last name"
@@ -86,30 +90,40 @@
             />
           </div>
         </div>
+
         <div class="city-state-submit">
+          <!-- City -->
           <div>
             <label for="city">City</label>
             <input
               type="text"
               id="city"
+              tabindex="5"
               name="city"
               #city="ngModel"
               placeholder="City"
               ngModel
             />
           </div>
+
+          <!-- State -->
           <div>
             <label for="state">State/ Province</label>
             <input
               type="text"
               id="state"
+              tabindex="6"
               name="state"
               placeholder="State/ Province"
               ngModel
             />
           </div>
+
+          <!-- Submit -->
           <div class="submit-caption">
-            <button type="submit" [disabled]="!myForm.valid">Submit</button>
+            <button type="submit" tabindex="7" [disabled]="!myForm.valid">
+              Submit
+            </button>
           </div>
         </div>
       </div>

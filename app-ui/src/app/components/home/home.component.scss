@@ -197,6 +197,8 @@
       .submission {
         > p {
           font-style: italic;
+          max-width: 375px;
+          line-height: 20px;
         }
 
         .full-name,
@@ -311,7 +313,7 @@
           grid-template-areas:
             "city state"
             "submit submit";
-          grid-template-columns: repeat(2, 50%);
+          grid-template-columns: repeat(2, calc(50% - 5px));
           div:nth-child(1) {
             grid-area: city;
           }
