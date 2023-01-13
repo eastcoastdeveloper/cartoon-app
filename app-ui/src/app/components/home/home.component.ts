@@ -1,8 +1,9 @@
-import { Component, OnDestroy, OnInit } from "@angular/core";
+import { Component, OnDestroy, OnInit, ViewChild } from "@angular/core";
 import { Subject, takeUntil } from "rxjs";
 import { UserDataInterface } from "src/app/interfaces/user-data.interface";
 import { HttpService } from "src/app/services/http.service";
 import { WindowWidthService } from "src/app/services/window-width.service";
+import { NgForm } from "@angular/forms";
 
 @Component({
   selector: "app-home",
@@ -13,6 +14,12 @@ export class HomeComponent implements OnInit, OnDestroy {
   destroy$: Subject<boolean> = new Subject<boolean>();
   windowWidth?: number;
   userDataArray: UserDataInterface[] = [];
+  caption?: string;
+  firstName?: string;
+  lastName?: string;
+  city?: string;
+  state?: string;
+  coutry?: string;
 
   currentImage: string =
     "https://blog-www.pods.com/wp-content/uploads/2019/08/MG_6_1_Miami.jpg";
@@ -55,6 +62,19 @@ export class HomeComponent implements OnInit, OnDestroy {
   voteDown(data: UserDataInterface) {
     data.votes! === 0 ? (data.votes = 0) : data.votes!--;
     console.log(data.votes);
+  }
+
+  @ViewChild("myForm") form: NgForm;
+
+  onSubmit() {
+    this.city = this.form.value.requiredFields.city;
+    this.firstName = this.form.value.requiredFields.firstName;
+    this.lastName = this.form.value.requiredFields.lastName;
+    this.city = this.form.value.city;
+    this.state = this.form.value.state;
+    console.log(this.form.value);
+
+    this.form.reset();
   }
 
   // Kill Subscriptions

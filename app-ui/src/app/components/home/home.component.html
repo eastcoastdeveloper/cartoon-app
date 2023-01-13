@@ -28,13 +28,14 @@
       </div>
     </div>
 
-    <form>
+    <form (ngSubmit)="onSubmit()" #myForm="ngForm">
       <div ngModelGroup="requiredFields" #requiredFields="ngModelGroup">
         <div>
           <label for="caption">Caption</label>
           <input
             type="text"
             id="caption"
+            name="caption"
             placeholder="Caption"
             class="caption"
             ngModel
@@ -49,6 +50,7 @@
             <input
               type="text"
               id="email"
+              name="email"
               #email="ngModel"
               placeholder="Email address"
               ngModel
@@ -62,6 +64,7 @@
             <input
               type="text"
               id="fName"
+              name="fName"
               #fName="ngModel"
               placeholder="First name"
               ngModel
@@ -75,6 +78,7 @@
             <input
               type="text"
               id="lName"
+              name="lName"
               #lName="ngModel"
               placeholder="Last name"
               ngModel
@@ -88,6 +92,7 @@
             <input
               type="text"
               id="city"
+              name="city"
               #city="ngModel"
               placeholder="City"
               ngModel
@@ -98,12 +103,13 @@
             <input
               type="text"
               id="state"
+              name="state"
               placeholder="State/ Province"
               ngModel
             />
           </div>
           <div class="submit-caption">
-            <button type="submit">Submit</button>
+            <button type="submit" [disabled]="!myForm.valid">Submit</button>
           </div>
         </div>
       </div>
