@@ -21,14 +21,16 @@ export class HttpService implements OnDestroy {
 
     return this._http
       .get<UserDataInterface[]>(
-        `/api/getCaptions/?page=${pageNum}?&limit=${pageLimit}`,
+        `/api/get-captions/?page=${pageNum}?&limit=${pageLimit}`,
         httpOptions
       )
       .pipe(
         map((responseData) => {
           let allProjects: any = [];
+          console.log(responseData);
           Object.keys(responseData).filter((currentVal, index) => {
             if (currentVal === "results") {
+              console.log(responseData);
               allProjects = Object.values(responseData)[index];
               allProjects.map((val: any) => {
                 val.cached = true;

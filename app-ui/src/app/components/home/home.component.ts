@@ -72,7 +72,6 @@ export class HomeComponent implements OnInit, OnDestroy {
       state: this.form.value.state,
     };
     this._httpService.postFormResults(this.formResults);
-
     this.form.reset();
   }
 
