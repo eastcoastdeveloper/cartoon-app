@@ -28,115 +28,113 @@
       </div>
     </div>
 
-    <form (ngSubmit)="onSubmit()" #myForm="ngForm">
-      <div ngModelGroup="requiredFields" #requiredFields="ngModelGroup">
+    <form (ngSubmit)="onSubmit()" #captionForm="ngForm">
+      <div>
+        <label for="caption">Caption</label>
+        <input
+          type="text"
+          id="caption"
+          tabindex="1"
+          name="caption"
+          placeholder="Caption"
+          class="caption"
+          ngModel
+          required
+          #caption="ngModel"
+        />
+      </div>
+      <div class="email-first-last">
+        <!-- Email Address -->
         <div>
-          <label for="caption">Caption</label>
+          <label for="email">Email Address</label>
           <input
-            type="text"
-            id="caption"
-            tabindex="1"
-            name="caption"
-            placeholder="Caption"
-            class="caption"
+            type="email"
+            id="email"
+            tabindex="2"
+            name="email"
+            #email="ngModel"
+            placeholder="Email address"
             ngModel
             required
-            #caption="ngModel"
           />
         </div>
-        <div class="email-first-last">
-          <!-- Email Address -->
-          <div>
-            <label for="email">Email Address</label>
-            <input
-              type="text"
-              id="email"
-              tabindex="2"
-              name="email"
-              #email="ngModel"
-              placeholder="Email address"
-              ngModel
-              required
-            />
-          </div>
 
-          <!-- First Name -->
-          <div>
-            <label for="fName">First Name</label>
-            <input
-              type="text"
-              id="fName"
-              tabindex="3"
-              name="fName"
-              #fName="ngModel"
-              placeholder="First name"
-              ngModel
-              required
-            />
-          </div>
-
-          <!-- Last Name -->
-          <div>
-            <label for="lName">Last Name</label>
-            <input
-              type="text"
-              id="lName"
-              tabindex="4"
-              name="lName"
-              #lName="ngModel"
-              placeholder="Last name"
-              ngModel
-            />
-          </div>
+        <!-- First Name -->
+        <div>
+          <label for="fName">First Name</label>
+          <input
+            type="text"
+            id="fName"
+            tabindex="3"
+            name="fName"
+            #fName="ngModel"
+            placeholder="First name"
+            ngModel
+            required
+          />
         </div>
 
-        <div class="city-state-submit">
-          <!-- City -->
-          <div>
-            <label for="city">City</label>
-            <input
-              type="text"
-              id="city"
-              tabindex="5"
-              name="city"
-              #city="ngModel"
-              placeholder="City"
-              ngModel
-            />
-          </div>
+        <!-- Last Name -->
+        <div>
+          <label for="lName">Last Name</label>
+          <input
+            type="text"
+            id="lName"
+            tabindex="4"
+            name="lName"
+            #lName="ngModel"
+            placeholder="Last name"
+            ngModel
+          />
+        </div>
+      </div>
 
-          <!-- State -->
-          <div>
-            <label for="state">State/ Province</label>
-            <input
-              type="text"
-              id="state"
-              tabindex="6"
-              name="state"
-              placeholder="State/ Province"
-              ngModel
-            />
-          </div>
+      <div class="city-state-submit">
+        <!-- City -->
+        <div>
+          <label for="city">City</label>
+          <input
+            type="text"
+            id="city"
+            tabindex="5"
+            name="city"
+            #city="ngModel"
+            placeholder="City"
+            ngModel
+          />
+        </div>
 
-          <!-- Submit -->
-          <div
-            class="submit-caption"
-            (mouseover)="hover = true"
-            (mouseleave)="hover = false"
+        <!-- State -->
+        <div>
+          <label for="state">State/ Province</label>
+          <input
+            type="text"
+            id="state"
+            tabindex="6"
+            name="state"
+            placeholder="State/ Province"
+            ngModel
+          />
+        </div>
+
+        <!-- Submit -->
+        <div
+          class="submit-caption"
+          (mouseover)="hover = true"
+          (mouseleave)="hover = false"
+        >
+          <button
+            type="submit"
+            tabindex="7"
+            [ngClass]="{ 'form-active-btn-hover': captionForm.valid && hover }"
+            [disabled]="!captionForm.valid"
           >
-            <button
-              type="submit"
-              tabindex="7"
-              [ngClass]="{ 'form-active-btn-hover': myForm.valid && hover }"
-              [disabled]="!myForm.valid"
-            >
-              Submit
-            </button>
-          </div>
+            Submit
+          </button>
         </div>
       </div>
       <div class="required-fields-error">
-        <small *ngIf="requiredFields.invalid && requiredFields.touched"
+        <small *ngIf="captionForm.invalid && captionForm.touched"
           >Please complete required fields.</small
         >
       </div>
@@ -164,9 +162,9 @@
         <div (click)="voteUp(data)" class="vote-up">
           <span>&#43;</span>
         </div>
-        <div class="vote-total">
+        <!-- <div class="vote-total">
           <span class="vote-total">{{ data.votes }}</span>
-        </div>
+        </div> -->
         <div (click)="voteDown(data)" class="vote-down">
           <span class="vote-total">&#45;</span>
         </div>

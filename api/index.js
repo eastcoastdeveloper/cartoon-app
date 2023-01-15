@@ -23,6 +23,8 @@ function captionsRequest(model) {
   }
 }
 
+app.use('/api/form-submission', require('./routes/form-submission'));
+
 app.use('/api/getCaptions', captionsRequest(projectData), (req, res) => {
   res.json(res.captionsRequest);
 })
@@ -31,16 +33,16 @@ app.use('/api/getCaptions', captionsRequest(projectData), (req, res) => {
 /* ############################## */
 /*        Update Vote Count       */
 /* ############################## */
-function postNewVote(model) {
-  return (req, res, next) => {
-    console.log(req)
-    next();
-  }
-}
+// function postNewVote(model) {
+//   return (req, res, next) => {
+//     console.log(req)
+//     next();
+//   }
+// }
 
-app.post('/api/updateVoteCount', postNewVote(projectData), (req, res) => {
-  console.log(req.body)
-})
+// app.post('/api/updateVoteCount', postNewVote(projectData), (req, res) => {
+//   console.log(req.body)
+// })
 
 app.listen(port, (err) => {
   if (err) { console.log(err); }

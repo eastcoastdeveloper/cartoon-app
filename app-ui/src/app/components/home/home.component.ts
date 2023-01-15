@@ -15,12 +15,7 @@ export class HomeComponent implements OnInit, OnDestroy {
   windowWidth?: number;
   userDataArray: UserDataInterface[] = [];
   hover: boolean = false;
-  caption?: string;
-  firstName?: string;
-  lastName?: string;
-  city?: string;
-  state?: string;
-  coutry?: string;
+  formResults: UserDataInterface;
 
   currentImage: string =
     "https://blog-www.pods.com/wp-content/uploads/2019/08/MG_6_1_Miami.jpg";
@@ -55,25 +50,28 @@ export class HomeComponent implements OnInit, OnDestroy {
 
   // Up Vote
   voteUp(data: UserDataInterface) {
-    data.votes!++;
+    // data.votes!++;
     this._httpService.updateVoteCount(data);
   }
 
   // Down Vote
   voteDown(data: UserDataInterface) {
-    data.votes! === 0 ? (data.votes = 0) : data.votes!--;
-    console.log(data.votes);
+    // data.votes! === 0 ? (data.votes = 0) : data.votes!--;
+    // console.log(data.votes);
   }
 
-  @ViewChild("myForm") form: NgForm;
+  @ViewChild("captionForm") form: NgForm;
 
   onSubmit() {
-    this.city = this.form.value.requiredFields.city;
-    this.firstName = this.form.value.requiredFields.firstName;
-    this.lastName = this.form.value.requiredFields.lastName;
-    this.city = this.form.value.city;
-    this.state = this.form.value.state;
-    console.log(this.form.value);
+    this.formResults = {
+      caption: this.form.value.caption,
+      email: this.form.value.email,
+      firstName: this.form.value.fName,
+      lastName: this.form.value.lName,
+      city: this.form.value.city,
+      state: this.form.value.state,
+    };
+    this._httpService.postFormResults(this.formResults);
 
     this.form.reset();
   }
