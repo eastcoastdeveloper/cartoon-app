@@ -6,4 +6,5 @@ export class UserDataInterface {
   city?: string;
   state?: string;
   country?: string;
+  votes?: number;
 }

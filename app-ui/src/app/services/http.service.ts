@@ -46,14 +46,22 @@ export class HttpService implements OnDestroy {
   }
 
   // Post New Vote
-  updateVoteCount(data: UserDataInterface) {
-    this._http
-      .post<UserDataInterface>("/api/updateVoteCount", {
-        title: "User Up or Down Voted",
+  updateVoteCount(newUpVote: UserDataInterface) {
+    const headers = { "content-type": "application/json" };
+    const body = JSON.stringify(newUpVote);
+    console.log(body);
+    return this._http
+      .post<any>("/api/update-caption-vote", body, {
+        headers: headers,
+        observe: "response",
+        reportProgress: true,
       })
-      .subscribe((data) => {
-        console.log(data);
-      });
+      .pipe(
+        catchError((err) => {
+          console.log(err);
+          throw err;
+        })
+      );
   }
 
   // Post Form Results
