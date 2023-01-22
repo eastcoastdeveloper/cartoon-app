@@ -1,11 +1,10 @@
-import { Component, OnDestroy, OnInit, ViewChild } from "@angular/core";
+import { Component, OnDestroy, OnInit } from "@angular/core";
 import { Subject, takeUntil } from "rxjs";
 import { UserDataInterface } from "src/app/interfaces/user-data.interface";
 import { HttpService } from "src/app/services/http.service";
 import { WindowWidthService } from "src/app/services/window-width.service";
 import { FormControl, FormGroup, Validators } from "@angular/forms";
 import { emailValidator } from "./email-validator.directive";
-import { NgForm } from "@angular/forms";
 
 interface IUser {
   caption: string;
@@ -30,7 +29,6 @@ export class HomeComponent implements OnInit, OnDestroy {
   userDataArray: UserDataInterface[] = [];
   hover: boolean = false;
   formResults: UserDataInterface;
-  // email: string = "";
   currentImage: string =
     "https://blog-www.pods.com/wp-content/uploads/2019/08/MG_6_1_Miami.jpg";
 
@@ -148,22 +146,6 @@ export class HomeComponent implements OnInit, OnDestroy {
     data.votes! === 0 ? (data.votes = 0) : data.votes!--;
     this._httpService.updateVoteCount(data);
   }
-
-  // @ViewChild("captionForm") form: NgForm;
-
-  // onSubmit() {
-  //   // if form.invalid { return true }
-  //   this.formResults = {
-  //     caption: this.form.value.caption,
-  //     email: this.form.value.email,
-  //     firstName: this.form.value.fName,
-  //     lastName: this.form.value.lName,
-  //     city: this.form.value.city,
-  //     state: this.form.value.state,
-  //   };
-  //   this._httpService.postFormResults(this.formResults);
-  //   this.form.reset();
-  // }
 
   // Kill Subscriptions
   ngOnDestroy(): void {

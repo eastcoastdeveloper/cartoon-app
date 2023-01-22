@@ -229,18 +229,11 @@
           (mouseover)="hover = true"
           (mouseleave)="hover = false"
         >
-          <!-- [ngClass]="{ 'form-active-btn-hover': reactiveForm.valid && hover }"
-        [disabled]="!reactiveForm.valid" -->
           <button type="submit" tabindex="7" (click)="validate()">
             Submit
           </button>
         </div>
       </div>
-      <!-- <div class="required-fields-error">
-        <small *ngIf="captionForm.invalid && captionForm.touched"
-          >Please complete required fields.</small
-        >
-      </div> -->
     </form>
   </div>
 
