@@ -8,7 +8,8 @@ import { HeaderComponent } from "./components/header/header.component";
 import { LoadingInterceptor } from "./guards/loading.interceptor";
 import { FooterComponent } from "./components/footer/footer.component";
 import { LoaderComponent } from "./components/loader/loader.component";
-import { FormsModule } from "@angular/forms";
+import { FormsModule, ReactiveFormsModule } from "@angular/forms";
+import { EmailValidatorDirective } from "./components/home/email-validator.directive";
 
 @NgModule({
   declarations: [
@@ -17,8 +18,15 @@ import { FormsModule } from "@angular/forms";
     HeaderComponent,
     FooterComponent,
     LoaderComponent,
+    EmailValidatorDirective,
   ],
-  imports: [HttpClientModule, BrowserModule, AppRoutingModule, FormsModule],
+  imports: [
+    HttpClientModule,
+    BrowserModule,
+    AppRoutingModule,
+    FormsModule,
+    ReactiveFormsModule,
+  ],
   providers: [
     HttpClientModule,
     {

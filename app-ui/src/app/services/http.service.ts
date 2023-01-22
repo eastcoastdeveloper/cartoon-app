@@ -20,17 +20,13 @@ export class HttpService implements OnDestroy {
     };
 
     return this._http
-      .get<UserDataInterface[]>(
-        `/api/get-captions/?page=${pageNum}?&limit=${pageLimit}`,
-        httpOptions
-      )
+      .get<UserDataInterface[]>(`/api/getCaptions`, httpOptions)
       .pipe(
         map((responseData) => {
           let allProjects: any = [];
           console.log(responseData);
           Object.keys(responseData).filter((currentVal, index) => {
             if (currentVal === "results") {
-              console.log(responseData);
               allProjects = Object.values(responseData)[index];
               allProjects.map((val: any) => {
                 val.cached = true;
@@ -48,22 +44,14 @@ export class HttpService implements OnDestroy {
   }
 
   // Post New Vote
-  updateVoteCount(newUpVote: UserDataInterface) {
-    const headers = { "content-type": "application/json" };
-    const body = JSON.stringify(newUpVote);
-    console.log(body);
-    return this._http
-      .post<any>("/api/update-caption-vote", body, {
-        headers: headers,
-        observe: "response",
-        reportProgress: true,
+  updateVoteCount(data: UserDataInterface) {
+    this._http
+      .post<UserDataInterface>("/api/updateVoteCount", {
+        title: "User Up or Down Voted",
       })
-      .pipe(
-        catchError((err) => {
-          console.log(err);
-          throw err;
-        })
-      );
+      .subscribe((data) => {
+        console.log(data);
+      });
   }
 
   // Post Form Results

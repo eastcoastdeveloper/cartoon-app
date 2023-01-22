@@ -28,64 +28,139 @@
       </div>
     </div>
 
-    <form (ngSubmit)="onSubmit()" #captionForm="ngForm">
+    <form [formGroup]="reactiveForm" #form="ngForm">
       <div>
+        <!-- Caption -->
         <label for="caption">Caption</label>
         <input
           type="text"
           id="caption"
-          tabindex="1"
           name="caption"
-          placeholder="Caption"
-          class="caption"
-          ngModel
+          formControlName="caption"
+          placeholder="Please submit your caption"
           required
-          #caption="ngModel"
+          minlength="1"
+          maxlength="250"
+          class="form-control form-control-sm"
+          [class.is-invalid]="
+            caption.invalid && (caption.dirty || caption.touched)
+          "
         />
+        <div
+          *ngIf="caption.invalid && (caption.dirty || caption.touched)"
+          class="invalid-feedback"
+        >
+          <div *ngIf="caption.errors?.['required']">
+            This field is required.
+          </div>
+          <div *ngIf="caption.errors?.['minlength']">
+            This field must have at least 1 character.
+          </div>
+          <div *ngIf="caption.errors?.['maxlength']">
+            This field must have at most 250 characters.
+          </div>
+        </div>
       </div>
       <div class="email-first-last">
-        <!-- Email Address -->
         <div>
+          <!-- Email Address -->
           <label for="email">Email Address</label>
           <input
             type="email"
             id="email"
-            tabindex="2"
             name="email"
-            #email="ngModel"
-            placeholder="Email address"
-            ngModel
+            formControlName="email"
+            placeholder="your-name@provider.com"
             required
+            minlength="1"
+            maxlength="250"
+            class="form-control form-control-sm"
+            [class.is-invalid]="email.invalid && (email.dirty || email.touched)"
           />
+          <div
+            *ngIf="email.invalid && (email.dirty || email.touched)"
+            class="invalid-feedback"
+          >
+            <div *ngIf="email.errors?.['required']">
+              This field is required.
+            </div>
+            <div *ngIf="email.errors?.['minlength']">
+              This field must have at least 1 character.
+            </div>
+            <div *ngIf="email.errors?.['maxlength']">
+              This field must have at most 250 characters.
+            </div>
+            <div
+              *ngIf="!email.errors?.['required'] && !email.errors?.['minlength'] && !email.errors?.['maxlength'] && email.errors?.['emailValidator']"
+            >
+              Invalid email format.
+            </div>
+          </div>
         </div>
 
-        <!-- First Name -->
         <div>
-          <label for="fName">First Name</label>
+          <!-- First Name -->
+          <label for="name">First Name</label>
           <input
             type="text"
-            id="fName"
-            tabindex="3"
-            name="fName"
-            #fName="ngModel"
+            id="firstname"
+            name="firstname"
+            formControlName="firstname"
             placeholder="First name"
-            ngModel
             required
+            minlength="1"
+            maxlength="250"
+            class="form-control form-control-sm"
+            [class.is-invalid]="
+              firstname.invalid && (firstname.dirty || firstname.touched)
+            "
           />
+          <div
+            *ngIf="firstname.invalid && (firstname.dirty || firstname.touched)"
+            class="invalid-feedback"
+          >
+            <div *ngIf="firstname.errors?.['required']">
+              This field is required.
+            </div>
+            <div *ngIf="firstname.errors?.['minlength']">
+              This field must have at least 1 character.
+            </div>
+            <div *ngIf="firstname.errors?.['maxlength']">
+              This field must have at most 250 characters.
+            </div>
+          </div>
         </div>
 
         <!-- Last Name -->
         <div>
-          <label for="lName">Last Name</label>
+          <label for="name">Last Name</label>
           <input
             type="text"
-            id="lName"
-            tabindex="4"
-            name="lName"
-            #lName="ngModel"
+            id="lastname"
+            name="lastname"
+            formControlName="lastname"
             placeholder="Last name"
-            ngModel
+            minlength="1"
+            maxlength="250"
+            class="form-control form-control-sm"
+            [class.is-invalid]="
+              lastname.invalid && (lastname.dirty || lastname.touched)
+            "
           />
+          <div
+            *ngIf="lastname.invalid && (lastname.dirty || lastname.touched)"
+            class="invalid-feedback"
+          >
+            <div *ngIf="lastname.errors?.['required']">
+              This field is required.
+            </div>
+            <div *ngIf="lastname.errors?.['minlength']">
+              This field must have at least 1 character.
+            </div>
+            <div *ngIf="lastname.errors?.['maxlength']">
+              This field must have at most 250 characters.
+            </div>
+          </div>
         </div>
       </div>
 
@@ -96,12 +171,26 @@
           <input
             type="text"
             id="city"
-            tabindex="5"
             name="city"
-            #city="ngModel"
+            formControlName="city"
             placeholder="City"
-            ngModel
+            minlength="1"
+            maxlength="250"
+            class="form-control form-control-sm"
+            [class.is-invalid]="city.invalid && (city.dirty || city.touched)"
           />
+          <div
+            *ngIf="city.invalid && (city.dirty || city.touched)"
+            class="invalid-feedback"
+          >
+            <div *ngIf="city.errors?.['required']">This field is required.</div>
+            <div *ngIf="city.errors?.['minlength']">
+              This field must have at least 1 character.
+            </div>
+            <div *ngIf="city.errors?.['maxlength']">
+              This field must have at most 250 characters.
+            </div>
+          </div>
         </div>
 
         <!-- State -->
@@ -110,11 +199,28 @@
           <input
             type="text"
             id="state"
-            tabindex="6"
             name="state"
+            formControlName="state"
             placeholder="State/ Province"
-            ngModel
+            minlength="1"
+            maxlength="250"
+            class="form-control form-control-sm"
+            [class.is-invalid]="state.invalid && (state.dirty || state.touched)"
           />
+          <div
+            *ngIf="state.invalid && (state.dirty || state.touched)"
+            class="invalid-feedback"
+          >
+            <div *ngIf="state.errors?.['required']">
+              This field is required.
+            </div>
+            <div *ngIf="state.errors?.['minlength']">
+              This field must have at least 1 character.
+            </div>
+            <div *ngIf="state.errors?.['maxlength']">
+              This field must have at most 250 characters.
+            </div>
+          </div>
         </div>
 
         <!-- Submit -->
@@ -123,21 +229,18 @@
           (mouseover)="hover = true"
           (mouseleave)="hover = false"
         >
-          <button
-            type="submit"
-            tabindex="7"
-            [ngClass]="{ 'form-active-btn-hover': captionForm.valid && hover }"
-            [disabled]="!captionForm.valid"
-          >
+          <!-- [ngClass]="{ 'form-active-btn-hover': reactiveForm.valid && hover }"
+        [disabled]="!reactiveForm.valid" -->
+          <button type="submit" tabindex="7" (click)="validate()">
             Submit
           </button>
         </div>
       </div>
-      <div class="required-fields-error">
+      <!-- <div class="required-fields-error">
         <small *ngIf="captionForm.invalid && captionForm.touched"
           >Please complete required fields.</small
         >
-      </div>
+      </div> -->
     </form>
   </div>
 
@@ -151,7 +254,7 @@
           <span>{{ data.lastName }}</span>
         </div>
         <div class="location">
-          <span>{{ data.city }}</span>
+          <span>{{ data.state }}</span>
           <span>{{ data.state }}</span>
           <span>{{ data.country }}</span>
         </div>
