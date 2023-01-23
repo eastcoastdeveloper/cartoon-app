@@ -20,7 +20,10 @@ export class HttpService implements OnDestroy {
     };
 
     return this._http
-      .get<UserDataInterface[]>(`/api/getCaptions`, httpOptions)
+      .get<UserDataInterface[]>(
+        `/api/getCaptions/?page=${pageNum}?&limit=${pageLimit}`,
+        httpOptions
+      )
       .pipe(
         map((responseData) => {
           let allProjects: any = [];

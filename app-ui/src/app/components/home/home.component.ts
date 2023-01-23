@@ -24,6 +24,7 @@ export class HomeComponent implements OnInit, OnDestroy {
   reactiveForm!: FormGroup;
   user: IUser;
 
+  captionRequestIndex: number = 1;
   destroy$: Subject<boolean> = new Subject<boolean>();
   windowWidth?: number;
   userDataArray: UserDataInterface[] = [];
@@ -72,7 +73,8 @@ export class HomeComponent implements OnInit, OnDestroy {
     });
 
     new Promise<void>((resolve, reject) => {
-      this._httpService.populateCaptions(1, 10);
+      this.captionRequestIndex++;
+      this._httpService.populateCaptions(this.captionRequestIndex, 10);
       resolve(this.captureCaptionResponse());
     });
 
@@ -145,6 +147,10 @@ export class HomeComponent implements OnInit, OnDestroy {
   voteDown(data: UserDataInterface) {
     data.votes! === 0 ? (data.votes = 0) : data.votes!--;
     this._httpService.updateVoteCount(data);
+  }
+
+  loadMoreCaptions() {
+    this._httpService.populateCaptions(this.captionRequestIndex, 10);
   }
 
   // Kill Subscriptions

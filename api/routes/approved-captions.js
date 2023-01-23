@@ -10,12 +10,26 @@ function populateUI(model) {
         const endIndex = page * limit;
         const results = {};
     
-        results.results = model.captions;
+        results.results = model.captions.slice(startIndex, endIndex)
 
-        console.log(results)
         res.populateUI = results;
+        console.log(results)
+        console.log(page)
+        console.log(limit)
         next();
       }
+  
+      // return (req, res, next) => {
+      //   const page = parseInt(req.query.page);
+      //   const limit = parseInt(req.query.limit);
+      //   const startIndex = (page - 1) * limit;
+      //   const endIndex = page * limit;
+      //   const results = {};
+    
+      //   results.results = model.captions.slice(startIndex, endIndex);
+      //   res.paginatedResults = results;
+      //   next();
+      // }
 }
 
 router.get('/', populateUI(projectData), (req, res) => {

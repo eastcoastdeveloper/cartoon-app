@@ -1,7 +1,14 @@
 @import "../../style/color.scss";
 
 #home-page {
-  margin-bottom: 30px;
+  margin: 0 auto 30px auto;
+  max-width: 790px;
+
+  .total-comments {
+    font: normal 14px sans-serif;
+    padding: 10px 0;
+    margin: 35px 0 10px 0;
+  }
 
   h2 {
     font: normal 20px sans-serif;
@@ -10,7 +17,7 @@
   }
 
   .cartoon {
-    margin: 155px auto 30px auto;
+    margin: 155px auto 0 auto;
     display: grid;
     grid-template-columns: 40px auto 40px;
     max-width: 710px;
@@ -75,7 +82,6 @@
 
     .main-image {
       max-width: 710px;
-      margin: 0 auto;
       width: 100%;
       background-color: transparent;
       border: 1px solid $midnight;
@@ -102,9 +108,7 @@
   }
 
   .user-input {
-    max-width: 790px;
-    margin: 0 auto;
-
+    margin-top: 50px;
     .caption-details {
       display: grid;
       grid-template-columns: auto 200px;
@@ -202,14 +206,12 @@
 
   .published-content {
     font: normal 14px sans-serif;
-    margin: 5px auto 30px auto;
-    max-width: 790px;
+    margin: 0 auto 0 auto;
     padding: 0 20px;
     max-height: 55vh;
     overflow: auto;
 
     .repeating-block {
-      margin: 20px 0;
       position: relative;
 
       .submission {
@@ -257,6 +259,19 @@
             font-size: 20px;
           }
         }
+      }
+    }
+    .load-more-captions {
+      text-align: center;
+      button {
+        font: normal 14px sans-serif;
+        background-color: $midnight;
+        border-radius: 3px;
+        padding: 5px 10px;
+        cursor: pointer;
+        outline: none;
+        border: none;
+        color: $fog;
       }
     }
   }

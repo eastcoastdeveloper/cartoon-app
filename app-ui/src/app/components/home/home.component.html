@@ -237,6 +237,10 @@
     </form>
   </div>
 
+  <div class="total-comments">
+    {{ userDataArray.length + " total caption submissions" }}
+  </div>
+
   <div class="published-content">
     <div *ngFor="let data of userDataArray" class="repeating-block">
       <!-- Captions ... -->
@@ -265,6 +269,9 @@
           <span class="vote-total">&#45;</span>
         </div>
       </div>
+    </div>
+    <div class="load-more-captions">
+      <button type="button" (click)="loadMoreCaptions()">Load More</button>
     </div>
   </div>
 </div>
