@@ -53,7 +53,7 @@ export class HttpService implements OnDestroy {
   saveNewlyCachedData(pageNum: number) {
     this.storageObject[pageNum] = this.captionsArray;
     this._localStorageService.saveData(
-      "prjx",
+      "captions",
       JSON.stringify(this.storageObject)
     );
   }
