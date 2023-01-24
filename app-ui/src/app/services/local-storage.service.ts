@@ -1,6 +1,5 @@
 import { Injectable } from "@angular/core";
 import * as CryptoJS from "crypto-js";
-import { ProjectsListInterface } from "../interfaces/projects-list.interface";
 
 @Injectable({
   providedIn: "root",
@@ -33,16 +32,5 @@ export class LocalStorageService {
     return CryptoJS.AES.decrypt(txtToDecrypt, this.key).toString(
       CryptoJS.enc.Utf8
     );
-  }
-
-  // Populate Page Content
-  configureProjects(arr: ProjectsListInterface[]) {
-    let categoryArray: ProjectsListInterface[] = [];
-    if (arr.length < 9) {
-      categoryArray = arr;
-    } else {
-      categoryArray = arr;
-      return categoryArray;
-    }
   }
 }

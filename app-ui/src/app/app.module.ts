@@ -9,7 +9,7 @@ import { LoadingInterceptor } from "./guards/loading.interceptor";
 import { FooterComponent } from "./components/footer/footer.component";
 import { LoaderComponent } from "./components/loader/loader.component";
 import { FormsModule, ReactiveFormsModule } from "@angular/forms";
-import { EmailValidatorDirective } from "./components/home/email-validator.directive";
+import { EmailValidatorDirective } from "./directives/email-validator.directive";
 
 @NgModule({
   declarations: [

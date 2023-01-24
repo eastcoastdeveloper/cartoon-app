@@ -4,7 +4,7 @@ import { UserDataInterface } from "src/app/interfaces/user-data.interface";
 import { HttpService } from "src/app/services/http.service";
 import { WindowWidthService } from "src/app/services/window-width.service";
 import { FormControl, FormGroup, Validators } from "@angular/forms";
-import { emailValidator } from "./email-validator.directive";
+import { emailValidator } from "../../directives/email-validator.directive";
 
 interface IUser {
   caption: string;
@@ -74,7 +74,7 @@ export class HomeComponent implements OnInit, OnDestroy {
 
     new Promise<void>((resolve, reject) => {
       this.captionRequestIndex++;
-      this._httpService.populateCaptions(this.captionRequestIndex, 10);
+      this._httpService.captionsCacheCheck(this.captionRequestIndex, 10);
       resolve(this.captureCaptionResponse());
     });
 
@@ -150,7 +150,7 @@ export class HomeComponent implements OnInit, OnDestroy {
   }
 
   loadMoreCaptions() {
-    this._httpService.populateCaptions(this.captionRequestIndex, 10);
+    this._httpService.captionsCacheCheck(this.captionRequestIndex, 10);
   }
 
   // Kill Subscriptions

@@ -11,11 +11,7 @@ function populateUI(model) {
     const results = {};
 
     results.results = model.captions.slice(startIndex, endIndex)
-
     res.populateUI = results;
-    console.log(results)
-    console.log(page)
-    console.log(limit)
     next();
   }
 }
