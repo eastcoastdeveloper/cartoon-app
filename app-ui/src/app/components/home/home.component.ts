@@ -150,6 +150,7 @@ export class HomeComponent implements OnInit, OnDestroy {
   }
 
   loadMoreCaptions() {
+    this.captionRequestIndex++;
     this._httpService.captionsCacheCheck(this.captionRequestIndex, 10);
   }
 

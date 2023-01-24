@@ -1,6 +1,7 @@
 import { HttpClient, HttpHeaders } from "@angular/common/http";
 import { Injectable, OnDestroy } from "@angular/core";
 import { BehaviorSubject, Subject, map, catchError } from "rxjs";
+import { LocalStorageInterface } from "../interfaces/local-storage.interface";
 import { UserDataInterface } from "../interfaces/user-data.interface";
 import { LocalStorageService } from "./local-storage.service";
 
@@ -10,7 +11,7 @@ import { LocalStorageService } from "./local-storage.service";
 export class HttpService implements OnDestroy {
   responseSubject = new BehaviorSubject<UserDataInterface[]>([]);
   unsubscribe$: Subject<boolean> = new Subject<boolean>();
-  // storageObject: LocalStorageInterface = new LocalStorageInterface();
+  storageObject: LocalStorageInterface = new LocalStorageInterface();
   captionsArray: any = [];
 
   constructor(
@@ -19,34 +20,42 @@ export class HttpService implements OnDestroy {
   ) {}
 
   captionsCacheCheck(pageNum: number, pageLimit: number) {
-    // this.populateCaptions(pageNum, pageLimit);
     const storage = this._localStorageService.getData("captions");
     this.captionsArray = [];
 
     // There IS Cache
     if (storage != "") {
       let parsed = JSON.parse(storage);
-      // this.storageObject = parsed;
+      this.storageObject = parsed;
 
       // If Requested Captions Group is Cached
-      // if (this.storageObject.hasOwnProperty(pageNum)) {
-      //   this.captionsArray = this.storageObject[pageNum];
-      //   this.allProjectsSubject.next(this.captionsArray);
-      // }
+      if (this.storageObject.hasOwnProperty(pageNum)) {
+        this.captionsArray = this.storageObject[pageNum];
+        this.responseSubject.next(this.captionsArray);
+      }
 
       // Requested Group Called First Time
-      // else {
-      //   new Promise((resolve) => {
-      //     this.populateCaptions(pageNum, pageLimit);
-      //     resolve(this.saveNewlyCachedData(pageNum));
-      //   });
-      // }
+      else {
+        new Promise((resolve) => {
+          this.populateCaptions(pageNum, pageLimit);
+          resolve(this.saveNewlyCachedData(pageNum));
+        });
+      }
     }
 
     // There's NOTHING Cached
     else {
       this.populateCaptions(pageNum, pageLimit);
     }
+  }
+
+  // Cache GET Request
+  saveNewlyCachedData(pageNum: number) {
+    this.storageObject[pageNum] = this.captionsArray;
+    this._localStorageService.saveData(
+      "prjx",
+      JSON.stringify(this.storageObject)
+    );
   }
 
   // Get Captions
@@ -63,7 +72,6 @@ export class HttpService implements OnDestroy {
       .pipe(
         map((responseData) => {
           let allProjects: any = [];
-          console.log(responseData);
           Object.keys(responseData).filter((currentVal, index) => {
             if (currentVal === "results") {
               allProjects = Object.values(responseData)[index];
@@ -75,6 +83,11 @@ export class HttpService implements OnDestroy {
           allProjects.map((val: any) => {
             this.captionsArray.push(val);
           });
+          this.storageObject[pageNum] = this.captionsArray;
+          this._localStorageService.saveData(
+            "captions",
+            JSON.stringify(this.storageObject)
+          );
         })
       )
       .subscribe(() => {
