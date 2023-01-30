@@ -135,17 +135,18 @@ export class HomeComponent implements OnInit, OnDestroy {
       .subscribe((val) => {
         this.userDataArray = val;
       });
+    // console.log(this.userDataArray);
   }
 
   // Up Vote
   voteUp(data: UserDataInterface) {
-    data.votes!++;
+    // data.votes!++;
     this._httpService.updateVoteCount(data);
   }
 
   // Down Vote
   voteDown(data: UserDataInterface) {
-    data.votes! === 0 ? (data.votes = 0) : data.votes!--;
+    // data.votes! === 0 ? (data.votes = 0) : data.votes!--;
     this._httpService.updateVoteCount(data);
   }
 

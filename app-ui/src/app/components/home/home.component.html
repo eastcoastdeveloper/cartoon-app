@@ -242,19 +242,22 @@
   </div>
 
   <div class="published-content">
-    <div *ngFor="let data of userDataArray" class="repeating-block">
+    <div
+      *ngFor="let data of userDataArray; let i = index"
+      class="repeating-block"
+    >
       <!-- Captions ... -->
       <div class="submission">
-        <p>{{ data.caption }}</p>
+        <!-- <p>{{ data[i].caption }}</p>
         <div class="full-name">
-          <span>{{ data.firstName }}</span>
-          <span>{{ data.lastName }}</span>
+          <span>{{ data[i].firstName }}</span>
+          <span>{{ data[i].lastName }}</span>
         </div>
         <div class="location">
-          <span>{{ data.state }}</span>
-          <span>{{ data.state }}</span>
-          <span>{{ data.country }}</span>
-        </div>
+          <span>{{ data[i].state }}</span>
+          <span>{{ data[i].state }}</span>
+          <span>{{ data[i].country }}</span>
+        </div> -->
       </div>
 
       <!-- Voting -->
@@ -263,7 +266,7 @@
           <span>&#43;</span>
         </div>
         <div class="vote-total">
-          <span class="vote-total">{{ data.votes }}</span>
+          <!-- <span class="vote-total">{{ data.votes }}</span> -->
         </div>
         <div (click)="voteDown(data)" class="vote-down">
           <span class="vote-total">&#45;</span>

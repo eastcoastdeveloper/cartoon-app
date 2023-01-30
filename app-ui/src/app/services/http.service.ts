@@ -30,6 +30,7 @@ export class HttpService implements OnDestroy {
 
       // If Requested Captions Group is Cached
       if (this.storageObject.hasOwnProperty(pageNum)) {
+        console.log("fired");
         this.captionsArray = this.storageObject[pageNum];
         this.responseSubject.next(this.captionsArray);
       }
@@ -81,8 +82,9 @@ export class HttpService implements OnDestroy {
             }
           });
           allProjects.map((val: any) => {
-            this.captionsArray.push(val);
+            this.captionsArray.push(val.captions);
           });
+          console.log(this.captionsArray);
           this.storageObject[pageNum] = this.captionsArray;
           this._localStorageService.saveData(
             "captions",
