@@ -3,6 +3,7 @@
     {
       "objectID": "001",
       "imageURL": "",
+      "totalCaptions": 4,
       "captions": [
         {
           "caption": "From its medieval origins to the digital era",
@@ -45,6 +46,7 @@
     {
       "objectID": "002",
       "imageURL": "",
+      "totalCaptions": 4,
       "captions": [
         {
           "caption": "From its medieval origins to the digital era",
@@ -87,6 +89,7 @@
     {
       "objectID": "003",
       "imageURL": "",
+      "totalCaptions": 4,
       "captions": [
         {
           "caption": "From its medieval origins to the digital era",
@@ -129,6 +132,7 @@
     {
       "objectID": "004",
       "imageURL": "",
+      "totalCaptions": 4,
       "captions": [
         {
           "caption": "From its medieval origins to the digital era",
@@ -171,6 +175,7 @@
     {
       "objectID": "005",
       "imageURL": "",
+      "totalCaptions": 4,
       "captions": [
         {
           "caption": "From its medieval origins to the digital era",
@@ -213,6 +218,7 @@
     {
       "objectID": "006",
       "imageURL": "",
+      "totalCaptions": 4,
       "captions": [
         {
           "caption": "From its medieval origins to the digital era",
@@ -255,6 +261,7 @@
     {
       "objectID": "007",
       "imageURL": "",
+      "totalCaptions": 4,
       "captions": [
         {
           "caption": "From its medieval origins to the digital era",
@@ -297,6 +304,7 @@
     {
       "objectID": "008",
       "imageURL": "",
+      "totalCaptions": 4,
       "captions": [
         {
           "caption": "From its medieval origins to the digital era",
@@ -339,6 +347,7 @@
     {
       "objectID": "009",
       "imageURL": "",
+      "totalCaptions": 4,
       "captions": [
         {
           "caption": "From its medieval origins to the digital era",
@@ -381,6 +390,7 @@
     {
       "objectID": "010",
       "imageURL": "",
+      "totalCaptions": 4,
       "captions": [
         {
           "caption": "From its medieval origins to the digital era",
@@ -423,6 +433,7 @@
     {
       "objectID": "011",
       "imageURL": "",
+      "totalCaptions": 12,
       "captions": [
         {
           "caption": "From its medieval origins to the digital era",
@@ -459,12 +470,85 @@
           "state": "CA",
           "country": "USA",
           "votes": 0
+        },
+        {
+          "caption": "From its medieval origins to the digital era",
+          "firstName": "Julianne",
+          "lastName": "Moore",
+          "city": "Los Angeles",
+          "state": "CA",
+          "country": "USA",
+          "votes": 0
+        },
+        {
+          "caption": "From its medieval origins to the digital era",
+          "firstName": "Will",
+          "lastName": "Smith",
+          "city": "Los Angeles",
+          "state": "CA",
+          "country": "USA",
+          "votes": 0
+        },
+        {
+          "caption": "From its medieval origins to the digital era",
+          "firstName": "Bruce",
+          "lastName": "Lee",
+          "city": "Los Angeles",
+          "state": "CA",
+          "country": "USA",
+          "votes": 0
+        },
+        {
+          "caption": "From its medieval origins to the digital era",
+          "firstName": "Regina",
+          "lastName": "King",
+          "city": "Los Angeles",
+          "state": "CA",
+          "country": "USA",
+          "votes": 0
+        },
+        {
+          "caption": "From its medieval origins to the digital era",
+          "firstName": "Julie",
+          "lastName": "Andrews",
+          "city": "Los Angeles",
+          "state": "CA",
+          "country": "USA",
+          "votes": 0
+        },
+        {
+          "caption": "From its medieval origins to the digital era",
+          "firstName": "Mongomery",
+          "lastName": "Clift",
+          "city": "Los Angeles",
+          "state": "CA",
+          "country": "USA",
+          "votes": 0
+        },
+        {
+          "caption": "From its medieval origins to the digital era",
+          "firstName": "Isabelle",
+          "lastName": "Huppert",
+          "city": "Los Angeles",
+          "state": "CA",
+          "country": "USA",
+          "votes": 0
+        },
+        {
+          "caption": "From its medieval origins to the digital era",
+          "firstName": "Al",
+          "lastName": "Pacino",
+          "city": "Los Angeles",
+          "state": "CA",
+          "country": "USA",
+          "votes": 0
         }
       ]
     },
     {
       "objectID": "012",
       "imageURL": "",
+      "totalCaptions": 4,
       "captions": [
         {
           "caption": "From its medieval origins to the digital era",
@@ -507,6 +591,7 @@
     {
       "objectID": "013",
       "imageURL": "",
+      "totalCaptions": 13,
       "captions": [
         {
           "caption": "From its medieval origins to the digital era",
@@ -543,12 +628,94 @@
           "state": "CA",
           "country": "USA",
           "votes": 0
+        },
+        {
+          "caption": "From its medieval origins to the digital era",
+          "firstName": "Julianne",
+          "lastName": "Moore",
+          "city": "Los Angeles",
+          "state": "CA",
+          "country": "USA",
+          "votes": 0
+        },
+        {
+          "caption": "From its medieval origins to the digital era",
+          "firstName": "Will",
+          "lastName": "Smith",
+          "city": "Los Angeles",
+          "state": "CA",
+          "country": "USA",
+          "votes": 0
+        },
+        {
+          "caption": "From its medieval origins to the digital era",
+          "firstName": "Bruce",
+          "lastName": "Lee",
+          "city": "Los Angeles",
+          "state": "CA",
+          "country": "USA",
+          "votes": 0
+        },
+        {
+          "caption": "From its medieval origins to the digital era",
+          "firstName": "Regina",
+          "lastName": "King",
+          "city": "Los Angeles",
+          "state": "CA",
+          "country": "USA",
+          "votes": 0
+        },
+        {
+          "caption": "From its medieval origins to the digital era",
+          "firstName": "Kirk",
+          "lastName": "Douglas",
+          "city": "Los Angeles",
+          "state": "CA",
+          "country": "USA",
+          "votes": 0
+        },
+        {
+          "caption": "From its medieval origins to the digital era",
+          "firstName": "Julianne",
+          "lastName": "Moore",
+          "city": "Los Angeles",
+          "state": "CA",
+          "country": "USA",
+          "votes": 0
+        },
+        {
+          "caption": "From its medieval origins to the digital era",
+          "firstName": "Will",
+          "lastName": "Smith",
+          "city": "Los Angeles",
+          "state": "CA",
+          "country": "USA",
+          "votes": 0
+        },
+        {
+          "caption": "From its medieval origins to the digital era",
+          "firstName": "Bruce",
+          "lastName": "Lee",
+          "city": "Los Angeles",
+          "state": "CA",
+          "country": "USA",
+          "votes": 0
+        },
+        {
+          "caption": "From its medieval origins to the digital era",
+          "firstName": "Regina",
+          "lastName": "King",
+          "city": "Los Angeles",
+          "state": "CA",
+          "country": "USA",
+          "votes": 0
         }
       ]
     },
     {
       "objectID": "014",
       "imageURL": "",
+      "totalCaptions": 4,
       "captions": [
         {
           "caption": "From its medieval origins to the digital era",
@@ -591,6 +758,7 @@
     {
       "objectID": "015",
       "imageURL": "",
+      "totalCaptions": 4,
       "captions": [
         {
           "caption": "From its medieval origins to the digital era",
@@ -633,6 +801,7 @@
     {
       "objectID": "016",
       "imageURL": "",
+      "totalCaptions": 4,
       "captions": [
         {
           "caption": "From its medieval origins to the digital era",
@@ -675,7 +844,80 @@
     {
       "objectID": "017",
       "imageURL": "",
+      "totalCaptions": 12,
       "captions": [
+        {
+          "caption": "From its medieval origins to the digital era",
+          "firstName": "Angelina",
+          "lastName": "Jolie",
+          "city": "Los Angeles",
+          "state": "CA",
+          "country": "USA",
+          "votes": 0
+        },
+        {
+          "caption": "From its medieval origins to the digital era",
+          "firstName": "John Wayne",
+          "lastName": "Doe",
+          "city": "Los Angeles",
+          "state": "CA",
+          "country": "USA",
+          "votes": 0
+        },
+        {
+          "caption": "From its medieval origins to the digital era",
+          "firstName": "Jane",
+          "lastName": "Fonda",
+          "city": "Los Angeles",
+          "state": "CA",
+          "country": "USA",
+          "votes": 0
+        },
+        {
+          "caption": "From its medieval origins to the digital era",
+          "firstName": "Charlton",
+          "lastName": "Heston",
+          "city": "Los Angeles",
+          "state": "CA",
+          "country": "USA",
+          "votes": 0
+        },
+        {
+          "caption": "From its medieval origins to the digital era",
+          "firstName": "Jack",
+          "lastName": "Nicholson",
+          "city": "Los Angeles",
+          "state": "CA",
+          "country": "USA",
+          "votes": 0
+        },
+        {
+          "caption": "From its medieval origins to the digital era",
+          "firstName": "Marlon",
+          "lastName": "Brando",
+          "city": "Los Angeles",
+          "state": "CA",
+          "country": "USA",
+          "votes": 0
+        },
+        {
+          "caption": "From its medieval origins to the digital era",
+          "firstName": "Denzel",
+          "lastName": "Wshington",
+          "city": "Los Angeles",
+          "state": "CA",
+          "country": "USA",
+          "votes": 0
+        },
+        {
+          "caption": "From its medieval origins to the digital era",
+          "firstName": "Katherine",
+          "lastName": "Hepburn",
+          "city": "Los Angeles",
+          "state": "CA",
+          "country": "USA",
+          "votes": 0
+        },
         {
           "caption": "From its medieval origins to the digital era",
           "firstName": "Angelina",
