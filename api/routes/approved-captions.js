@@ -10,7 +10,7 @@ function populateUI(model) {
     const endIndex = page * limit;
     const results = {};
 
-    results.results = model.captions.slice(startIndex, endIndex)
+    results.results = model.userData.slice(startIndex, endIndex)
     res.populateUI = results;
     next();
   }

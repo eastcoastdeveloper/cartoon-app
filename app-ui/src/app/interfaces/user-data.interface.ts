@@ -1,4 +1,4 @@
-export class UserDataInterface {
+export class CaptionsInterface {
   caption?: string;
   email?: string;
   firstName?: string;
@@ -7,4 +7,9 @@ export class UserDataInterface {
   state?: string;
   country?: string;
   votes?: number;
+}
+
+export class UserDataInterface {
+  images: string;
+  captions: CaptionsInterface;
 }
