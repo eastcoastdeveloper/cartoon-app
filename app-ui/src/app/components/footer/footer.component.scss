@@ -1,0 +1,19 @@
+@import "../../style/color.scss";
+
+footer {
+  border-top: 1px solid $midnight;
+  background-color: $white;
+  padding: 15px 0;
+  .copyright {
+    text-align: center;
+    font: normal 14px sans-serif;
+    span {
+      margin-right: 5px;
+    }
+    a {
+      cursor: pointer;
+      color: $midnight;
+      text-decoration: none;
+    }
+  }
+}
