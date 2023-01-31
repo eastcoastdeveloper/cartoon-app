@@ -5,6 +5,7 @@ import { HttpService } from "src/app/services/http.service";
 import { WindowWidthService } from "src/app/services/window-width.service";
 import { FormControl, FormGroup, Validators } from "@angular/forms";
 import { emailValidator } from "../../directives/email-validator.directive";
+import { Router } from "@angular/router";
 
 interface IUser {
   caption: string;
@@ -21,20 +22,19 @@ interface IUser {
   styleUrls: ["./home.component.scss"],
 })
 export class HomeComponent implements OnInit, OnDestroy {
-  reactiveForm!: FormGroup;
-  user: IUser;
-
-  captionRequestIndex: number = 1;
   destroy$: Subject<boolean> = new Subject<boolean>();
-  windowWidth?: number;
   userDataArray: UserDataInterface[] = [];
-  hover: boolean = false;
+  captionsGroupIndex: number = 1;
   formResults: UserDataInterface;
-  currentImage: string =
-    "https://blog-www.pods.com/wp-content/uploads/2019/08/MG_6_1_Miami.jpg";
+  reactiveForm!: FormGroup;
+  hover: boolean = false;
+  windowWidth?: number;
+  toonIdentifier: string;
+  user: IUser;
 
   constructor(
     private _windowWidthService: WindowWidthService,
+    private _router: Router,
     private _httpService: HttpService
   ) {
     this.user = {} as IUser;
@@ -72,20 +72,44 @@ export class HomeComponent implements OnInit, OnDestroy {
       ]),
     });
 
-    new Promise<void>((resolve, reject) => {
-      this.captionRequestIndex++;
-      this._httpService.captionsCacheCheck(this.captionRequestIndex, 10);
-      resolve(this.captureCaptionResponse());
-    });
-
     // Subscribe to Window Width
     this._windowWidthService.currentWidth$
       .pipe(takeUntil(this.destroy$))
       .subscribe((val) => {
         this.windowWidth = val;
       });
+
+    this.configureQueryParams("abc1");
   }
 
+  // Load Cartoon Route
+  configureQueryParams(identifier: string) {
+    this.toonIdentifier = identifier;
+    this._router
+      .navigate(["home", identifier], {
+        queryParams: {
+          toon: identifier,
+        },
+      })
+      .then(() => {
+        this.fetchCartoonData(this.toonIdentifier);
+      });
+  }
+
+  fetchCartoonData(toonReference: string) {
+    new Promise<void>((resolve, reject) => {
+      this.captionsGroupIndex++;
+      // identifier, first of ten captions, limiter (10)
+      this._httpService.captionsCacheCheck(
+        toonReference,
+        this.captionsGroupIndex,
+        10
+      );
+      resolve(this.captureCaptionResponse());
+    });
+  }
+
+  // Form Field Getters
   get caption() {
     return this.reactiveForm.get("caption")!;
   }
@@ -110,6 +134,7 @@ export class HomeComponent implements OnInit, OnDestroy {
     return this.reactiveForm.get("state")!;
   }
 
+  // Form Validation
   public validate(): void {
     if (this.reactiveForm.invalid) {
       for (const control of Object.keys(this.reactiveForm.controls)) {
@@ -134,8 +159,8 @@ export class HomeComponent implements OnInit, OnDestroy {
       .pipe(takeUntil(this.destroy$))
       .subscribe((val) => {
         this.userDataArray = val;
+        console.log(val);
       });
-    // console.log(this.userDataArray);
   }
 
   // Up Vote
@@ -151,8 +176,12 @@ export class HomeComponent implements OnInit, OnDestroy {
   }
 
   loadMoreCaptions() {
-    this.captionRequestIndex++;
-    this._httpService.captionsCacheCheck(this.captionRequestIndex, 10);
+    this.captionsGroupIndex++;
+    this._httpService.captionsCacheCheck(
+      this.toonIdentifier,
+      this.captionsGroupIndex,
+      10
+    );
   }
 
   // Kill Subscriptions

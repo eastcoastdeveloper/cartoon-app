@@ -19,9 +19,14 @@ export class HttpService implements OnDestroy {
     private _localStorageService: LocalStorageService
   ) {}
 
-  captionsCacheCheck(pageNum: number, pageLimit: number) {
+  captionsCacheCheck(
+    toonReference: string | number,
+    captionsGroupIndex: number,
+    pageLimit: number
+  ) {
     const storage = this._localStorageService.getData("captions");
     this.captionsArray = [];
+    console.log(toonReference);
 
     // There IS Cache
     if (storage != "") {
@@ -29,30 +34,30 @@ export class HttpService implements OnDestroy {
       this.storageObject = parsed;
 
       // If Requested Captions Group is Cached
-      if (this.storageObject.hasOwnProperty(pageNum)) {
+      if (this.storageObject.hasOwnProperty(captionsGroupIndex)) {
         console.log("fired");
-        this.captionsArray = this.storageObject[pageNum];
+        this.captionsArray = this.storageObject[captionsGroupIndex];
         this.responseSubject.next(this.captionsArray);
       }
 
       // Requested Group Called First Time
       else {
         new Promise((resolve) => {
-          this.populateCaptions(pageNum, pageLimit);
-          resolve(this.saveNewlyCachedData(pageNum));
+          this.populateCaptions(captionsGroupIndex, pageLimit);
+          resolve(this.saveNewlyCachedData(captionsGroupIndex));
         });
       }
     }
 
     // There's NOTHING Cached
     else {
-      this.populateCaptions(pageNum, pageLimit);
+      this.populateCaptions(captionsGroupIndex, pageLimit);
     }
   }
 
   // Cache GET Request
-  saveNewlyCachedData(pageNum: number) {
-    this.storageObject[pageNum] = this.captionsArray;
+  saveNewlyCachedData(captionsGroupIndex: number) {
+    this.storageObject[captionsGroupIndex] = this.captionsArray;
     this._localStorageService.saveData(
       "captions",
       JSON.stringify(this.storageObject)
@@ -60,14 +65,14 @@ export class HttpService implements OnDestroy {
   }
 
   // Get Captions
-  populateCaptions(pageNum: number, pageLimit: number) {
+  populateCaptions(captionsGroupIndex: number, pageLimit: number) {
     const httpOptions = {
       headers: new HttpHeaders(),
     };
 
     return this._http
       .get<UserDataInterface[]>(
-        `/api/getCaptions/?page=${pageNum}?&limit=${pageLimit}`,
+        `/api/getCaptions/?page=${captionsGroupIndex}?&limit=${pageLimit}`,
         httpOptions
       )
       .pipe(
@@ -85,7 +90,7 @@ export class HttpService implements OnDestroy {
             this.captionsArray.push(val.captions);
           });
           console.log(this.captionsArray);
-          this.storageObject[pageNum] = this.captionsArray;
+          this.storageObject[captionsGroupIndex] = this.captionsArray;
           this._localStorageService.saveData(
             "captions",
             JSON.stringify(this.storageObject)
