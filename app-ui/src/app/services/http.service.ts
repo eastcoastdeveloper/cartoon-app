@@ -2,16 +2,16 @@ import { HttpClient, HttpHeaders } from "@angular/common/http";
 import { Injectable, OnDestroy } from "@angular/core";
 import { BehaviorSubject, Subject, map, catchError } from "rxjs";
 import { LocalStorageInterface } from "../interfaces/local-storage.interface";
-import {
-  CaptionsInterface,
-  UserDataInterface,
-} from "../interfaces/user-data.interface";
+import { UserDataInterface } from "../interfaces/user-data.interface";
 import { LocalStorageService } from "./local-storage.service";
 
 @Injectable({
   providedIn: "root",
 })
 export class HttpService implements OnDestroy {
+  storageObject: LocalStorageInterface = new LocalStorageInterface();
+  unsubscribe$: Subject<boolean> = new Subject<boolean>();
+  cartoonDataObject: UserDataInterface;
   responseSubject = new BehaviorSubject<UserDataInterface>({
     objectID: "",
     imageURL: "",
@@ -20,20 +20,9 @@ export class HttpService implements OnDestroy {
     captions: [],
     cached: false,
   });
-  unsubscribe$: Subject<boolean> = new Subject<boolean>();
-  storageObject: LocalStorageInterface = new LocalStorageInterface();
 
   // Update/ Deleted
   captionsArray: any = [];
-
-  cartoonDataObject: UserDataInterface = {
-    objectID: "",
-    imageURL: "",
-    altText: "",
-    totalCaptions: 4,
-    captions: [],
-    cached: false,
-  };
 
   constructor(
     private _http: HttpClient,
@@ -93,10 +82,6 @@ export class HttpService implements OnDestroy {
       headers: new HttpHeaders(),
     };
 
-    console.log(toonReference);
-    console.log(captionsGroupIndex);
-    console.log(pageLimit);
-
     return this._http
       .get<UserDataInterface[]>(
         `/api/getCaptions/?toonReference=${toonReference}&captionsGroupIndex=${captionsGroupIndex}&pageLimit=${pageLimit}`,
@@ -104,14 +89,10 @@ export class HttpService implements OnDestroy {
       )
       .pipe(
         map((responseData) => {
-          // let cartoonDataObject: any = [];
           Object.keys(responseData).filter((currentVal, index) => {
             if (currentVal === "results") {
               this.cartoonDataObject = Object.values(responseData)[index];
-              // cartoonDataObject.map((val: any) => {
               this.cartoonDataObject.cached = true;
-              console.log(this.cartoonDataObject);
-              // });
             }
           });
           // cartoonDataObject.map((val: any) => {
