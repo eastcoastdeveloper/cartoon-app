@@ -1,6 +1,7 @@
 {
   "userData": [
     {
+      "itemIndex": 0,
       "objectID": "abc1",
       "imageURL": "https://blog-www.pods.com/wp-content/uploads/2019/08/MG_6_1_Miami.jpg",
       "altText": "",
@@ -45,6 +46,7 @@
       ]
     },
     {
+      "itemIndex": 1,
       "objectID": "abc2",
       "imageURL": "",
       "altText": "",
@@ -89,6 +91,7 @@
       ]
     },
     {
+      "itemIndex": 2,
       "objectID": "abc3",
       "imageURL": "",
       "altText": "",
@@ -133,6 +136,7 @@
       ]
     },
     {
+      "itemIndex": 3,
       "objectID": "abc4",
       "imageURL": "",
       "altText": "",
@@ -177,6 +181,7 @@
       ]
     },
     {
+      "itemIndex": 4,
       "objectID": "abc5",
       "imageURL": "",
       "altText": "",
@@ -221,6 +226,7 @@
       ]
     },
     {
+      "itemIndex": 5,
       "objectID": "abc6",
       "imageURL": "",
       "altText": "",
@@ -265,6 +271,7 @@
       ]
     },
     {
+      "itemIndex": 6,
       "objectID": "abc7",
       "imageURL": "",
       "altText": "",
@@ -309,6 +316,7 @@
       ]
     },
     {
+      "itemIndex": 7,
       "objectID": "abc8",
       "imageURL": "",
       "altText": "",
@@ -353,6 +361,7 @@
       ]
     },
     {
+      "itemIndex": 8,
       "objectID": "abc9",
       "imageURL": "",
       "altText": "",
@@ -397,6 +406,7 @@
       ]
     },
     {
+      "itemIndex": 9,
       "objectID": "abc10",
       "imageURL": "",
       "altText": "",
@@ -441,6 +451,7 @@
       ]
     },
     {
+      "itemIndex": 10,
       "objectID": "abc11",
       "imageURL": "",
       "altText": "",
@@ -557,6 +568,7 @@
       ]
     },
     {
+      "itemIndex": 11,
       "objectID": "abc12",
       "imageURL": "",
       "altText": "",
@@ -601,6 +613,7 @@
       ]
     },
     {
+      "itemIndex": 12,
       "objectID": "abc13",
       "imageURL": "",
       "altText": "",
@@ -726,6 +739,7 @@
       ]
     },
     {
+      "itemIndex": 13,
       "objectID": "abcbc14",
       "imageURL": "",
       "altText": "",
@@ -770,6 +784,7 @@
       ]
     },
     {
+      "itemIndex": 14,
       "objectID": "abcbc15",
       "imageURL": "",
       "altText": "",
@@ -814,6 +829,7 @@
       ]
     },
     {
+      "itemIndex": 15,
       "objectID": "abc16",
       "imageURL": "",
       "altText": "",
@@ -858,6 +874,7 @@
       ]
     },
     {
+      "itemIndex": 16,
       "objectID": "abc17",
       "imageURL": "",
       "altText": "",

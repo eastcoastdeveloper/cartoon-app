@@ -19,6 +19,7 @@ export class HttpService implements OnDestroy {
     totalCaptions: 4,
     captions: [],
     cached: false,
+    itemIndex: 0,
   });
 
   // Update/ Deleted
@@ -32,7 +33,8 @@ export class HttpService implements OnDestroy {
   captionsCacheCheck(
     toonReference: string | number,
     captionsGroupIndex: number,
-    pageLimit: number
+    pageLimit: number,
+    itemIndex: number
   ) {
     const storage = this._localStorageService.getData("captions");
     this.captionsArray = [];
@@ -51,7 +53,12 @@ export class HttpService implements OnDestroy {
       // Requested Group Called First Time
       else {
         new Promise((resolve) => {
-          this.populateCaptions(toonReference, captionsGroupIndex, pageLimit);
+          this.populateCaptions(
+            toonReference,
+            captionsGroupIndex,
+            pageLimit,
+            itemIndex
+          );
           resolve(this.saveNewlyCachedData(captionsGroupIndex));
         });
       }
@@ -59,7 +66,12 @@ export class HttpService implements OnDestroy {
 
     // There's NOTHING Cached
     else {
-      this.populateCaptions(toonReference, captionsGroupIndex, pageLimit);
+      this.populateCaptions(
+        toonReference,
+        captionsGroupIndex,
+        pageLimit,
+        itemIndex
+      );
     }
   }
 
@@ -76,7 +88,8 @@ export class HttpService implements OnDestroy {
   populateCaptions(
     toonReference: string | number,
     captionsGroupIndex: number,
-    pageLimit: number
+    pageLimit: number,
+    itemIndex: number
   ) {
     const httpOptions = {
       headers: new HttpHeaders(),
@@ -84,7 +97,7 @@ export class HttpService implements OnDestroy {
 
     return this._http
       .get<UserDataInterface[]>(
-        `/api/getCaptions/?toonReference=${toonReference}&captionsGroupIndex=${captionsGroupIndex}&pageLimit=${pageLimit}`,
+        `/api/getCaptions/?toonReference=${toonReference}&captionsGroupIndex=${captionsGroupIndex}&pageLimit=${pageLimit}&itemIndex=${itemIndex}`,
         httpOptions
       )
       .pipe(

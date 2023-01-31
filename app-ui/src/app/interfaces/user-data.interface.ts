@@ -16,4 +16,5 @@ export class UserDataInterface {
   totalCaptions: number;
   captions: CaptionsInterface[];
   cached: boolean;
+  itemIndex: number;
 }
