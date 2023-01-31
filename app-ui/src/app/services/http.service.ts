@@ -38,7 +38,6 @@ export class HttpService implements OnDestroy {
   ) {
     const storage = this._localStorageService.getData("captions");
     this.captionsArray = [];
-    console.log(captionsGroupIndex);
 
     // There IS Cache
     if (storage != "") {
@@ -114,8 +113,6 @@ export class HttpService implements OnDestroy {
           // cartoonDataObject.map((val: any) => {
           //   this.captionsArray.push(val.captions);
           // });
-          console.log(this.cartoonDataObject);
-          console.log(captionsGroupIndex);
           this.storageObject[captionsGroupIndex] = this.cartoonDataObject;
           this._localStorageService.saveData(
             "captions",
@@ -130,7 +127,6 @@ export class HttpService implements OnDestroy {
 
   // Post New Vote
   updateVoteCount(data: number) {
-    console.log(data);
     this._http
       .post<UserDataInterface>("/api/updateVoteCount", {
         title: "User Up or Down Voted",

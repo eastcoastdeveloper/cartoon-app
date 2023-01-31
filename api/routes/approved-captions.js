@@ -16,7 +16,6 @@ function populateUI(model) {
     })
 
     // results.results = model.userData;
-    console.log(results)
     res.populateUI = results;
     next();
   }

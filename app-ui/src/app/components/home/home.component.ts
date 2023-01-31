@@ -21,6 +21,7 @@ export class HomeComponent implements OnInit, OnDestroy {
   userDataArray: CaptionsInterface[] = [];
   captionsGroupIndex: number = 1;
   formResults: UserDataInterface;
+  currentImage: string;
   reactiveForm!: FormGroup;
   hover: boolean = false;
   windowWidth?: number;
@@ -75,13 +76,11 @@ export class HomeComponent implements OnInit, OnDestroy {
       });
 
     this.configureQueryParams("abc1");
-    console.log(this.captionsGroupIndex);
   }
 
   // Load Cartoon Route
   configureQueryParams(identifier: string) {
     this.toonIdentifier = identifier;
-    console.log(this.captionsGroupIndex);
     this._router
       .navigate(["home", identifier], {
         queryParams: {
@@ -95,7 +94,6 @@ export class HomeComponent implements OnInit, OnDestroy {
 
   fetchCartoonData(toonReference: string) {
     new Promise<void>((resolve) => {
-      console.log(this.captionsGroupIndex);
       this._httpService.captionsCacheCheck(
         toonReference,
         this.captionsGroupIndex,
@@ -156,7 +154,8 @@ export class HomeComponent implements OnInit, OnDestroy {
       .pipe(takeUntil(this.destroy$))
       .subscribe((val) => {
         this.userDataArray = val.captions;
-        console.log(this.userDataArray);
+        this.currentImage = val.imageURL;
+        console.log(val);
       });
   }
 
