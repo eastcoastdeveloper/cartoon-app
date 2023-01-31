@@ -38,6 +38,7 @@ export class HttpService implements OnDestroy {
   ) {
     const storage = this._localStorageService.getData("captions");
     this.captionsArray = [];
+    console.log(captionsGroupIndex);
 
     // There IS Cache
     if (storage != "") {
@@ -47,7 +48,9 @@ export class HttpService implements OnDestroy {
       // If Requested Captions Group is Cached
       if (this.storageObject.hasOwnProperty(captionsGroupIndex)) {
         this.captionsArray = this.storageObject[captionsGroupIndex];
-        this.responseSubject.next(this.captionsArray);
+        this.captionsArray.length > 0
+          ? this.responseSubject.next(this.captionsArray)
+          : "";
       }
 
       // Requested Group Called First Time
@@ -111,11 +114,13 @@ export class HttpService implements OnDestroy {
           // cartoonDataObject.map((val: any) => {
           //   this.captionsArray.push(val.captions);
           // });
-          // this.storageObject[captionsGroupIndex] = this.captionsArray;
-          // this._localStorageService.saveData(
-          //   "captions",
-          //   JSON.stringify(this.storageObject)
-          // );
+          console.log(this.cartoonDataObject);
+          console.log(captionsGroupIndex);
+          this.storageObject[captionsGroupIndex] = this.cartoonDataObject;
+          this._localStorageService.saveData(
+            "captions",
+            JSON.stringify(this.storageObject)
+          );
         })
       )
       .subscribe(() => {
@@ -124,14 +129,13 @@ export class HttpService implements OnDestroy {
   }
 
   // Post New Vote
-  updateVoteCount(data: UserDataInterface) {
+  updateVoteCount(data: number) {
+    console.log(data);
     this._http
       .post<UserDataInterface>("/api/updateVoteCount", {
         title: "User Up or Down Voted",
       })
-      .subscribe((data) => {
-        console.log(data);
-      });
+      .subscribe((data) => {});
   }
 
   // Post Form Results

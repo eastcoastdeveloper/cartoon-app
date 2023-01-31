@@ -1,6 +1,9 @@
 import { Component, OnDestroy, OnInit } from "@angular/core";
 import { Subject, takeUntil } from "rxjs";
-import { UserDataInterface } from "src/app/interfaces/user-data.interface";
+import {
+  CaptionsInterface,
+  UserDataInterface,
+} from "src/app/interfaces/user-data.interface";
 import { HttpService } from "src/app/services/http.service";
 import { WindowWidthService } from "src/app/services/window-width.service";
 import { FormControl, FormGroup, Validators } from "@angular/forms";
@@ -15,7 +18,7 @@ import { IUser } from "src/app/interfaces/form.interface";
 })
 export class HomeComponent implements OnInit, OnDestroy {
   destroy$: Subject<boolean> = new Subject<boolean>();
-  userDataArray: UserDataInterface;
+  userDataArray: CaptionsInterface[] = [];
   captionsGroupIndex: number = 1;
   formResults: UserDataInterface;
   reactiveForm!: FormGroup;
@@ -72,11 +75,13 @@ export class HomeComponent implements OnInit, OnDestroy {
       });
 
     this.configureQueryParams("abc1");
+    console.log(this.captionsGroupIndex);
   }
 
   // Load Cartoon Route
   configureQueryParams(identifier: string) {
     this.toonIdentifier = identifier;
+    console.log(this.captionsGroupIndex);
     this._router
       .navigate(["home", identifier], {
         queryParams: {
@@ -89,8 +94,8 @@ export class HomeComponent implements OnInit, OnDestroy {
   }
 
   fetchCartoonData(toonReference: string) {
-    new Promise<void>((resolve, reject) => {
-      this.captionsGroupIndex++;
+    new Promise<void>((resolve) => {
+      console.log(this.captionsGroupIndex);
       this._httpService.captionsCacheCheck(
         toonReference,
         this.captionsGroupIndex,
@@ -150,21 +155,21 @@ export class HomeComponent implements OnInit, OnDestroy {
     this._httpService.responseSubject
       .pipe(takeUntil(this.destroy$))
       .subscribe((val) => {
-        this.userDataArray = val;
-        console.log(val);
+        this.userDataArray = val.captions;
+        console.log(this.userDataArray);
       });
   }
 
   // Up Vote
-  voteUp(data: UserDataInterface) {
-    // data.votes!++;
-    this._httpService.updateVoteCount(data);
+  voteUp(vote: number) {
+    vote!++;
+    this._httpService.updateVoteCount(vote);
   }
 
   // Down Vote
-  voteDown(data: UserDataInterface) {
-    // data.votes! === 0 ? (data.votes = 0) : data.votes!--;
-    this._httpService.updateVoteCount(data);
+  voteDown(vote: number) {
+    vote! === 0 ? (vote = 0) : vote!--;
+    this._httpService.updateVoteCount(vote);
   }
 
   loadMoreCaptions() {
