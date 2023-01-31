@@ -6,15 +6,7 @@ import { WindowWidthService } from "src/app/services/window-width.service";
 import { FormControl, FormGroup, Validators } from "@angular/forms";
 import { emailValidator } from "../../directives/email-validator.directive";
 import { Router } from "@angular/router";
-
-interface IUser {
-  caption: string;
-  email: string;
-  firstname: string;
-  lastname: string;
-  city: string;
-  state: string;
-}
+import { IUser } from "src/app/interfaces/form.interface";
 
 @Component({
   selector: "app-home",
