@@ -4,13 +4,18 @@ const projectData = require('../captions-data.json');
 
 function populateUI(model) {
   return (req, res, next) => {
-    const page = parseInt(req.query.page);
-    const limit = parseInt(req.query.limit);
-    const startIndex = (page - 1) * limit;
-    const endIndex = page * limit;
+    const toonReference = req.query.toonReference;
+    const captionsGroupIndex = parseInt(req.query.captionsGroupIndex);
+    const pageLimit = parseInt(req.query.pageLimit);
+    const startIndex = (captionsGroupIndex - 1) * pageLimit;
+    const endIndex = captionsGroupIndex * pageLimit;
     const results = {};
 
-    results.results = model.userData[imageNumber].slice(startIndex, endIndex);
+    results.results = model.userData.find((val) => {
+      return val.objectID === toonReference;
+    })
+
+    // results.results = model.userData;
     console.log(results)
     res.populateUI = results;
     next();

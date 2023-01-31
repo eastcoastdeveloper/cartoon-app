@@ -91,7 +91,6 @@ export class HomeComponent implements OnInit, OnDestroy {
   fetchCartoonData(toonReference: string) {
     new Promise<void>((resolve, reject) => {
       this.captionsGroupIndex++;
-      // identifier, first of ten captions, limiter (10)
       this._httpService.captionsCacheCheck(
         toonReference,
         this.captionsGroupIndex,

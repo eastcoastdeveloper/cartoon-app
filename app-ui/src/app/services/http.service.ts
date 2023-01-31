@@ -26,7 +26,6 @@ export class HttpService implements OnDestroy {
   ) {
     const storage = this._localStorageService.getData("captions");
     this.captionsArray = [];
-    console.log(toonReference);
 
     // There IS Cache
     if (storage != "") {
@@ -35,7 +34,6 @@ export class HttpService implements OnDestroy {
 
       // If Requested Captions Group is Cached
       if (this.storageObject.hasOwnProperty(captionsGroupIndex)) {
-        console.log("fired");
         this.captionsArray = this.storageObject[captionsGroupIndex];
         this.responseSubject.next(this.captionsArray);
       }
@@ -43,7 +41,7 @@ export class HttpService implements OnDestroy {
       // Requested Group Called First Time
       else {
         new Promise((resolve) => {
-          this.populateCaptions(captionsGroupIndex, pageLimit);
+          this.populateCaptions(toonReference, captionsGroupIndex, pageLimit);
           resolve(this.saveNewlyCachedData(captionsGroupIndex));
         });
       }
@@ -51,7 +49,7 @@ export class HttpService implements OnDestroy {
 
     // There's NOTHING Cached
     else {
-      this.populateCaptions(captionsGroupIndex, pageLimit);
+      this.populateCaptions(toonReference, captionsGroupIndex, pageLimit);
     }
   }
 
@@ -65,36 +63,44 @@ export class HttpService implements OnDestroy {
   }
 
   // Get Captions
-  populateCaptions(captionsGroupIndex: number, pageLimit: number) {
+  populateCaptions(
+    toonReference: string | number,
+    captionsGroupIndex: number,
+    pageLimit: number
+  ) {
     const httpOptions = {
       headers: new HttpHeaders(),
     };
 
+    console.log(toonReference);
+    console.log(captionsGroupIndex);
+    console.log(pageLimit);
+
     return this._http
       .get<UserDataInterface[]>(
-        `/api/getCaptions/?page=${captionsGroupIndex}?&limit=${pageLimit}`,
+        `/api/getCaptions/?toonReference=${toonReference}&captionsGroupIndex=${captionsGroupIndex}&pageLimit=${pageLimit}`,
         httpOptions
       )
       .pipe(
         map((responseData) => {
-          let allProjects: any = [];
+          let cartoonDataObject: any = [];
           Object.keys(responseData).filter((currentVal, index) => {
             if (currentVal === "results") {
-              allProjects = Object.values(responseData)[index];
-              allProjects.map((val: any) => {
-                val.cached = true;
-              });
+              cartoonDataObject = Object.values(responseData)[index];
+              // cartoonDataObject.map((val: any) => {
+              cartoonDataObject.cached = true;
+              console.log(cartoonDataObject);
+              // });
             }
           });
-          allProjects.map((val: any) => {
-            this.captionsArray.push(val.captions);
-          });
-          console.log(this.captionsArray);
-          this.storageObject[captionsGroupIndex] = this.captionsArray;
-          this._localStorageService.saveData(
-            "captions",
-            JSON.stringify(this.storageObject)
-          );
+          // cartoonDataObject.map((val: any) => {
+          //   this.captionsArray.push(val.captions);
+          // });
+          // this.storageObject[captionsGroupIndex] = this.captionsArray;
+          // this._localStorageService.saveData(
+          //   "captions",
+          //   JSON.stringify(this.storageObject)
+          // );
         })
       )
       .subscribe(() => {
