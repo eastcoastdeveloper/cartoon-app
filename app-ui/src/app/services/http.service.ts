@@ -23,7 +23,7 @@ export class HttpService implements OnDestroy {
   });
 
   // Update/ Deleted
-  captionsArray: any = [];
+  currentDataObject: any = [];
 
   constructor(
     private _http: HttpClient,
@@ -37,19 +37,19 @@ export class HttpService implements OnDestroy {
     itemIndex: number
   ) {
     const storage = this._localStorageService.getData("captions");
-    this.captionsArray = [];
+    this.currentDataObject = {};
 
     // There IS Cache
     if (storage != "") {
       let parsed = JSON.parse(storage);
       this.storageObject = parsed;
+      console.log(this.storageObject);
 
       // If Requested Captions Group is Cached
       if (this.storageObject.hasOwnProperty(captionsGroupIndex)) {
-        this.captionsArray = this.storageObject[captionsGroupIndex];
-        this.captionsArray.length > 0
-          ? this.responseSubject.next(this.captionsArray)
-          : "";
+        this.currentDataObject = this.storageObject[captionsGroupIndex];
+        this.responseSubject.next(this.currentDataObject);
+        console.log(this.currentDataObject);
       }
 
       // Requested Group Called First Time
@@ -79,7 +79,7 @@ export class HttpService implements OnDestroy {
 
   // Cache GET Request
   saveNewlyCachedData(captionsGroupIndex: number) {
-    this.storageObject[captionsGroupIndex] = this.captionsArray;
+    this.storageObject[captionsGroupIndex] = this.currentDataObject;
     this._localStorageService.saveData(
       "captions",
       JSON.stringify(this.storageObject)
@@ -111,13 +111,15 @@ export class HttpService implements OnDestroy {
             }
           });
           // cartoonDataObject.map((val: any) => {
-          //   this.captionsArray.push(val.captions);
+          //   this.currentDataObject.push(val.captions);
           // });
           this.storageObject[captionsGroupIndex] = this.cartoonDataObject;
           this._localStorageService.saveData(
             "captions",
             JSON.stringify(this.storageObject)
           );
+          console.log(this.storageObject);
+          console.log(captionsGroupIndex);
         })
       )
       .subscribe(() => {
