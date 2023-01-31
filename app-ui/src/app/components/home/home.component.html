@@ -237,40 +237,37 @@
     </form>
   </div>
 
-  <div class="total-comments">
+  <!-- <div class="total-comments">
     {{ userDataArray.length + " total caption submissions" }}
-  </div>
+  </div> -->
 
   <div class="published-content">
     <div
-      *ngFor="let data of userDataArray; let i = index"
+      *ngFor="let data of userDataArray.captions; let i = index"
       class="repeating-block"
     >
-      <!-- Captions ... -->
       <div class="submission">
-        <!-- <p>{{ data[i].caption }}</p>
+        <p>{{ data.caption }}</p>
         <div class="full-name">
-          <span>{{ data[i].firstName }}</span>
-          <span>{{ data[i].lastName }}</span>
+          <span>{{ data.firstName }}</span>
+          <span>{{ data.lastName }}</span>
         </div>
         <div class="location">
-          <span>{{ data[i].state }}</span>
-          <span>{{ data[i].state }}</span>
-          <span>{{ data[i].country }}</span>
-        </div> -->
+          <span>{{ data.state }}</span>
+          <span>{{ data.state }}</span>
+          <span>{{ data.country }}</span>
+        </div>
       </div>
-
-      <!-- Voting -->
       <div class="votes">
-        <div (click)="voteUp(data)" class="vote-up">
+        <!-- <div (click)="voteUp(data)" class="vote-up">
           <span>&#43;</span>
         </div>
         <div class="vote-total">
-          <!-- <span class="vote-total">{{ data.votes }}</span> -->
+          <span class="vote-total">{{ data.votes }}</span>
         </div>
         <div (click)="voteDown(data)" class="vote-down">
           <span class="vote-total">&#45;</span>
-        </div>
+        </div> -->
       </div>
     </div>
     <div class="load-more-captions">

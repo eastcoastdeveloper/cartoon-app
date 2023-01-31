@@ -10,9 +10,10 @@ export class CaptionsInterface {
 }
 
 export class UserDataInterface {
-  objectID: number;
+  objectID: string;
   imageURL: string;
   altText: string;
   totalCaptions: number;
-  captions: CaptionsInterface;
+  captions: CaptionsInterface[];
+  cached: boolean;
 }

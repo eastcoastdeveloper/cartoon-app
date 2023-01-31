@@ -2,17 +2,38 @@ import { HttpClient, HttpHeaders } from "@angular/common/http";
 import { Injectable, OnDestroy } from "@angular/core";
 import { BehaviorSubject, Subject, map, catchError } from "rxjs";
 import { LocalStorageInterface } from "../interfaces/local-storage.interface";
-import { UserDataInterface } from "../interfaces/user-data.interface";
+import {
+  CaptionsInterface,
+  UserDataInterface,
+} from "../interfaces/user-data.interface";
 import { LocalStorageService } from "./local-storage.service";
 
 @Injectable({
   providedIn: "root",
 })
 export class HttpService implements OnDestroy {
-  responseSubject = new BehaviorSubject<UserDataInterface[]>([]);
+  responseSubject = new BehaviorSubject<UserDataInterface>({
+    objectID: "",
+    imageURL: "",
+    altText: "",
+    totalCaptions: 4,
+    captions: [],
+    cached: false,
+  });
   unsubscribe$: Subject<boolean> = new Subject<boolean>();
   storageObject: LocalStorageInterface = new LocalStorageInterface();
+
+  // Update/ Deleted
   captionsArray: any = [];
+
+  cartoonDataObject: UserDataInterface = {
+    objectID: "",
+    imageURL: "",
+    altText: "",
+    totalCaptions: 4,
+    captions: [],
+    cached: false,
+  };
 
   constructor(
     private _http: HttpClient,
@@ -83,13 +104,13 @@ export class HttpService implements OnDestroy {
       )
       .pipe(
         map((responseData) => {
-          let cartoonDataObject: any = [];
+          // let cartoonDataObject: any = [];
           Object.keys(responseData).filter((currentVal, index) => {
             if (currentVal === "results") {
-              cartoonDataObject = Object.values(responseData)[index];
+              this.cartoonDataObject = Object.values(responseData)[index];
               // cartoonDataObject.map((val: any) => {
-              cartoonDataObject.cached = true;
-              console.log(cartoonDataObject);
+              this.cartoonDataObject.cached = true;
+              console.log(this.cartoonDataObject);
               // });
             }
           });
@@ -104,7 +125,7 @@ export class HttpService implements OnDestroy {
         })
       )
       .subscribe(() => {
-        this.responseSubject.next(this.captionsArray);
+        this.responseSubject.next(this.cartoonDataObject);
       });
   }
 

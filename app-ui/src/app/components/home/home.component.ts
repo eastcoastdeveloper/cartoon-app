@@ -15,7 +15,14 @@ import { IUser } from "src/app/interfaces/form.interface";
 })
 export class HomeComponent implements OnInit, OnDestroy {
   destroy$: Subject<boolean> = new Subject<boolean>();
-  userDataArray: UserDataInterface[] = [];
+  userDataArray: UserDataInterface = {
+    objectID: "",
+    imageURL: "",
+    altText: "",
+    totalCaptions: 4,
+    captions: [],
+    cached: false,
+  };
   captionsGroupIndex: number = 1;
   formResults: UserDataInterface;
   reactiveForm!: FormGroup;
