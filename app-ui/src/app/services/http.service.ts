@@ -110,9 +110,6 @@ export class HttpService implements OnDestroy {
               this.cartoonDataObject.cached = true;
             }
           });
-          // cartoonDataObject.map((val: any) => {
-          //   this.currentDataObject.push(val.captions);
-          // });
           this.storageObject[captionsGroupIndex] = this.cartoonDataObject;
           this._localStorageService.saveData(
             "captions",
