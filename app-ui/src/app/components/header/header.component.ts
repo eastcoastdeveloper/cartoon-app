@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from "@angular/core";
+import { Component, OnDestroy } from "@angular/core";
 import { Subject, takeUntil } from "rxjs";
 import { WindowWidthService } from "src/app/services/window-width.service";
 
