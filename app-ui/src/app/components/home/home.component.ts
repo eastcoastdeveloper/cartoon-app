@@ -129,7 +129,7 @@ export class HomeComponent implements OnInit, OnDestroy {
     return this.reactiveForm.get("state")!;
   }
 
-  // Form Validation
+  // Form Validation & Post to Backend
   public validate(): void {
     if (this.reactiveForm.invalid) {
       for (const control of Object.keys(this.reactiveForm.controls)) {
@@ -139,13 +139,7 @@ export class HomeComponent implements OnInit, OnDestroy {
     }
 
     this.user = this.reactiveForm.value;
-
-    console.info("Caption:", this.user.caption);
-    console.info("Email:", this.user.email);
-    console.info("First Name:", this.user.firstname);
-    console.info("Last Name:", this.user.lastname);
-    console.info("City:", this.user.city);
-    console.info("State:", this.user.state);
+    this._httpService.postFormResults(this.user);
   }
 
   // Set Caption Response to Array

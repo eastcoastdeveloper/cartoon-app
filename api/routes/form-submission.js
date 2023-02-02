@@ -5,8 +5,11 @@ const router = express.Router();
 router.use(bodyParser.json());
 
 router.post('/', function (req, res, next) {
-  console.log(req.body);
-  // res.json(req.body);
+  const formData = req.body;
+  console.log(formData);
+  res.status(201).json({
+    message: 'Form submission added successfully'
+  });
 });
 
 module.exports = router;

@@ -1,6 +1,7 @@
 import { HttpClient, HttpHeaders } from "@angular/common/http";
 import { Injectable, OnDestroy } from "@angular/core";
 import { BehaviorSubject, Subject, map, catchError } from "rxjs";
+import { IUser } from "../interfaces/form.interface";
 import { LocalStorageInterface } from "../interfaces/local-storage.interface";
 import { UserDataInterface } from "../interfaces/user-data.interface";
 import { LocalStorageService } from "./local-storage.service";
@@ -134,21 +135,12 @@ export class HttpService implements OnDestroy {
   }
 
   // Post Form Results
-  postFormResults(formData: UserDataInterface) {
-    const headers = { "content-type": "application/json" };
-    const body = JSON.stringify(formData);
+  postFormResults(formData: IUser) {
     return this._http
-      .post<any>("/api/form-submission", body, {
-        headers: headers,
-        observe: "response",
-        reportProgress: true,
-      })
-      .pipe(
-        catchError((err) => {
-          console.log(err);
-          throw err;
-        })
-      );
+      .post<IUser>("/api/form-submission", formData)
+      .subscribe((responseData) => {
+        console.log(responseData);
+      });
   }
 
   ngOnDestroy(): void {
