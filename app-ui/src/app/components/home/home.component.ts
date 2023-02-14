@@ -20,7 +20,7 @@ export class HomeComponent implements OnInit, OnDestroy {
   destroy$: Subject<boolean> = new Subject<boolean>();
   userDataArray: CaptionsInterface[] = [];
   captionsGroupIndex: number = 1;
-  formResults: UserDataInterface;
+  // formResults: UserDataInterface;
   currentImage: string;
   reactiveForm!: FormGroup;
   hover: boolean = false;
@@ -139,6 +139,7 @@ export class HomeComponent implements OnInit, OnDestroy {
     }
 
     this.user = this.reactiveForm.value;
+    console.log(this.user);
     this._httpService.postFormResults(this.user);
   }
 

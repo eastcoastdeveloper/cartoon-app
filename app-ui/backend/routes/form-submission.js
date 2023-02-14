@@ -9,13 +9,12 @@ router.post('/', function (req, res, next) {
   const formData = new CaptionData({
     caption: req.body.caption,
     email: req.body.email,
-    firstName: req.body.firstName,
-    lastName: req.body.lastName,
+    firstname: req.body.firstname,
+    lastName: req.body.lastname,
     city: req.body.city,
     state: req.body.state
   })
   formData.save();
-  console.log(formData);
   res.status(201).json({
     message: 'Form submission added successfully'
   });
