@@ -14,6 +14,7 @@ router.post('/', function (req, res, next) {
     city: req.body.city,
     state: req.body.state
   })
+  formData.save();
   console.log(formData);
   res.status(201).json({
     message: 'Form submission added successfully'
