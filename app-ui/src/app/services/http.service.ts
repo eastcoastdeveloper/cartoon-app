@@ -13,15 +13,7 @@ export class HttpService implements OnDestroy {
   storageObject: LocalStorageInterface = new LocalStorageInterface();
   unsubscribe$: Subject<boolean> = new Subject<boolean>();
   cartoonDataObject: UserDataInterface;
-  responseSubject = new BehaviorSubject<UserDataInterface>({
-    objectID: "",
-    imageURL: "",
-    altText: "",
-    totalCaptions: 4,
-    captions: [],
-    cached: false,
-    itemIndex: 0,
-  });
+  responseSubject = new BehaviorSubject<Array<UserDataInterface>>([]);
 
   // Update/ Deleted
   currentDataObject: any = [];
@@ -43,14 +35,14 @@ export class HttpService implements OnDestroy {
     // There IS Cache
     if (storage != "") {
       let parsed = JSON.parse(storage);
-      this.storageObject = parsed;
+      this.storageObject = Object.values(parsed);
       console.log(this.storageObject);
 
       // If Requested Captions Group is Cached
       if (this.storageObject.hasOwnProperty(captionsGroupIndex)) {
         this.currentDataObject = this.storageObject[captionsGroupIndex];
         this.responseSubject.next(this.currentDataObject);
-        console.log(this.currentDataObject);
+        console.log(this.currentDataObject[0].caption);
       }
 
       // Requested Group Called First Time
@@ -105,8 +97,9 @@ export class HttpService implements OnDestroy {
       )
       .pipe(
         map((responseData) => {
+          console.log(responseData);
           Object.keys(responseData).filter((currentVal, index) => {
-            if (currentVal === "results") {
+            if (currentVal === "captions") {
               this.cartoonDataObject = Object.values(responseData)[index];
               this.cartoonDataObject.cached = true;
             }
@@ -116,12 +109,11 @@ export class HttpService implements OnDestroy {
             "captions",
             JSON.stringify(this.storageObject)
           );
-          console.log(this.storageObject);
-          console.log(captionsGroupIndex);
+          console.log(this.cartoonDataObject);
         })
       )
       .subscribe(() => {
-        this.responseSubject.next(this.cartoonDataObject);
+        // this.responseSubject.next(this.cartoonDataObject);
       });
   }
 

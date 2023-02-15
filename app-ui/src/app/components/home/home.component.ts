@@ -1,9 +1,5 @@
 import { Component, OnDestroy, OnInit } from "@angular/core";
-import { Subject, takeUntil } from "rxjs";
-import {
-  CaptionsInterface,
-  UserDataInterface,
-} from "src/app/interfaces/user-data.interface";
+import { forkJoin, of, Subject, takeUntil } from "rxjs";
 import { HttpService } from "src/app/services/http.service";
 import { WindowWidthService } from "src/app/services/window-width.service";
 import { FormControl, FormGroup, Validators } from "@angular/forms";
@@ -18,9 +14,8 @@ import { IUser } from "src/app/interfaces/form.interface";
 })
 export class HomeComponent implements OnInit, OnDestroy {
   destroy$: Subject<boolean> = new Subject<boolean>();
-  userDataArray: CaptionsInterface[] = [];
+  userDataArray: any = [];
   captionsGroupIndex: number = 1;
-  // formResults: UserDataInterface;
   currentImage: string;
   reactiveForm!: FormGroup;
   hover: boolean = false;
@@ -92,6 +87,7 @@ export class HomeComponent implements OnInit, OnDestroy {
       });
   }
 
+  // Check Cache Before Fetch
   fetchCartoonData(toonReference: string) {
     new Promise<void>((resolve) => {
       this._httpService.captionsCacheCheck(
@@ -139,18 +135,32 @@ export class HomeComponent implements OnInit, OnDestroy {
     }
 
     this.user = this.reactiveForm.value;
-    console.log(this.user);
     this._httpService.postFormResults(this.user);
   }
 
-  // Set Caption Response to Array
+  // Get Captions & Full Payload
   captureCaptionResponse() {
+    // this._httpService.extractCaptionsFromPayload();
+    // const observables = {
+    //   a: of(this._httpService.captionsSubject),
+    //   b: of(this._httpService.responseSubject),
+    // };
+    // const join = forkJoin(observables);
+    // join.subscribe((val) => {
+    //   console.log(val.a.getValue());
+    //   console.log(val.b.getValue());
+    // });
+    // combineLatest(
+    //   this._httpService.captionsSubject,
+    //   this._httpService.responseSubject
+    // ).subscribe(([captionsSubject, responseSubject]) => {
+    //   console.log(captionsSubject);
+    //   console.log(responseSubject);
+    // });
     this._httpService.responseSubject
       .pipe(takeUntil(this.destroy$))
       .subscribe((val) => {
-        this.userDataArray = val.captions;
-        this.currentImage = val.imageURL;
-        console.log(val);
+        this.userDataArray = val;
       });
   }
 

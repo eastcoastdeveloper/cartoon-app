@@ -230,9 +230,9 @@
     </form>
   </div>
 
-  <!-- <div class="total-comments">
+  <div class="total-comments">
     {{ userDataArray.length + " captions" }}
-  </div> -->
+  </div>
 
   <div class="published-content">
     <div
@@ -246,13 +246,13 @@
           <span>{{ data.lastName }}</span>
         </div>
         <div class="location">
-          <span>{{ data.state }}</span>
+          <span>{{ data.city }}</span>
           <span>{{ data.state }}</span>
           <span>{{ data.country }}</span>
         </div>
       </div>
       <div class="votes">
-        <div (click)="voteUp(data.votes!)" class="vote-up">
+        <!-- <div (click)="voteUp(data.votes!)" class="vote-up">
           <span>&#43;</span>
         </div>
         <div class="vote-total">
@@ -260,7 +260,7 @@
         </div>
         <div (click)="voteDown(data.votes!)" class="vote-down">
           <span class="vote-total">&#45;</span>
-        </div>
+        </div> -->
       </div>
     </div>
     <div class="load-more-captions">
