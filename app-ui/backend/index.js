@@ -36,7 +36,10 @@ app.use('/api/form-submission', require('./routes/form-submission'));
 app.get('/api/getCaptions', (req, res, next) => {
   CaptionData.find()
     .then((documents) => {
-      console.log(documents)
+      const currentDate = req.query.toonReference;
+      const captionsGroupIndex = req.query.captionsGroupIndex;
+      const pageLimit = req.query.pageLimit;
+      const itemIndex = req.query.itemIndex;
       res.status(200).json({
         message: "Caption results fetch successfully",
         captions: documents

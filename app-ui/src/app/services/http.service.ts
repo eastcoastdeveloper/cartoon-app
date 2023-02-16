@@ -24,7 +24,7 @@ export class HttpService implements OnDestroy {
   ) {}
 
   captionsCacheCheck(
-    toonReference: string | number,
+    toonReference: string,
     captionsGroupIndex: number,
     pageLimit: number,
     itemIndex: number
