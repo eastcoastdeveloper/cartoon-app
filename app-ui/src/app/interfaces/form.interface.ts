@@ -5,4 +5,5 @@ export class IUser {
   lastname: string;
   city: string;
   state: string;
+  country: string;
 }

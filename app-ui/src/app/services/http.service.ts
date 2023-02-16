@@ -42,7 +42,7 @@ export class HttpService implements OnDestroy {
       if (this.storageObject.hasOwnProperty(captionsGroupIndex)) {
         this.currentDataObject = this.storageObject[captionsGroupIndex];
         this.responseSubject.next(this.currentDataObject);
-        console.log(this.currentDataObject[0].caption);
+        console.log(this.currentDataObject);
       }
 
       // Requested Group Called First Time

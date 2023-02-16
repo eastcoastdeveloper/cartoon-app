@@ -21,15 +21,21 @@ export class HomeComponent implements OnInit, OnDestroy {
   hover: boolean = false;
   windowWidth?: number;
   toonIdentifier: string;
-  user: IUser;
+  user: IUser = {
+    caption: "",
+    email: "",
+    firstname: "",
+    lastname: "",
+    city: "",
+    state: "",
+    country: "",
+  };
 
   constructor(
     private _windowWidthService: WindowWidthService,
     private _router: Router,
     private _httpService: HttpService
-  ) {
-    this.user = {} as IUser;
-  }
+  ) {}
 
   ngOnInit(): void {
     this.reactiveForm = new FormGroup({
@@ -70,11 +76,20 @@ export class HomeComponent implements OnInit, OnDestroy {
         this.windowWidth = val;
       });
 
-    this.configureQueryParams("abc1");
+    this.configureQueryParams(this.getCurrentDate());
+  }
+
+  getCurrentDate() {
+    let d = new Date();
+    let currentDay = d.getDate();
+    let monthIndex: any = d.getMonth();
+    let year: any = d.getFullYear();
+    return `${monthIndex}${currentDay}${year}`;
   }
 
   // Load Cartoon Route
   configureQueryParams(identifier: string) {
+    console.log(identifier);
     this.toonIdentifier = identifier;
     this._router
       .navigate(["home", identifier], {
@@ -135,6 +150,7 @@ export class HomeComponent implements OnInit, OnDestroy {
     }
 
     this.user = this.reactiveForm.value;
+    console.log(this.user);
     this._httpService.postFormResults(this.user);
   }
 
