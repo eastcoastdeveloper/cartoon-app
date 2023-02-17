@@ -10,10 +10,12 @@ export class CaptionsInterface {
 }
 
 export class UserDataInterface {
-  imageURL: string;
   altText: string;
-  totalCaptions: number;
-  captions: CaptionsInterface[];
   cached: boolean;
+  captions: CaptionsInterface[];
+  date: number;
+  imageUrl: string;
   itemIndex: number;
+  totalCaptions: number;
+  _id: string;
 }

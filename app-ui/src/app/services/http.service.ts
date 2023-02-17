@@ -13,7 +13,16 @@ export class HttpService implements OnDestroy {
   storageObject: LocalStorageInterface = new LocalStorageInterface();
   unsubscribe$: Subject<boolean> = new Subject<boolean>();
   cartoonDataObject: UserDataInterface;
-  responseSubject = new BehaviorSubject<Array<UserDataInterface>>([]);
+  responseSubject = new BehaviorSubject<UserDataInterface>({
+    altText: "",
+    cached: false,
+    captions: [],
+    date: 0,
+    imageUrl: "",
+    itemIndex: 0,
+    totalCaptions: 0,
+    _id: "",
+  });
 
   // Update/ Deleted
   currentDataObject: any = [];
@@ -23,6 +32,7 @@ export class HttpService implements OnDestroy {
     private _localStorageService: LocalStorageService
   ) {}
 
+  // Search Cache
   captionsCacheCheck(
     toonReference: string,
     captionsGroupIndex: number,
@@ -97,9 +107,9 @@ export class HttpService implements OnDestroy {
       )
       .pipe(
         map((responseData) => {
-          console.log(responseData);
+          // console.log(responseData);
           Object.keys(responseData).filter((currentVal, index) => {
-            if (currentVal === "captions") {
+            if (currentVal === "results") {
               this.cartoonDataObject = Object.values(responseData)[index];
               this.cartoonDataObject.cached = true;
             }
@@ -113,7 +123,7 @@ export class HttpService implements OnDestroy {
         })
       )
       .subscribe(() => {
-        // this.responseSubject.next(this.cartoonDataObject);
+        this.responseSubject.next(this.cartoonDataObject);
       });
   }
 

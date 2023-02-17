@@ -17,6 +17,8 @@ export class HomeComponent implements OnInit, OnDestroy {
   userDataArray: any = [];
   captionsGroupIndex: number = 1;
   currentImage: string;
+  totalCaptions: number;
+  altText: string;
   reactiveForm!: FormGroup;
   hover: boolean = false;
   windowWidth?: number;
@@ -176,7 +178,9 @@ export class HomeComponent implements OnInit, OnDestroy {
     this._httpService.responseSubject
       .pipe(takeUntil(this.destroy$))
       .subscribe((val) => {
-        this.userDataArray = val;
+        this.currentImage = val.imageUrl;
+        this.altText = val.altText;
+        this.totalCaptions = val.totalCaptions;
       });
   }
 

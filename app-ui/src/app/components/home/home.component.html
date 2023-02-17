@@ -6,7 +6,7 @@
       </div>
     </div>
     <div class="main-image element-shadow">
-      <img [src]="currentImage" alt="temp image alt text" />
+      <img [src]="currentImage" [alt]="altText" />
     </div>
     <div *ngIf="windowWidth! > 768" class="arrow-right">
       <div>
@@ -231,7 +231,7 @@
   </div>
 
   <div class="total-comments">
-    {{ userDataArray.length + " captions" }}
+    {{ totalCaptions + " captions" }}
   </div>
 
   <div class="published-content">
@@ -239,7 +239,8 @@
       *ngFor="let data of userDataArray; let i = index"
       class="repeating-block"
     >
-      <div class="submission">
+      <!-- <div>{{ data[0] }}</div> -->
+      <!-- <div class="submission">
         <p>{{ data.caption }}</p>
         <div class="full-name">
           <span>{{ data.firstname }}</span>
@@ -250,7 +251,7 @@
           <span>{{ data.state }}</span>
           <span>{{ data.country }}</span>
         </div>
-      </div>
+      </div> -->
       <div class="votes">
         <!-- <div (click)="voteUp(data.votes!)" class="vote-up">
           <span>&#43;</span>
