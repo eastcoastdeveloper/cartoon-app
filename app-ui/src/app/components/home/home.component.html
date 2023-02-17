@@ -236,22 +236,21 @@
 
   <div class="published-content">
     <div
-      *ngFor="let data of userDataArray; let i = index"
+      *ngFor="let data of captionsArray; let i = index"
       class="repeating-block"
     >
-      <!-- <div>{{ data[0] }}</div> -->
-      <!-- <div class="submission">
+      <div class="submission">
         <p>{{ data.caption }}</p>
         <div class="full-name">
-          <span>{{ data.firstname }}</span>
-          <span>{{ data.lastname }}</span>
+          <span>{{ data.firstName }}</span>
+          <span>{{ data.lastName }}</span>
         </div>
         <div class="location">
           <span>{{ data.city }}</span>
           <span>{{ data.state }}</span>
           <span>{{ data.country }}</span>
         </div>
-      </div> -->
+      </div>
       <div class="votes">
         <!-- <div (click)="voteUp(data.votes!)" class="vote-up">
           <span>&#43;</span>

@@ -6,6 +6,7 @@ import { FormControl, FormGroup, Validators } from "@angular/forms";
 import { emailValidator } from "../../directives/email-validator.directive";
 import { Router } from "@angular/router";
 import { IUser } from "src/app/interfaces/form.interface";
+import { CaptionsInterface } from "src/app/interfaces/user-data.interface";
 
 @Component({
   selector: "app-home",
@@ -14,7 +15,7 @@ import { IUser } from "src/app/interfaces/form.interface";
 })
 export class HomeComponent implements OnInit, OnDestroy {
   destroy$: Subject<boolean> = new Subject<boolean>();
-  userDataArray: any = [];
+  captionsArray: CaptionsInterface[] = [];
   captionsGroupIndex: number = 1;
   currentImage: string;
   totalCaptions: number;
@@ -152,7 +153,6 @@ export class HomeComponent implements OnInit, OnDestroy {
     }
 
     this.user = this.reactiveForm.value;
-    console.log(this.user);
     this._httpService.postFormResults(this.user);
   }
 
@@ -181,6 +181,8 @@ export class HomeComponent implements OnInit, OnDestroy {
         this.currentImage = val.imageUrl;
         this.altText = val.altText;
         this.totalCaptions = val.totalCaptions;
+        this.captionsArray = val.captions;
+        console.log(this.captionsArray);
       });
   }
 

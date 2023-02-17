@@ -4,7 +4,6 @@ const CaptionData = require('../models/userData');
 
 function populateUI() {
   return (req, res, next) => {
-    // console.log(req)
     CaptionData.find()
     .then((documents) => {
       const currentDate = req.query.toonReference;
