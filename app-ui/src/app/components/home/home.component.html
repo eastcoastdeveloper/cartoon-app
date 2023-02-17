@@ -243,12 +243,15 @@
         <p>{{ data.caption }}</p>
         <div class="full-name">
           <span>{{ data.firstName }}</span>
-          <span>{{ data.lastName }}</span>
+          <span *ngIf="data.lastName != ''">{{ data.lastName }}</span>
         </div>
-        <div class="location">
-          <span>{{ data.city }}</span>
-          <span>{{ data.state }}</span>
-          <span>{{ data.country }}</span>
+        <div
+          *ngIf="data.city && data.state && data.country === ''"
+          class="location"
+        >
+          <span *ngIf="data.city != ''">{{ data.city }}</span>
+          <span *ngIf="data.state != ''">{{ data.state }}</span>
+          <span *ngIf="data.country != ''">{{ data.country }}</span>
         </div>
       </div>
       <div class="votes">
