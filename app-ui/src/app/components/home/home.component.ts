@@ -87,12 +87,14 @@ export class HomeComponent implements OnInit, OnDestroy {
     let currentDay = d.getDate();
     let monthIndex: any = d.getMonth();
     let year: any = d.getFullYear();
+
+    // Double Digit Month
+    monthIndex < 10 ? (monthIndex = `0${monthIndex}`) : "";
     return `${monthIndex}${currentDay}${year}`;
   }
 
   // Load Cartoon Route
   configureQueryParams(identifier: string) {
-    console.log(identifier);
     this.toonIdentifier = identifier;
     this._router
       .navigate(["home", identifier], {
@@ -156,25 +158,8 @@ export class HomeComponent implements OnInit, OnDestroy {
     this._httpService.postFormResults(this.user);
   }
 
-  // Get Captions & Full Payload
+  // Set Values & Append Date to URL
   captureCaptionResponse() {
-    // this._httpService.extractCaptionsFromPayload();
-    // const observables = {
-    //   a: of(this._httpService.captionsSubject),
-    //   b: of(this._httpService.responseSubject),
-    // };
-    // const join = forkJoin(observables);
-    // join.subscribe((val) => {
-    //   console.log(val.a.getValue());
-    //   console.log(val.b.getValue());
-    // });
-    // combineLatest(
-    //   this._httpService.captionsSubject,
-    //   this._httpService.responseSubject
-    // ).subscribe(([captionsSubject, responseSubject]) => {
-    //   console.log(captionsSubject);
-    //   console.log(responseSubject);
-    // });
     this._httpService.responseSubject
       .pipe(takeUntil(this.destroy$))
       .subscribe((val) => {
@@ -182,7 +167,11 @@ export class HomeComponent implements OnInit, OnDestroy {
         this.altText = val.altText;
         this.totalCaptions = val.totalCaptions;
         this.captionsArray = val.captions;
-        console.log(this.captionsArray);
+        this._router.navigate(["home", val.date], {
+          queryParams: {
+            toon: val.date,
+          },
+        });
       });
   }
 

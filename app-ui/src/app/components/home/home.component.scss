@@ -1,14 +1,23 @@
 @import "../../style/color.scss";
 
+@font-face {
+  font-family: "Yantramanav-Regular", sans-serif;
+  src: url("../../../assets/fonts/Yantramanav-Regular.ttf");
+}
+
 #home-page {
   margin: 0 auto 30px auto;
   max-width: 790px;
 
-  // .total-comments {
-  //   font: normal 14px sans-serif;
-  //   padding: 10px 0;
-  //   margin: 35px 0 10px 0;
-  // }
+  .total-comments {
+    font: normal 14px sans-serif;
+    padding: 10px 0;
+    margin: 20px 0 0 0;
+  }
+
+  .marginZero {
+    margin: 0 !important;
+  }
 
   h2 {
     font: normal 20px sans-serif;
@@ -207,19 +216,23 @@
 
   .published-content {
     font: normal 14px sans-serif;
-    margin: 20px auto 0 auto;
+    margin: 10px auto 0 auto;
     max-height: 55vh;
     overflow: auto;
+    padding: 0 10px;
+    box-sizing: border-box;
 
     .repeating-block {
       position: relative;
       border-radius: 5px;
-      padding: 15px 20px;
+      overflow-y: hidden;
 
       .submission {
         > p {
-          font-style: italic;
-          max-width: 375px;
+          font: italic 14px "Yantramanav-Regular", sans-serif;
+          background-color: $midnight;
+          color: $fog;
+          padding: 15px;
           line-height: 20px;
         }
 
@@ -228,6 +241,7 @@
           display: flex;
           grid-column-gap: 5px;
           margin: 5px 0;
+          padding: 0 15px;
         }
       }
       .votes {
@@ -264,10 +278,13 @@
       }
     }
     .repeating-block:not(:last-child) {
-      margin-bottom: 10px;
+      margin-bottom: 30px;
     }
     .repeating-block:nth-child(odd) {
       background-color: $white;
+    }
+    .repeating-block:last-child {
+      margin-bottom: 20px;
     }
     .load-more-captions {
       text-align: center;

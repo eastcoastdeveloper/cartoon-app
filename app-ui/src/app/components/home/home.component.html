@@ -237,7 +237,7 @@
   <div class="published-content">
     <div
       *ngFor="let data of captionsArray; let i = index"
-      class="repeating-block"
+      class="repeating-block element-shadow"
     >
       <div class="submission">
         <p>{{ data.caption }}</p>
@@ -246,7 +246,10 @@
           <span *ngIf="data.lastName != ''">{{ data.lastName }}</span>
         </div>
         <div
-          *ngIf="data.city && data.state && data.country === ''"
+          [ngClass]="{
+            marginZero:
+              data.city === '' && data.state === '' && data.country === ''
+          }"
           class="location"
         >
           <span *ngIf="data.city != ''">{{ data.city }}</span>
@@ -266,8 +269,8 @@
         </div> -->
       </div>
     </div>
-    <div class="load-more-captions">
+    <!-- <div class="load-more-captions">
       <button type="button" (click)="loadMoreCaptions()">Load More</button>
-    </div>
+    </div> -->
   </div>
 </div>
