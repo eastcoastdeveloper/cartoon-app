@@ -1,4 +1,5 @@
 const express = require('express');
+const { type } = require('os');
 const router = express.Router();
 const CaptionData = require('../models/userData');
 
@@ -15,7 +16,7 @@ function populateUI() {
       
       // Loading Initialization:
       // Search documents for matching date
-      // If current date is not found, send random date
+      // If current date is not found, send random document
       for (var i = 0; i < documents.length; i++) {
         if (documents[i].date === parseInt(currentDate)) {
           results.results = documents[i];
@@ -30,9 +31,24 @@ function populateUI() {
         query.count(function (err, count) {
           if (err) console.log(err);
           else {
-            newDocument = allDocuments[Math.round(Math.random() * count)]; 
-            results.results = newDocument;
-            res.populateUI = results;
+            let d = new Date(),
+              currentDay = d.getDate(),
+              monthIndex = d.getMonth(),
+              year = d.getFullYear(),
+              fullDate,
+              documentIndex = 0;
+            
+            while (currentDay > 1) {
+              currentDay--;
+              fullDate = parseInt(`${monthIndex}${currentDay}${year}`);
+              if (fullDate === allDocuments[documentIndex].date) {
+                results.results = allDocuments[documentIndex];
+                console.log(fullDate);
+                console.log(allDocuments[documentIndex].date)
+                res.populateUI = results;
+                break;
+              }
+            }
             next();
           }
         });
@@ -40,6 +56,22 @@ function populateUI() {
     })
   }
 };
+
+function daysInMonth (month, year) {
+  return new Date(year, month, 0).getDate();
+}
+
+// function reverseInTime() {
+//   let d = new Date(),
+//     currentDay = d.getDate(),
+//     monthIndex = d.getMonth(),
+//     year = d.getFullYear(),
+//     fullDate;
+  
+//   currentDay--;  
+//   fullDate = `${monthIndex}${currentDay}${year}`;
+//   return fullDate
+// }
 
 router.get('/', populateUI(), (req, res) => {
   res.json(res.populateUI);
