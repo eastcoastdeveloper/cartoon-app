@@ -155,6 +155,7 @@ export class HomeComponent implements OnInit, OnDestroy {
     }
 
     this.user = this.reactiveForm.value;
+    console.log(this.user);
     this._httpService.postFormResults(this.user);
   }
 

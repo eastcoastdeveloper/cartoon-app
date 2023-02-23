@@ -107,7 +107,7 @@ export class HttpService implements OnDestroy {
       )
       .pipe(
         map((responseData) => {
-          // console.log(responseData);
+          console.log(responseData);
           Object.keys(responseData).filter((currentVal, index) => {
             if (currentVal === "results") {
               this.cartoonDataObject = Object.values(responseData)[index];

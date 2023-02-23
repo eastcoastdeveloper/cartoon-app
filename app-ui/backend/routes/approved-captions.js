@@ -1,11 +1,11 @@
 const express = require('express');
 const { type } = require('os');
+const { post } = require('..');
 const router = express.Router();
 const CaptionData = require('../models/userData');
 
 function populateUI() {
   return (req, res, next) => {
-    let newDocument;
     CaptionData.find()
     .then(async (documents) => {
       const currentDate = req.query.toonReference;
@@ -16,7 +16,6 @@ function populateUI() {
       
       // Loading Initialization:
       // Search documents for matching date
-      // If current date is not found, send random document
       for (var i = 0; i < documents.length; i++) {
         if (documents[i].date === parseInt(currentDate)) {
           results.results = documents[i];
@@ -24,10 +23,15 @@ function populateUI() {
           next();
         }
       }
-
+      
+      // If current date is not found, reverse in time to find nearest previous date/ document
       if (JSON.stringify(results) === '{}') {
         var query = CaptionData.find();
+
+        // Sort documents by date
         var allDocuments = await CaptionData.find({});
+        allDocuments.sort((a,b) => a.date - b.date);
+
         query.count(function (err, count) {
           if (err) console.log(err);
           else {
@@ -38,15 +42,15 @@ function populateUI() {
               fullDate,
               documentIndex = 0;
             
-            while (currentDay > 1) {
+            for (; documentIndex < count; documentIndex++) {
               currentDay--;
-              fullDate = parseInt(`${monthIndex}${currentDay}${year}`);
-              if (fullDate === allDocuments[documentIndex].date) {
-                results.results = allDocuments[documentIndex];
-                console.log(fullDate);
-                console.log(allDocuments[documentIndex].date)
-                res.populateUI = results;
-                break;
+              amountOfDaysInMonth = daysInMonth(monthIndex+1, year);
+              for (var j = currentDay; j > 0; j--) {
+                fullDate = parseInt( `${monthIndex}${j}${year}`);
+                if (fullDate === allDocuments[documentIndex].date) {
+                  results.results = allDocuments[documentIndex];
+                  res.populateUI = results;
+                }
               }
             }
             next();
@@ -57,21 +61,10 @@ function populateUI() {
   }
 };
 
+// Total Days in Month
 function daysInMonth (month, year) {
   return new Date(year, month, 0).getDate();
 }
-
-// function reverseInTime() {
-//   let d = new Date(),
-//     currentDay = d.getDate(),
-//     monthIndex = d.getMonth(),
-//     year = d.getFullYear(),
-//     fullDate;
-  
-//   currentDay--;  
-//   fullDate = `${monthIndex}${currentDay}${year}`;
-//   return fullDate
-// }
 
 router.get('/', populateUI(), (req, res) => {
   res.json(res.populateUI);
