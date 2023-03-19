@@ -15,16 +15,19 @@ function populateUI() {
       const results = {};
       
       // Loading Initialization:
-      // Search documents for matching date
       for (var i = 0; i < documents.length; i++) {
+        // Does the current date match a document?
         if (documents[i].date === parseInt(currentDate)) {
           results.results = documents[i];
           res.populateUI = results;
           next();
         }
+        // Does entered date match a document?
+        // Someone enters a URL...
       }
       
-      // If current date is not found, reverse in time to find nearest previous date/ document
+      // If current date or the entered date does not match a document
+      // reverse in time to find nearest previous date / document
       if (JSON.stringify(results) === '{}') {
         var query = CaptionData.find();
 
