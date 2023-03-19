@@ -2,7 +2,7 @@ import { Component, OnDestroy, OnInit } from "@angular/core";
 import { forkJoin, of, Subject, takeUntil } from "rxjs";
 import { HttpService } from "src/app/services/http.service";
 import { WindowWidthService } from "src/app/services/window-width.service";
-import { FormControl, FormGroup, Validators } from "@angular/forms";
+import { UntypedFormControl, UntypedFormGroup, Validators } from "@angular/forms";
 import { emailValidator } from "../../directives/email-validator.directive";
 import { Router } from "@angular/router";
 import { IUser } from "src/app/interfaces/form.interface";
@@ -20,7 +20,7 @@ export class HomeComponent implements OnInit, OnDestroy {
   currentImage: string;
   totalCaptions: number;
   altText: string;
-  reactiveForm!: FormGroup;
+  reactiveForm!: UntypedFormGroup;
   hover: boolean = false;
   windowWidth?: number;
   toonIdentifier: string;
@@ -41,32 +41,32 @@ export class HomeComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit(): void {
-    this.reactiveForm = new FormGroup({
-      caption: new FormControl(this.user.caption, [
+    this.reactiveForm = new UntypedFormGroup({
+      caption: new UntypedFormControl(this.user.caption, [
         Validators.required,
         Validators.minLength(1),
         Validators.maxLength(250),
       ]),
-      email: new FormControl(this.user.email, [
+      email: new UntypedFormControl(this.user.email, [
         Validators.required,
         Validators.minLength(1),
         Validators.maxLength(250),
         emailValidator(),
       ]),
-      firstname: new FormControl(this.user.firstname, [
+      firstname: new UntypedFormControl(this.user.firstname, [
         Validators.required,
         Validators.minLength(1),
         Validators.maxLength(250),
       ]),
-      lastname: new FormControl(this.user.lastname, [
+      lastname: new UntypedFormControl(this.user.lastname, [
         Validators.minLength(1),
         Validators.maxLength(250),
       ]),
-      city: new FormControl(this.user.city, [
+      city: new UntypedFormControl(this.user.city, [
         Validators.minLength(1),
         Validators.maxLength(250),
       ]),
-      state: new FormControl(this.user.state, [
+      state: new UntypedFormControl(this.user.state, [
         Validators.minLength(1),
         Validators.maxLength(250),
       ]),
