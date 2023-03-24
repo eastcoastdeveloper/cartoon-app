@@ -1,13 +1,14 @@
 const mongoose = require('mongoose');
+
 const userData = mongoose.Schema({
-    imageUrl: { type: String },
-    altText: { type: String },
-    totalCaptions: { type: Number },
-    captions: { type: Array },
-    cached: { type: Boolean },
-    itemIndex: { type: Number },
-    date: {type: Number}
+  imageUrl: { type: String },
+  altText: { type: String },
+  totalCaptions: { type: Number },
+  captions: { type: Array },
+  itemIndex: { type: Number }
 });
+
+// let doc = new Model({ referenceID: '12char12char' });
 
 module.exports = mongoose.model('Post', userData);
 

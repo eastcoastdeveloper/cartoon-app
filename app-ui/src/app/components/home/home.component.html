@@ -1,6 +1,10 @@
 <div id="home-page">
   <div class="cartoon">
-    <div *ngIf="windowWidth! > 768" class="arrow-left">
+    <div
+      *ngIf="windowWidth! > 768"
+      (click)="navigatePrevious()"
+      class="arrow-left"
+    >
       <div>
         <span>&#11013;</span>
       </div>
@@ -8,14 +12,18 @@
     <div class="main-image element-shadow">
       <img [src]="currentImage" [alt]="altText" />
     </div>
-    <div *ngIf="windowWidth! > 768" class="arrow-right">
+    <div
+      *ngIf="windowWidth! > 768"
+      (click)="navigateNext()"
+      class="arrow-right"
+    >
       <div>
         <span>&#11157;</span>
       </div>
     </div>
     <div *ngIf="windowWidth! < 769" class="arrow-buttons">
-      <button type="button">Previous</button>
-      <button type="button">Next</button>
+      <button type="button" (click)="navigatePrevious()">Previous</button>
+      <button type="button" (click)="navigateNext()">Next</button>
     </div>
   </div>
 

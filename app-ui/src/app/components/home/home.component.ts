@@ -1,8 +1,13 @@
 import { Component, OnDestroy, OnInit } from "@angular/core";
-import { forkJoin, of, Subject, takeUntil } from "rxjs";
+import { Subject, takeUntil } from "rxjs";
 import { HttpService } from "src/app/services/http.service";
 import { WindowWidthService } from "src/app/services/window-width.service";
-import { UntypedFormControl, UntypedFormGroup, Validators } from "@angular/forms";
+import { nanoid } from "nanoid";
+import {
+  UntypedFormControl,
+  UntypedFormGroup,
+  Validators,
+} from "@angular/forms";
 import { emailValidator } from "../../directives/email-validator.directive";
 import { Router } from "@angular/router";
 import { IUser } from "src/app/interfaces/form.interface";
@@ -23,7 +28,8 @@ export class HomeComponent implements OnInit, OnDestroy {
   reactiveForm!: UntypedFormGroup;
   hover: boolean = false;
   windowWidth?: number;
-  toonIdentifier: string;
+  toonIndex: number;
+  nn: string;
   user: IUser = {
     caption: "",
     email: "",
@@ -79,43 +85,15 @@ export class HomeComponent implements OnInit, OnDestroy {
         this.windowWidth = val;
       });
 
-    this.configureQueryParams(this.getCurrentDate());
-  }
-
-  getCurrentDate() {
-    let d = new Date();
-    let currentDay = d.getDate();
-    let monthIndex: any = d.getMonth();
-    let year: any = d.getFullYear();
-
-    // Double Digit Month
-    monthIndex < 10 ? (monthIndex = `0${monthIndex}`) : "";
-    return `${monthIndex}${currentDay}${year}`;
-  }
-
-  // Load Cartoon Route
-  configureQueryParams(identifier: string) {
-    this.toonIdentifier = identifier;
-    this._router
-      .navigate(["home", identifier], {
-        queryParams: {
-          toon: identifier,
-        },
-      })
-      .then(() => {
-        this.fetchCartoonData(this.toonIdentifier);
-      });
+    // this.configureQueryParams();
+    this.fetchCartoonData(null!);
   }
 
   // Check Cache Before Fetch
-  fetchCartoonData(toonReference: string) {
+  fetchCartoonData(toonReference?: number) {
     new Promise<void>((resolve) => {
-      this._httpService.captionsCacheCheck(
-        toonReference,
-        this.captionsGroupIndex,
-        10,
-        0
-      );
+      console.log(toonReference);
+      this._httpService.captionsCacheCheck(toonReference);
       resolve(this.captureCaptionResponse());
     });
   }
@@ -155,25 +133,36 @@ export class HomeComponent implements OnInit, OnDestroy {
     }
 
     this.user = this.reactiveForm.value;
-    console.log(this.user);
     this._httpService.postFormResults(this.user);
   }
 
   // Set Values & Append Date to URL
   captureCaptionResponse() {
-    this._httpService.responseSubject
+    this._httpService.responseSubject$
       .pipe(takeUntil(this.destroy$))
       .subscribe((val) => {
         this.currentImage = val.imageUrl;
         this.altText = val.altText;
         this.totalCaptions = val.totalCaptions;
         this.captionsArray = val.captions;
-        this._router.navigate(["home", val.date], {
+        this.toonIndex = val.itemIndex;
+        const uiid = nanoid().slice(0, 5);
+        this._router.navigate(["home", uiid], {
           queryParams: {
-            toon: val.date,
+            toon: uiid,
+            num: this.toonIndex,
           },
         });
       });
+  }
+
+  navigateNext() {
+    this.toonIndex = this.toonIndex + 1;
+    this.fetchCartoonData(this.toonIndex);
+  }
+
+  navigatePrevious() {
+    console.log("navigate previous");
   }
 
   // Up Vote
@@ -190,12 +179,7 @@ export class HomeComponent implements OnInit, OnDestroy {
 
   loadMoreCaptions() {
     this.captionsGroupIndex++;
-    this._httpService.captionsCacheCheck(
-      this.toonIdentifier,
-      this.captionsGroupIndex,
-      10,
-      0
-    );
+    this._httpService.captionsCacheCheck(this.toonIndex);
   }
 
   // Kill Subscriptions

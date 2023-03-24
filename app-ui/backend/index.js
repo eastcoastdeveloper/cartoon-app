@@ -3,7 +3,7 @@ const app = express();
 const helmet = require('helmet');
 const bodyParser = require("body-parser");
 const mongoose = require('mongoose');
-// const port = process.env.PORT || 8080;
+const port = process.env.PORT || 8080;
 
 mongoose.connect("mongodb+srv://uxdeveloper_DB:Jjn7i4ZDFrAPeeLT@cluster0.kndgbma.mongodb.net/?retryWrites=true&w=majority").then(() => {
   console.log('Connected to Database!')
