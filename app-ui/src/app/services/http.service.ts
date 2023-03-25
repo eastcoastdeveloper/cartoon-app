@@ -10,14 +10,15 @@ import { LocalStorageService } from "./local-storage.service";
   providedIn: "root",
 })
 export class HttpService implements OnDestroy {
-  storageObject: LocalStorageInterface = new LocalStorageInterface();
+  storageObject: LocalStorageInterface | null;
   unsubscribe$: Subject<boolean> = new Subject<boolean>();
   cartoonDataObject: UserDataInterface;
   itemIndex: number | undefined;
+  totalItems: number | undefined;
+  totalItems$ = new BehaviorSubject<number>(0);
   responseSubject$ = new BehaviorSubject<UserDataInterface>({
     altText: "",
     captions: [],
-    date: 0,
     imageUrl: "",
     itemIndex: 0,
     totalCaptions: 0,
@@ -43,13 +44,13 @@ export class HttpService implements OnDestroy {
       this.storageObject = Object.values(parsed);
 
       // If Requested Captions Group is Cached
-      if (this.storageObject.hasOwnProperty(this.itemIndex!)) {
+      if (this.storageObject[this.itemIndex!]) {
         this.currentDataObject = this.storageObject[this.itemIndex!];
         this.responseSubject$.next(this.currentDataObject);
       }
 
       // Requested Group Called First Time
-      if (!this.storageObject.hasOwnProperty(this.itemIndex!)) {
+      if (!this.storageObject[this.itemIndex!]) {
         new Promise((resolve) => {
           this.populateCaptions(this.itemIndex);
           resolve(this.saveNewlyCachedData(this.itemIndex!));
@@ -60,14 +61,13 @@ export class HttpService implements OnDestroy {
     // There's NOTHING Cached
     else {
       console.log("NO Cache");
-      console.log(toonReference);
       this.populateCaptions(toonReference);
     }
   }
 
   // Cache GET Request
   saveNewlyCachedData(captionsGroupIndex: number) {
-    this.storageObject[captionsGroupIndex] = this.currentDataObject;
+    this.storageObject![captionsGroupIndex] = this.currentDataObject;
     this._localStorageService.saveData(
       "captions",
       JSON.stringify(this.storageObject)
@@ -88,26 +88,38 @@ export class HttpService implements OnDestroy {
       .pipe(
         map((responseData) => {
           if (null != responseData) {
-            console.log(responseData);
             Object.keys(responseData).filter((currentVal, index) => {
               if (currentVal === "results") {
                 this.cartoonDataObject = Object.values(responseData)[index];
                 this.itemIndex = this.cartoonDataObject.itemIndex;
+                this.currentDataObject = this.cartoonDataObject;
+                this.saveNewlyCachedData(this.itemIndex!);
               }
             });
           }
-          this.storageObject[this.itemIndex!] = this.cartoonDataObject;
-          console.log(this.storageObject);
-          console.log(this.itemIndex);
-
-          this._localStorageService.saveData(
-            "captions",
-            JSON.stringify(this.storageObject)
-          );
         })
       )
       .subscribe(() => {
         this.responseSubject$.next(this.cartoonDataObject);
+      });
+  }
+
+  // Get Captions
+  getTotal() {
+    const httpOptions = {
+      headers: new HttpHeaders(),
+    };
+
+    return this._http
+      .get<LocalStorageInterface>(`/api/init`, httpOptions)
+      .pipe(
+        map((response) => {
+          this.storageObject = response;
+          this.totalItems$.next(Object.keys(this.storageObject).length);
+        })
+      )
+      .subscribe(() => {
+        return this.storageObject;
       });
   }
 
@@ -124,9 +136,7 @@ export class HttpService implements OnDestroy {
   postFormResults(formData: IUser) {
     return this._http
       .post<IUser>("/api/form-submission", formData)
-      .subscribe((responseData) => {
-        console.log(responseData);
-      });
+      .subscribe((responseData) => {});
   }
 
   ngOnDestroy(): void {

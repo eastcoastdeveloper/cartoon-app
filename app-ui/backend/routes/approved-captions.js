@@ -7,34 +7,14 @@ const CaptionData = require('../models/userData');
 
 function populateUI() {
   return (req, res, next) => {
-    CaptionData.find()
-      .then(async (documents) => {
-        const itemQuery = req.query.toonReference;
-        const count = documents.length;
-        const results = {};
-
-        // Query is Null
-        if (!JSON.parse(itemQuery)) {
-          const randomNumber = Math.floor(Math.random() * count);
-          results.results = documents[randomNumber];
-          res.populateUI = results;
-          next();
-        }
-
-        if (null != JSON.parse(itemQuery)) {
-          let nextDocument = documents.filter((doc) => {
-            if (doc.itemIndex === parseInt(itemQuery)) {
-              return doc
-            }
-          })
-
-          results.results = nextDocument;
-          results.total = count
-          results.populateUI = results;
-          next()
-        }
-
-    })
+    const query = req.query.toonReference;
+    const results = {};
+    CaptionData.find().findOne({ itemIndex: query }, function (err, doc) {
+      document = doc;
+      results.results = document;
+      res.populateUI = results;
+      next();
+    });
   }
 };
 

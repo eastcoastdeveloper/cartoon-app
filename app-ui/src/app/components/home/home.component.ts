@@ -26,6 +26,7 @@ export class HomeComponent implements OnInit, OnDestroy {
   totalCaptions: number;
   altText: string;
   reactiveForm!: UntypedFormGroup;
+  totalItems: number;
   hover: boolean = false;
   windowWidth?: number;
   toonIndex: number;
@@ -85,14 +86,20 @@ export class HomeComponent implements OnInit, OnDestroy {
         this.windowWidth = val;
       });
 
-    // this.configureQueryParams();
-    this.fetchCartoonData(null!);
+    this._httpService.totalItems$
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((val) => {
+        this.totalItems = val;
+      });
+
+    this._httpService.getTotal();
+    const randomNumber = Math.floor(Math.random() * 5);
+    this.fetchCartoonData(randomNumber);
   }
 
   // Check Cache Before Fetch
   fetchCartoonData(toonReference?: number) {
     new Promise<void>((resolve) => {
-      console.log(toonReference);
       this._httpService.captionsCacheCheck(toonReference);
       resolve(this.captureCaptionResponse());
     });
@@ -157,7 +164,9 @@ export class HomeComponent implements OnInit, OnDestroy {
   }
 
   navigateNext() {
-    this.toonIndex = this.toonIndex + 1;
+    this.totalItems - 1 > this.toonIndex
+      ? this.toonIndex++
+      : (this.toonIndex = 0);
     this.fetchCartoonData(this.toonIndex);
   }
 

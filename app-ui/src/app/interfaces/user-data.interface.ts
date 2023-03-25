@@ -12,7 +12,6 @@ export class CaptionsInterface {
 export class UserDataInterface {
   altText: string;
   captions: CaptionsInterface[];
-  date: number;
   imageUrl: string;
   itemIndex: number;
   totalCaptions: number;
