@@ -1,5 +1,5 @@
 import { Component, OnDestroy, OnInit } from "@angular/core";
-import { Subject, takeUntil } from "rxjs";
+import { distinctUntilChanged, filter, Subject, takeUntil, tap } from "rxjs";
 import { HttpService } from "src/app/services/http.service";
 import { WindowWidthService } from "src/app/services/window-width.service";
 import { nanoid } from "nanoid";
@@ -9,9 +9,21 @@ import {
   Validators,
 } from "@angular/forms";
 import { emailValidator } from "../../directives/email-validator.directive";
-import { Router } from "@angular/router";
+import {
+  NavigationEnd,
+  NavigationStart,
+  Router,
+  Event,
+  NavigationError,
+  ActivationEnd,
+  RouterEvent,
+  ActivatedRoute,
+  RouterState,
+  RouterStateSnapshot,
+} from "@angular/router";
 import { IUser } from "src/app/interfaces/form.interface";
 import { CaptionsInterface } from "src/app/interfaces/user-data.interface";
+import { Meta, Title } from "@angular/platform-browser";
 
 @Component({
   selector: "app-home",
@@ -43,9 +55,31 @@ export class HomeComponent implements OnInit, OnDestroy {
 
   constructor(
     private _windowWidthService: WindowWidthService,
+    private _metaService: Meta,
+    private _title: Title,
     private _router: Router,
-    private _httpService: HttpService
-  ) {}
+    private _httpService: HttpService,
+    private _activateRoute: ActivatedRoute
+  ) {
+    let stateObj: RouterState = _router.routerState;
+
+    let snapshot: RouterStateSnapshot = stateObj.snapshot;
+
+    console.log(snapshot);
+    // let prevUrl = "";
+    // this._router.events
+    //   .pipe(
+    //     filter((e) => e instanceof NavigationEnd),
+    //     distinctUntilChanged((prev, curr) => this._router.url === prevUrl),
+    //     tap(() => (prevUrl = this._router.url))
+    //   )
+    //   .subscribe((event: Event) => {
+    //     console.log(
+    //       "This should only log once per route change, if url is the same "
+    //     );
+    //   });
+    this.addTags();
+  }
 
   ngOnInit(): void {
     this.reactiveForm = new UntypedFormGroup({
@@ -95,6 +129,24 @@ export class HomeComponent implements OnInit, OnDestroy {
     this._httpService.getTotal();
     const randomNumber = Math.floor(Math.random() * 5);
     this.fetchCartoonData(randomNumber);
+  }
+
+  addTags() {
+    this._metaService.addTags([
+      { name: "robots", content: "index, follow" },
+      {
+        name: "keywords",
+        content: "Angular SEO Integration, Music CRUD, Angular Universal",
+      },
+      { name: "author", content: "Eric Scott" },
+      { name: "viewport", content: "width=device-width, initial-scale=1" },
+      { name: "description", content: "Free Web tutorials" },
+      { name: "date.created", content: "2022-10-15", scheme: "YYYY-MM-DD" },
+      { name: "date.updated", content: "2023-02-05", scheme: "YYYY-MM-DD" },
+      { name: "date.modified", content: "2023-03-25", scheme: "YYYY-MM-DD" },
+      { charset: "UTF-8" },
+    ]);
+    this._title.setTitle("APOD Nasa Gov");
   }
 
   // Check Cache Before Fetch
@@ -171,7 +223,10 @@ export class HomeComponent implements OnInit, OnDestroy {
   }
 
   navigatePrevious() {
-    console.log("navigate previous");
+    this.toonIndex === 0
+      ? (this.toonIndex = this.totalItems - 1)
+      : this.toonIndex--;
+    this.fetchCartoonData(this.toonIndex);
   }
 
   // Up Vote

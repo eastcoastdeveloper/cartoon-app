@@ -63,6 +63,8 @@ export class HttpService implements OnDestroy {
       console.log("NO Cache");
       this.populateCaptions(toonReference);
     }
+
+    console.log(this.storageObject);
   }
 
   // Cache GET Request
@@ -90,6 +92,7 @@ export class HttpService implements OnDestroy {
           if (null != responseData) {
             Object.keys(responseData).filter((currentVal, index) => {
               if (currentVal === "results") {
+                console.log("PING");
                 this.cartoonDataObject = Object.values(responseData)[index];
                 this.itemIndex = this.cartoonDataObject.itemIndex;
                 this.currentDataObject = this.cartoonDataObject;
