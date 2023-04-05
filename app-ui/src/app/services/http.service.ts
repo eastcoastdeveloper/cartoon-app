@@ -60,11 +60,8 @@ export class HttpService implements OnDestroy {
 
     // There's NOTHING Cached
     else {
-      console.log("NO Cache");
       this.populateCaptions(toonReference);
     }
-
-    console.log(this.storageObject);
   }
 
   // Cache GET Request
@@ -92,7 +89,6 @@ export class HttpService implements OnDestroy {
           if (null != responseData) {
             Object.keys(responseData).filter((currentVal, index) => {
               if (currentVal === "results") {
-                console.log("PING");
                 this.cartoonDataObject = Object.values(responseData)[index];
                 this.itemIndex = this.cartoonDataObject.itemIndex;
                 this.currentDataObject = this.cartoonDataObject;
@@ -140,6 +136,13 @@ export class HttpService implements OnDestroy {
     return this._http
       .post<IUser>("/api/form-submission", formData)
       .subscribe((responseData) => {});
+  }
+
+  // Post Form Results
+  postEmail(signUpEmail: String) {
+    // return this._http
+    //   .post<IUser>("/api/form-submission", formData)
+    //   .subscribe((responseData) => {});
   }
 
   ngOnDestroy(): void {

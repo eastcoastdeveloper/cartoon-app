@@ -26,7 +26,8 @@
   }
 
   .cartoon {
-    margin: 155px auto 0 auto;
+    padding-top: 30px;
+    margin: 0 auto;
     display: grid;
     grid-template-columns: 40px auto 40px;
     max-width: 710px;
@@ -144,7 +145,7 @@
         box-sizing: border-box;
       }
 
-      .email-first-last {
+      .first-last {
         display: grid;
         grid-column-gap: 10px;
         div:nth-child(1) {
@@ -159,7 +160,7 @@
         }
       }
 
-      .email-first-last {
+      .first-last {
         grid-template-columns: repeat(2, calc(50% - 5px));
         grid-template-areas:
           "email email"
@@ -355,7 +356,7 @@
   #home-page {
     .user-input {
       form {
-        .email-first-last {
+        .first-last {
           display: block;
           margin: 0;
 

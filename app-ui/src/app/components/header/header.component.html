@@ -1,9 +1,10 @@
 <header>
-  <div class="logo-tagline">
+  <div class="logo-tagline" routerLink="/">
     <img *ngIf="windowWidth! > 768" src="../../../assets/logo.png" />
     <div>Clever Cartoon Caption Contest</div>
   </div>
   <nav>
-    <span>Sign in</span>
+    <span routerLink="/login">Login</span>
+    <span routerLink="/signup">Signup</span>
   </nav>
 </header>

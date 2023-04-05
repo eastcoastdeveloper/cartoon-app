@@ -1,5 +1,5 @@
 import { Component, OnDestroy, OnInit } from "@angular/core";
-import { distinctUntilChanged, filter, Subject, takeUntil, tap } from "rxjs";
+import { Subject, take, takeUntil } from "rxjs";
 import { HttpService } from "src/app/services/http.service";
 import { WindowWidthService } from "src/app/services/window-width.service";
 import { nanoid } from "nanoid";
@@ -8,22 +8,14 @@ import {
   UntypedFormGroup,
   Validators,
 } from "@angular/forms";
-import { emailValidator } from "../../directives/email-validator.directive";
-import {
-  NavigationEnd,
-  NavigationStart,
-  Router,
-  Event,
-  NavigationError,
-  ActivationEnd,
-  RouterEvent,
-  ActivatedRoute,
-  RouterState,
-  RouterStateSnapshot,
-} from "@angular/router";
+import { Router, ActivatedRoute } from "@angular/router";
 import { IUser } from "src/app/interfaces/form.interface";
-import { CaptionsInterface } from "src/app/interfaces/user-data.interface";
+import {
+  CaptionsInterface,
+  UserDataInterface,
+} from "src/app/interfaces/user-data.interface";
 import { Meta, Title } from "@angular/platform-browser";
+import { LocalStorageService } from "src/app/services/local-storage.service";
 
 @Component({
   selector: "app-home",
@@ -33,19 +25,19 @@ import { Meta, Title } from "@angular/platform-browser";
 export class HomeComponent implements OnInit, OnDestroy {
   destroy$: Subject<boolean> = new Subject<boolean>();
   captionsArray: CaptionsInterface[] = [];
+  dataObject: UserDataInterface;
   captionsGroupIndex: number = 1;
   currentImage: string;
   totalCaptions: number;
   altText: string;
   reactiveForm!: UntypedFormGroup;
   totalItems: number;
+  manualURL: string;
   hover: boolean = false;
   windowWidth?: number;
   toonIndex: number;
-  nn: string;
   user: IUser = {
     caption: "",
-    email: "",
     firstname: "",
     lastname: "",
     city: "",
@@ -55,29 +47,13 @@ export class HomeComponent implements OnInit, OnDestroy {
 
   constructor(
     private _windowWidthService: WindowWidthService,
-    private _metaService: Meta,
-    private _title: Title,
-    private _router: Router,
+    private _activateRoute: ActivatedRoute,
+    private _localStorage: LocalStorageService,
     private _httpService: HttpService,
-    private _activateRoute: ActivatedRoute
+    private _metaService: Meta,
+    private _router: Router,
+    private _title: Title
   ) {
-    let stateObj: RouterState = _router.routerState;
-
-    let snapshot: RouterStateSnapshot = stateObj.snapshot;
-
-    console.log(snapshot);
-    // let prevUrl = "";
-    // this._router.events
-    //   .pipe(
-    //     filter((e) => e instanceof NavigationEnd),
-    //     distinctUntilChanged((prev, curr) => this._router.url === prevUrl),
-    //     tap(() => (prevUrl = this._router.url))
-    //   )
-    //   .subscribe((event: Event) => {
-    //     console.log(
-    //       "This should only log once per route change, if url is the same "
-    //     );
-    //   });
     this.addTags();
   }
 
@@ -87,12 +63,6 @@ export class HomeComponent implements OnInit, OnDestroy {
         Validators.required,
         Validators.minLength(1),
         Validators.maxLength(250),
-      ]),
-      email: new UntypedFormControl(this.user.email, [
-        Validators.required,
-        Validators.minLength(1),
-        Validators.maxLength(250),
-        emailValidator(),
       ]),
       firstname: new UntypedFormControl(this.user.firstname, [
         Validators.required,
@@ -126,9 +96,37 @@ export class HomeComponent implements OnInit, OnDestroy {
         this.totalItems = val;
       });
 
-    this._httpService.getTotal();
-    const randomNumber = Math.floor(Math.random() * 5);
-    this.fetchCartoonData(randomNumber);
+    this._activateRoute.queryParams.pipe(take(1)).subscribe((val) => {
+      this.manualURL = val["num"];
+    });
+
+    const storage = this._localStorage.getData("captions");
+    if (storage === "" || this.manualURL === undefined) {
+      const randomNumber = Math.floor(Math.random() * 5);
+      this._httpService.getTotal();
+      this.fetchCartoonData(randomNumber);
+    }
+    if (this.manualURL) {
+      this.fetchCartoonData(parseInt(this.manualURL));
+    }
+
+    // Set Values & Append Date to URL
+    this._httpService.responseSubject$
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((val) => {
+        this.currentImage = val.imageUrl;
+        this.altText = val.altText;
+        this.totalCaptions = val.totalCaptions;
+        this.captionsArray = val.captions;
+        this.toonIndex = val.itemIndex;
+        const uiid = nanoid().slice(0, 5);
+        this._router.navigate(["home", uiid], {
+          queryParams: {
+            toon: uiid,
+            num: this.toonIndex,
+          },
+        });
+      });
   }
 
   addTags() {
@@ -151,19 +149,12 @@ export class HomeComponent implements OnInit, OnDestroy {
 
   // Check Cache Before Fetch
   fetchCartoonData(toonReference?: number) {
-    new Promise<void>((resolve) => {
-      this._httpService.captionsCacheCheck(toonReference);
-      resolve(this.captureCaptionResponse());
-    });
+    this._httpService.captionsCacheCheck(toonReference);
   }
 
   // Form Field Getters
   get caption() {
     return this.reactiveForm.get("caption")!;
-  }
-
-  get email() {
-    return this.reactiveForm.get("email")!;
   }
 
   get firstname() {
@@ -193,26 +184,6 @@ export class HomeComponent implements OnInit, OnDestroy {
 
     this.user = this.reactiveForm.value;
     this._httpService.postFormResults(this.user);
-  }
-
-  // Set Values & Append Date to URL
-  captureCaptionResponse() {
-    this._httpService.responseSubject$
-      .pipe(takeUntil(this.destroy$))
-      .subscribe((val) => {
-        this.currentImage = val.imageUrl;
-        this.altText = val.altText;
-        this.totalCaptions = val.totalCaptions;
-        this.captionsArray = val.captions;
-        this.toonIndex = val.itemIndex;
-        const uiid = nanoid().slice(0, 5);
-        this._router.navigate(["home", uiid], {
-          queryParams: {
-            toon: uiid,
-            num: this.toonIndex,
-          },
-        });
-      });
   }
 
   navigateNext() {
@@ -252,3 +223,20 @@ export class HomeComponent implements OnInit, OnDestroy {
     this.destroy$.complete();
   }
 }
+
+// if (!this.currentImage) {
+//   this._httpService.getTotal();
+// this._activateRoute.queryParams.pipe(take(1)).subscribe((val) => {
+//   this.manualURL = val["num"];
+//   if (!this.manualURL) {
+//     const randomNumber = Math.floor(Math.random() * 5);
+//     this.fetchCartoonData(randomNumber);
+//   } else {
+//     this.fetchCartoonData(parseInt(this.manualURL));
+//   }
+// });
+// } else {
+//   const randomNumber = Math.floor(Math.random() * 5);
+//   console.log(randomNumber);
+//   this.fetchCartoonData(randomNumber);
+// }

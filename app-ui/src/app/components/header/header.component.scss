@@ -13,6 +13,7 @@ header {
     display: inline-block;
 
     img {
+      cursor: pointer;
       float: left;
       margin-right: 20px;
     }
@@ -33,6 +34,13 @@ header {
     position: absolute;
     top: 50%;
     right: 30px;
+    display: grid;
+    grid-template-columns: repeat(2, auto);
+    grid-column-gap: 10px;
+    span {
+      display: block;
+      cursor: pointer;
+    }
   }
 }
 
