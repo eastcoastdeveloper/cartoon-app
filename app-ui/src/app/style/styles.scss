@@ -105,8 +105,18 @@ section {
   display: block;
 }
 
+html,
+body {
+  margin: 0;
+  padding: 0;
+}
+
 body {
   line-height: 1;
+}
+
+main {
+  height: calc(100vh - 170px);
 }
 
 ol,
@@ -140,4 +150,18 @@ body {
 
 .element-shadow {
   box-shadow: 2px 3px 5px 2px rgba(0, 0, 0, 0.4);
+}
+
+label {
+  font: normal 14px sans-serif;
+  display: block;
+  margin-bottom: 3px;
+}
+input {
+  padding: 5px;
+  font-size: 14px;
+  border: 1px solid $midnight;
+  border-radius: 3px;
+  width: calc(100% - 12px);
+  outline: none;
 }

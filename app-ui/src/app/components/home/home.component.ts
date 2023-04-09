@@ -90,25 +90,23 @@ export class HomeComponent implements OnInit, OnDestroy {
         this.windowWidth = val;
       });
 
-    this._httpService.totalItems$
-      .pipe(takeUntil(this.destroy$))
-      .subscribe((val) => {
-        this.totalItems = val;
-      });
-
     this._activateRoute.queryParams.pipe(take(1)).subscribe((val) => {
       this.manualURL = val["num"];
     });
 
     const storage = this._localStorage.getData("captions");
     if (storage === "" || this.manualURL === undefined) {
-      const randomNumber = Math.floor(Math.random() * 5);
-      this._httpService.getTotal();
-      this.fetchCartoonData(randomNumber);
+      this.getTotals();
     }
     if (this.manualURL) {
       this.fetchCartoonData(parseInt(this.manualURL));
     }
+
+    this._httpService.totalItems$
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((val) => {
+        this.totalItems = val;
+      });
 
     // Set Values & Append Date to URL
     this._httpService.responseSubject$
@@ -127,6 +125,14 @@ export class HomeComponent implements OnInit, OnDestroy {
           },
         });
       });
+  }
+
+  // Called Once on Load
+  async getTotals() {
+    await new Promise((resolve) => {
+      const randomNumber = Math.floor(Math.random() * 5);
+      resolve(this.fetchCartoonData(randomNumber));
+    });
   }
 
   addTags() {

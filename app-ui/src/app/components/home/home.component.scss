@@ -118,27 +118,13 @@
   }
 
   .user-input {
-    margin-top: 50px;
+    margin-top: 30px;
     .caption-details {
       display: grid;
       grid-template-columns: auto 200px;
     }
 
     form {
-      label {
-        font: normal 14px sans-serif;
-        display: block;
-        margin-bottom: 3px;
-      }
-      input {
-        padding: 5px;
-        font-size: 14px;
-        border: 1px solid $midnight;
-        border-radius: 3px;
-        width: calc(100% - 12px);
-        outline: none;
-      }
-
       .caption {
         width: 100%;
         margin-bottom: 10px;
@@ -149,13 +135,9 @@
         display: grid;
         grid-column-gap: 10px;
         div:nth-child(1) {
-          grid-area: email;
-          margin-top: 10px;
-        }
-        div:nth-child(2) {
           grid-area: fName;
         }
-        div:nth-child(3) {
+        div:nth-child(2) {
           grid-area: lName;
         }
       }
@@ -163,10 +145,10 @@
       .first-last {
         grid-template-columns: repeat(2, calc(50% - 5px));
         grid-template-areas:
-          "email email"
-          "fName lName";
+          "fName fName"
+          "lName lName";
         grid-row-gap: 10px;
-        margin-bottom: 10px;
+        margin: 10px 0;
         input:first-child {
           grid-column: 1/-1;
         }
@@ -220,7 +202,7 @@
     margin: 10px auto 0 auto;
     max-height: 55vh;
     overflow: auto;
-    padding: 0 10px;
+    padding: 0 10px 55px 10px;
     box-sizing: border-box;
 
     .repeating-block {
@@ -380,6 +362,7 @@
             "city state"
             "submit submit";
           grid-template-columns: repeat(2, calc(50% - 5px));
+          grid-row-gap: 30px;
           div:nth-child(1) {
             grid-area: city;
           }
@@ -388,7 +371,7 @@
           }
           div:nth-child(3) {
             grid-area: submit;
-            margin-top: 20px;
+            // margin-top: 20px;
             button {
               position: unset;
             }

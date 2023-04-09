@@ -14,7 +14,6 @@ export class HttpService implements OnDestroy {
   unsubscribe$: Subject<boolean> = new Subject<boolean>();
   cartoonDataObject: UserDataInterface;
   itemIndex: number | undefined;
-  totalItems: number | undefined;
   totalItems$ = new BehaviorSubject<number>(0);
   responseSubject$ = new BehaviorSubject<UserDataInterface>({
     altText: "",
@@ -33,7 +32,7 @@ export class HttpService implements OnDestroy {
   ) {}
 
   // Search Cache
-  captionsCacheCheck(toonReference?: number) {
+  async captionsCacheCheck(toonReference?: number) {
     const storage = this._localStorageService.getData("captions");
     this.currentDataObject = {};
     this.itemIndex = toonReference;
@@ -51,7 +50,7 @@ export class HttpService implements OnDestroy {
 
       // Requested Group Called First Time
       if (!this.storageObject[this.itemIndex!]) {
-        new Promise((resolve) => {
+        await new Promise((resolve) => {
           this.populateCaptions(this.itemIndex);
           resolve(this.saveNewlyCachedData(this.itemIndex!));
         });
@@ -66,11 +65,16 @@ export class HttpService implements OnDestroy {
 
   // Cache GET Request
   saveNewlyCachedData(captionsGroupIndex: number) {
-    this.storageObject![captionsGroupIndex] = this.currentDataObject;
-    this._localStorageService.saveData(
-      "captions",
-      JSON.stringify(this.storageObject)
-    );
+    if (this.storageObject) {
+      this.storageObject![captionsGroupIndex] = this.currentDataObject;
+      this._localStorageService.saveData(
+        "captions",
+        JSON.stringify(this.storageObject)
+      );
+    }
+    if (this.storageObject === undefined) {
+      this.getTotal();
+    }
   }
 
   // Get Captions

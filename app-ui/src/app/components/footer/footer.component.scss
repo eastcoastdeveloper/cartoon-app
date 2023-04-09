@@ -3,7 +3,10 @@
 footer {
   border-top: 1px solid $midnight;
   background-color: $white;
+  position: fixed;
   padding: 15px 0;
+  width: 100%;
+  bottom: 0;
   .copyright {
     text-align: center;
     font: normal 14px sans-serif;

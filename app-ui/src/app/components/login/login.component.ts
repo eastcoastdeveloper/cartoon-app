@@ -15,6 +15,7 @@ import { HttpService } from "src/app/services/http.service";
 export class LoginComponent implements OnInit {
   reactiveForm!: UntypedFormGroup;
   emailAdress: string;
+  password: string;
 
   constructor(private _httpService: HttpService) {}
 
@@ -25,6 +26,11 @@ export class LoginComponent implements OnInit {
         Validators.minLength(1),
         Validators.maxLength(250),
         emailValidator(),
+      ]),
+      password: new UntypedFormControl(this.password, [
+        Validators.required,
+        Validators.minLength(1),
+        Validators.maxLength(250),
       ]),
     });
   }
@@ -42,6 +48,7 @@ export class LoginComponent implements OnInit {
     }
 
     this.emailAdress = this.reactiveForm.value;
+    this.password = this.reactiveForm.value;
     this._httpService.postEmail(this.emailAdress);
   }
 }
