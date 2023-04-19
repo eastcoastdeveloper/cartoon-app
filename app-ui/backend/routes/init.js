@@ -3,19 +3,20 @@ const router = express.Router();
 const CaptionData = require('../models/userData');
 
 function cT() {
-    return (req, res, next) => {
+    return async (req, res, next) => {
         var query = CaptionData.find();
         var storageObject = {};
-        query.count(function (err, count) {
-            if (err) console.log(err)
-            else {
-                for (var i = 0; i < count; i++) {
-                    storageObject[i] = null;
-                }
-                res.cT = storageObject;
-                next();
+
+        await query.countDocuments({}).exec()
+        .then((count) => {
+            for (var i = 0; i < count; i++) {
+                storageObject[i] = null;
             }
-        });
+            res.cT = storageObject;
+             next();
+        }).catch((err) => {
+            console.log(err)
+        })
   }
 };
 

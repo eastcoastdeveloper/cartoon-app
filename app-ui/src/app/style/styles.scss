@@ -165,3 +165,15 @@ input {
   width: calc(100% - 12px);
   outline: none;
 }
+
+[type="submit"] {
+  outline: none;
+  width: 100%;
+  left: 0;
+  padding: 5px 15px;
+  font-weight: 600;
+  border-radius: 3px;
+  border: 1px solid $midnight;
+  cursor: pointer;
+  transition: all 0.25s;
+}

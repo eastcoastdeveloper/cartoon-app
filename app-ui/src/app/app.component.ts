@@ -6,11 +6,10 @@ import {
   NavigationStart,
   Router,
 } from "@angular/router";
-import { Subject, takeLast, takeUntil } from "rxjs";
-import { LocationStrategy, PlatformLocation } from "@angular/common";
+import { Subject, takeUntil } from "rxjs";
+import { LocationStrategy } from "@angular/common";
 import { LocalStorageService } from "./services/local-storage.service";
 import { HttpService } from "./services/http.service";
-import { UserDataInterface } from "./interfaces/user-data.interface";
 
 @Component({
   selector: "app-root",
@@ -21,22 +20,22 @@ import { UserDataInterface } from "./interfaces/user-data.interface";
   },
 })
 export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
-  private unsubscribe$ = new Subject<void>();
-  width: number = window.innerWidth;
-  height: number = window.innerWidth;
-  mobileWidth: number = 760;
-  isMobile: boolean = false;
-  queryNum: number;
-  toonReference: string;
-  backButtonClick = false;
-  // refreshed = false;
   history: { toonReference: string; num: number }[] = [];
+  private unsubscribe$ = new Subject<void>();
+  height: number = window.innerWidth;
+  width: number = window.innerWidth;
+  showRedirectMessage = false;
+  isMobile: boolean = false;
+  mobileWidth: number = 760;
+  backButtonClick = false;
+  toonReference: string;
+  queryNum: number;
 
   constructor(
     private _windowWidthService: WindowWidthService,
     private _localStorage: LocalStorageService,
-    private _location: LocationStrategy,
     private _activatedRoute: ActivatedRoute,
+    private _location: LocationStrategy,
     private _httpService: HttpService,
     private _router: Router
   ) {
@@ -48,7 +47,6 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
           let parsed = JSON.parse(storage);
           this._httpService.totalItems$.next(parsed.length);
         }
-        // console.log(this._router.navigated);
       }
       if (ev instanceof NavigationEnd) {
         this.toonReference = this._activatedRoute.snapshot.queryParams["toon"];
@@ -59,7 +57,6 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
             toonReference: this.toonReference,
             num: this.queryNum,
           });
-          console.log(this.history);
         }
       }
     });
@@ -86,6 +83,18 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
         this.preventBackButton();
       }
     });
+
+    this._httpService.invalidURL$
+      .pipe(takeUntil(this.unsubscribe$))
+      .subscribe((val) => {
+        this.showRedirectMessage = val;
+
+        if (this.showRedirectMessage) {
+          setTimeout(() => {
+            this.showRedirectMessage = false;
+          }, 5000);
+        }
+      });
   }
 
   // Initialize Window Width Service

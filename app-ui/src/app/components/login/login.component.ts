@@ -5,6 +5,7 @@ import {
   Validators,
 } from "@angular/forms";
 import { emailValidator } from "src/app/directives/email-validator.directive";
+import { AuthService } from "src/app/services/auth.service";
 import { HttpService } from "src/app/services/http.service";
 
 @Component({
@@ -17,7 +18,10 @@ export class LoginComponent implements OnInit {
   emailAdress: string;
   password: string;
 
-  constructor(private _httpService: HttpService) {}
+  constructor(
+    private _httpService: HttpService,
+    private _authSerivce: AuthService
+  ) {}
 
   ngOnInit(): void {
     this.reactiveForm = new UntypedFormGroup({
@@ -40,6 +44,7 @@ export class LoginComponent implements OnInit {
   }
 
   public validate(): void {
+    console.log(this.reactiveForm);
     if (this.reactiveForm.invalid) {
       for (const control of Object.keys(this.reactiveForm.controls)) {
         this.reactiveForm.controls[control].markAsTouched();
@@ -47,8 +52,21 @@ export class LoginComponent implements OnInit {
       return;
     }
 
-    this.emailAdress = this.reactiveForm.value;
-    this.password = this.reactiveForm.value;
-    this._httpService.postEmail(this.emailAdress);
+    this._authSerivce.login(
+      this.reactiveForm.value.email,
+      this.reactiveForm.value.password
+    );
   }
+
+  // onLogin(obj: any) {
+  //   if (this.reactiveForm.invalid) {
+  //     return;
+  //   } else {
+  //     console.log
+  //     this._authSerivce.login(
+  //       this.reactiveForm.value.email,
+  //       this.reactiveForm.value.password
+  //     );
+  //   }
+  // }
 }

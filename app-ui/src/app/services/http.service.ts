@@ -10,11 +10,12 @@ import { LocalStorageService } from "./local-storage.service";
   providedIn: "root",
 })
 export class HttpService implements OnDestroy {
-  storageObject: LocalStorageInterface | null;
   unsubscribe$: Subject<boolean> = new Subject<boolean>();
+  invalidURL$ = new BehaviorSubject<boolean>(false);
+  totalItems$ = new BehaviorSubject<number>(0);
+  storageObject: LocalStorageInterface | null;
   cartoonDataObject: UserDataInterface;
   itemIndex: number | undefined;
-  totalItems$ = new BehaviorSubject<number>(0);
   responseSubject$ = new BehaviorSubject<UserDataInterface>({
     altText: "",
     captions: [],
@@ -37,6 +38,8 @@ export class HttpService implements OnDestroy {
     this.currentDataObject = {};
     this.itemIndex = toonReference;
 
+    console.log(this.storageObject);
+
     // There IS Cache
     if (storage != "") {
       let parsed = JSON.parse(storage);
@@ -52,7 +55,6 @@ export class HttpService implements OnDestroy {
       if (!this.storageObject[this.itemIndex!]) {
         await new Promise((resolve) => {
           this.populateCaptions(this.itemIndex);
-          resolve(this.saveNewlyCachedData(this.itemIndex!));
         });
       }
     }
@@ -94,9 +96,12 @@ export class HttpService implements OnDestroy {
             Object.keys(responseData).filter((currentVal, index) => {
               if (currentVal === "results") {
                 this.cartoonDataObject = Object.values(responseData)[index];
-                this.itemIndex = this.cartoonDataObject.itemIndex;
-                this.currentDataObject = this.cartoonDataObject;
-                this.saveNewlyCachedData(this.itemIndex!);
+
+                if (this.cartoonDataObject !== null) {
+                  this.itemIndex = this.cartoonDataObject.itemIndex;
+                  this.currentDataObject = this.cartoonDataObject;
+                  this.saveNewlyCachedData(this.itemIndex!);
+                }
               }
             });
           }
@@ -143,11 +148,11 @@ export class HttpService implements OnDestroy {
   }
 
   // Post Form Results
-  postEmail(signUpEmail: String) {
-    // return this._http
-    //   .post<IUser>("/api/form-submission", formData)
-    //   .subscribe((responseData) => {});
-  }
+  // postEmail(signUpEmail: String) {
+  //   // return this._http
+  //   //   .post<IUser>("/api/form-submission", formData)
+  //   //   .subscribe((responseData) => {});
+  // }
 
   ngOnDestroy(): void {
     this.unsubscribe$.next(true);

@@ -112,18 +112,20 @@ export class HomeComponent implements OnInit, OnDestroy {
     this._httpService.responseSubject$
       .pipe(takeUntil(this.destroy$))
       .subscribe((val) => {
-        this.currentImage = val.imageUrl;
-        this.altText = val.altText;
-        this.totalCaptions = val.totalCaptions;
-        this.captionsArray = val.captions;
-        this.toonIndex = val.itemIndex;
-        const uiid = nanoid().slice(0, 5);
-        this._router.navigate(["home", uiid], {
-          queryParams: {
-            toon: uiid,
-            num: this.toonIndex,
-          },
-        });
+        if (val) {
+          this.currentImage = val.imageUrl;
+          this.altText = val.altText;
+          this.totalCaptions = val.totalCaptions;
+          this.captionsArray = val.captions;
+          this.toonIndex = val.itemIndex;
+          const uiid = nanoid().slice(0, 5);
+          this._router.navigate(["home", uiid], {
+            queryParams: {
+              toon: uiid,
+              num: this.toonIndex,
+            },
+          });
+        }
       });
   }
 
@@ -181,6 +183,7 @@ export class HomeComponent implements OnInit, OnDestroy {
 
   // Form Validation & Post to Backend
   public validate(): void {
+    console.log(this.reactiveForm);
     if (this.reactiveForm.invalid) {
       for (const control of Object.keys(this.reactiveForm.controls)) {
         this.reactiveForm.controls[control].markAsTouched();
@@ -229,20 +232,3 @@ export class HomeComponent implements OnInit, OnDestroy {
     this.destroy$.complete();
   }
 }
-
-// if (!this.currentImage) {
-//   this._httpService.getTotal();
-// this._activateRoute.queryParams.pipe(take(1)).subscribe((val) => {
-//   this.manualURL = val["num"];
-//   if (!this.manualURL) {
-//     const randomNumber = Math.floor(Math.random() * 5);
-//     this.fetchCartoonData(randomNumber);
-//   } else {
-//     this.fetchCartoonData(parseInt(this.manualURL));
-//   }
-// });
-// } else {
-//   const randomNumber = Math.floor(Math.random() * 5);
-//   console.log(randomNumber);
-//   this.fetchCartoonData(randomNumber);
-// }

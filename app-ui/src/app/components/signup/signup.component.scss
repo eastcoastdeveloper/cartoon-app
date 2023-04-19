@@ -1,0 +1,14 @@
+#signup {
+  height: 100%;
+  display: flex;
+  form {
+    margin: auto;
+    min-width: 275px;
+    > div:first-child {
+      margin-bottom: 10px;
+    }
+    [type="submit"] {
+      margin-top: 20px;
+    }
+  }
+}

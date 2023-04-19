@@ -2,3 +2,26 @@
   margin-top: 124px;
   height: 100%;
 }
+
+.redirect-message {
+  font: normal 14px sans-serif;
+  background-color: red;
+  transition: top 0.25s;
+  position: absolute;
+  text-align: center;
+  padding: 10px 0;
+  color: black;
+  width: 100%;
+  z-index: 2;
+  top: -36px;
+}
+
+.show-redirect-message {
+  top: 0 !important;
+}
+
+@media screen and (max-width: 768px) {
+  .content {
+    margin-top: 80px;
+  }
+}

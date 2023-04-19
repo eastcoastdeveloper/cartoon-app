@@ -161,26 +161,12 @@
 
         .submit-caption {
           position: relative;
-          button {
-            position: absolute;
-            bottom: 0;
-            width: 100%;
-            left: 0;
-            padding: 5px 15px;
-          }
-        }
-
-        .submit-caption {
           text-align: right;
           margin-top: 12px;
 
           button {
-            outline: none;
-            font-weight: 600;
-            border-radius: 3px;
-            border: 1px solid $midnight;
-            cursor: pointer;
-            transition: all 0.25s;
+            bottom: 0;
+            position: absolute;
           }
         }
       }
@@ -288,6 +274,7 @@
 
 @media screen and (max-width: 992px) {
   #home-page {
+    padding-bottom: 55px;
     .user-input,
     .total-comments,
     .published-content {
@@ -304,8 +291,6 @@
 
 @media screen and (max-width: 768px) {
   #home-page {
-    margin-top: 70px;
-
     .cartoon {
       display: block;
       padding: 0 20px;
@@ -362,7 +347,7 @@
             "city state"
             "submit submit";
           grid-template-columns: repeat(2, calc(50% - 5px));
-          grid-row-gap: 30px;
+          grid-row-gap: 5px;
           div:nth-child(1) {
             grid-area: city;
           }
@@ -371,9 +356,10 @@
           }
           div:nth-child(3) {
             grid-area: submit;
-            // margin-top: 20px;
+            margin-top: 40px;
             button {
               position: unset;
+              bottom: unset;
             }
           }
         }
