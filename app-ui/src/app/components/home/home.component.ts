@@ -16,6 +16,7 @@ import {
 } from "src/app/interfaces/user-data.interface";
 import { Meta, Title } from "@angular/platform-browser";
 import { LocalStorageService } from "src/app/services/local-storage.service";
+import { AuthService } from "src/app/services/auth.service";
 
 @Component({
   selector: "app-home",
@@ -25,6 +26,7 @@ import { LocalStorageService } from "src/app/services/local-storage.service";
 export class HomeComponent implements OnInit, OnDestroy {
   destroy$: Subject<boolean> = new Subject<boolean>();
   captionsArray: CaptionsInterface[] = [];
+  userIsAuthenticated = false;
   dataObject: UserDataInterface;
   captionsGroupIndex: number = 1;
   currentImage: string;
@@ -47,6 +49,7 @@ export class HomeComponent implements OnInit, OnDestroy {
 
   constructor(
     private _windowWidthService: WindowWidthService,
+    private _authService: AuthService,
     private _activateRoute: ActivatedRoute,
     private _localStorage: LocalStorageService,
     private _httpService: HttpService,
@@ -94,6 +97,19 @@ export class HomeComponent implements OnInit, OnDestroy {
       this.manualURL = val["num"];
     });
 
+    this.userIsAuthenticated = this._authService.getIsAuth();
+    this.userIsAuthenticated
+      ? this.reactiveForm.enable()
+      : this.reactiveForm.disable();
+    console.log(this.userIsAuthenticated);
+
+    this._authService.getAuthStatusListener().subscribe((isAuthenticated) => {
+      this.userIsAuthenticated = isAuthenticated;
+      this.userIsAuthenticated ? this.reactiveForm.enable() : "";
+      console.log(this.reactiveForm.status);
+      console.log("Home Cmpt: Is Authenticated");
+    });
+
     const storage = this._localStorage.getData("captions");
     if (storage === "" || this.manualURL === undefined) {
       this.getTotals();
@@ -121,7 +137,6 @@ export class HomeComponent implements OnInit, OnDestroy {
           const uiid = nanoid().slice(0, 5);
           this._router.navigate(["home", uiid], {
             queryParams: {
-              toon: uiid,
               num: this.toonIndex,
             },
           });
@@ -183,22 +198,26 @@ export class HomeComponent implements OnInit, OnDestroy {
 
   // Form Validation & Post to Backend
   public validate(): void {
-    console.log(this.reactiveForm);
+    // console.log(this.reactiveForm);
     if (this.reactiveForm.invalid) {
       for (const control of Object.keys(this.reactiveForm.controls)) {
         this.reactiveForm.controls[control].markAsTouched();
       }
       return;
     }
+    if (this.reactiveForm.valid) {
+      this._httpService.postFormResults(this.user);
+    }
 
     this.user = this.reactiveForm.value;
-    this._httpService.postFormResults(this.user);
   }
 
   navigateNext() {
     this.totalItems - 1 > this.toonIndex
       ? this.toonIndex++
       : (this.toonIndex = 0);
+    console.log(this.toonIndex);
+    console.log(this.totalItems);
     this.fetchCartoonData(this.toonIndex);
   }
 

@@ -1,3 +1,5 @@
+@import "../../style/color.scss";
+
 #signup {
   height: 100%;
   display: flex;
@@ -9,6 +11,10 @@
     }
     [type="submit"] {
       margin-top: 20px;
+      &:focus {
+        background-color: $midnight;
+        color: $fog;
+      }
     }
   }
 }

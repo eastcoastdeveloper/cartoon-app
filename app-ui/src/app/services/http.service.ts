@@ -5,6 +5,7 @@ import { IUser } from "../interfaces/form.interface";
 import { LocalStorageInterface } from "../interfaces/local-storage.interface";
 import { UserDataInterface } from "../interfaces/user-data.interface";
 import { LocalStorageService } from "./local-storage.service";
+import { Router } from "@angular/router";
 
 @Injectable({
   providedIn: "root",
@@ -29,6 +30,7 @@ export class HttpService implements OnDestroy {
 
   constructor(
     private _http: HttpClient,
+    private _router: Router,
     private _localStorageService: LocalStorageService
   ) {}
 
@@ -96,11 +98,22 @@ export class HttpService implements OnDestroy {
             Object.keys(responseData).filter((currentVal, index) => {
               if (currentVal === "results") {
                 this.cartoonDataObject = Object.values(responseData)[index];
-
                 if (this.cartoonDataObject !== null) {
                   this.itemIndex = this.cartoonDataObject.itemIndex;
                   this.currentDataObject = this.cartoonDataObject;
                   this.saveNewlyCachedData(this.itemIndex!);
+                }
+                // Redirect if URL does not exist
+                if (this.cartoonDataObject === null) {
+                  console.log("number does not exist");
+                  const randomNumber = Math.floor(
+                    Math.random() * this.totalItems$.value
+                  );
+                  this.invalidURL$.next(true);
+                  this.captionsCacheCheck(randomNumber);
+                  setTimeout(() => {
+                    this.invalidURL$.next(false);
+                  }, 5000);
                 }
               }
             });
@@ -144,7 +157,9 @@ export class HttpService implements OnDestroy {
   postFormResults(formData: IUser) {
     return this._http
       .post<IUser>("/api/form-submission", formData)
-      .subscribe((responseData) => {});
+      .subscribe((responseData) => {
+        console.log(responseData);
+      });
   }
 
   // Post Form Results

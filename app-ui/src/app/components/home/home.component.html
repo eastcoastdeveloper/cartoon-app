@@ -37,8 +37,11 @@
     </div> -->
 
     <form [formGroup]="reactiveForm" #form="ngForm">
+      <!-- <fieldset [disabled]="userIsAuthenticated"> -->
       <div>
-        <label for="caption">Caption</label>
+        <label [ngClass]="{ inactive: !userIsAuthenticated }" for="caption"
+          >Caption</label
+        >
         <input
           type="text"
           id="caption"
@@ -70,7 +73,9 @@
       </div>
       <div class="first-last">
         <div>
-          <label for="name">First Name</label>
+          <label [ngClass]="{ inactive: !userIsAuthenticated }" for="name"
+            >First Name</label
+          >
           <input
             type="text"
             id="firstname"
@@ -102,7 +107,9 @@
         </div>
 
         <div>
-          <label for="name">Last Name</label>
+          <label [ngClass]="{ inactive: !userIsAuthenticated }" for="name"
+            >Last Name</label
+          >
           <input
             type="text"
             id="lastname"
@@ -135,7 +142,9 @@
 
       <div class="city-state-submit">
         <div>
-          <label for="city">City</label>
+          <label [ngClass]="{ inactive: !userIsAuthenticated }" for="city"
+            >City</label
+          >
           <input
             type="text"
             id="city"
@@ -162,7 +171,9 @@
         </div>
 
         <div>
-          <label for="state">State/ Province</label>
+          <label [ngClass]="{ inactive: !userIsAuthenticated }" for="state"
+            >State/ Province</label
+          >
           <input
             type="text"
             id="state"
@@ -195,11 +206,17 @@
           (mouseover)="hover = true"
           (mouseleave)="hover = false"
         >
-          <button type="submit" tabindex="7" (click)="validate()">
+          <button
+            type="submit"
+            tabindex="7"
+            (click)="validate()"
+            [disabled]="!userIsAuthenticated"
+          >
             Submit
           </button>
         </div>
       </div>
+      <!-- </fieldset> -->
     </form>
   </div>
 

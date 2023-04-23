@@ -6,7 +6,6 @@ import {
 } from "@angular/forms";
 import { emailValidator } from "src/app/directives/email-validator.directive";
 import { AuthService } from "src/app/services/auth.service";
-import { HttpService } from "src/app/services/http.service";
 
 @Component({
   selector: "app-login",
@@ -18,10 +17,7 @@ export class LoginComponent implements OnInit {
   emailAdress: string;
   password: string;
 
-  constructor(
-    private _httpService: HttpService,
-    private _authSerivce: AuthService
-  ) {}
+  constructor(private _authSerivce: AuthService) {}
 
   ngOnInit(): void {
     this.reactiveForm = new UntypedFormGroup({

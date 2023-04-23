@@ -9,6 +9,8 @@ import { FooterComponent } from "./components/footer/footer.component";
 import { LoaderComponent } from "./components/loader/loader.component";
 import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { EmailValidatorDirective } from "./directives/email-validator.directive";
+import { AdminComponent } from "./components/admin/admin.component";
+import { AuthInterceptor } from "./guards/auth.interceptor";
 
 @NgModule({
   declarations: [
@@ -18,6 +20,7 @@ import { EmailValidatorDirective } from "./directives/email-validator.directive"
     LoaderComponent,
     routingComponents,
     EmailValidatorDirective,
+    AdminComponent,
   ],
   imports: [
     HttpClientModule,
@@ -31,6 +34,11 @@ import { EmailValidatorDirective } from "./directives/email-validator.directive"
     {
       provide: HTTP_INTERCEPTORS,
       useClass: LoadingInterceptor,
+      multi: true,
+    },
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: AuthInterceptor,
       multi: true,
     },
   ],

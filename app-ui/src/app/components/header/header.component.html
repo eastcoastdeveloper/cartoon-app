@@ -3,8 +3,10 @@
     <img *ngIf="windowWidth! > 768" src="../../../assets/logo.png" />
     <div>Clever Cartoon Caption Contest</div>
   </div>
-  <nav>
-    <span routerLink="/login">Login</span>
-    <span routerLink="/signup">Signup</span>
+  <nav [ngClass]="userIsAuthenticated ? 'default-layout' : 'admin-layout'">
+    <span *ngIf="!userIsAuthenticated" routerLink="/login">Login</span>
+    <span *ngIf="userIsAuthenticated" (click)="onLogout()">Logout</span>
+    <span *ngIf="!userIsAuthenticated" routerLink="/signup">Signup</span>
+    <span *ngIf="userIsAuthenticated" routerLink="/admin">Admin</span>
   </nav>
 </header>

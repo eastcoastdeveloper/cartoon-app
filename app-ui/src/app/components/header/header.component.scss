@@ -35,12 +35,17 @@ header {
     top: 50%;
     right: 30px;
     display: grid;
-    grid-template-columns: repeat(2, auto);
     grid-column-gap: 10px;
     span {
       display: block;
       cursor: pointer;
     }
+  }
+  .default-layout {
+    grid-template-columns: repeat(2, auto);
+  }
+  .admin-layout {
+    grid-template-columns: repeat(3, auto);
   }
 }
 
