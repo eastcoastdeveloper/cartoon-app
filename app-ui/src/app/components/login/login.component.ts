@@ -16,6 +16,7 @@ export class LoginComponent implements OnInit {
   reactiveForm!: UntypedFormGroup;
   emailAdress: string;
   password: string;
+  capsOn: any;
 
   constructor(private _authSerivce: AuthService) {}
 
@@ -40,7 +41,6 @@ export class LoginComponent implements OnInit {
   }
 
   public validate(): void {
-    console.log(this.reactiveForm);
     if (this.reactiveForm.invalid) {
       for (const control of Object.keys(this.reactiveForm.controls)) {
         this.reactiveForm.controls[control].markAsTouched();
@@ -52,17 +52,6 @@ export class LoginComponent implements OnInit {
       this.reactiveForm.value.email,
       this.reactiveForm.value.password
     );
+    this.reactiveForm.reset();
   }
-
-  // onLogin(obj: any) {
-  //   if (this.reactiveForm.invalid) {
-  //     return;
-  //   } else {
-  //     console.log
-  //     this._authSerivce.login(
-  //       this.reactiveForm.value.email,
-  //       this.reactiveForm.value.password
-  //     );
-  //   }
-  // }
 }

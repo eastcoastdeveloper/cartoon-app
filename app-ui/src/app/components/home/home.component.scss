@@ -105,14 +105,6 @@
     }
   }
 
-  input.ng-invalid.ng-touched {
-    background-color: $warningRed;
-  }
-
-  input.ng-invalid.ng-touched::placeholder {
-    color: $white;
-  }
-
   small {
     color: $warningRed;
   }
@@ -179,6 +171,10 @@
         font-style: italic;
       }
     }
+  }
+
+  .button-disabled {
+    pointer-events: none;
   }
 
   .form-active-btn-hover {

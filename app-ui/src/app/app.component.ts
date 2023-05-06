@@ -10,6 +10,7 @@ import { Subject, takeUntil } from "rxjs";
 import { LocationStrategy } from "@angular/common";
 import { LocalStorageService } from "./services/local-storage.service";
 import { HttpService } from "./services/http.service";
+import { AuthService } from "./services/auth.service";
 
 @Component({
   selector: "app-root",
@@ -20,22 +21,35 @@ import { HttpService } from "./services/http.service";
   },
 })
 export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
-  history: { toonReference: string; num: number }[] = [];
+  history: { num: number }[] = [];
   private unsubscribe$ = new Subject<void>();
   height: number = window.innerWidth;
   width: number = window.innerWidth;
-  showRedirectMessage = false;
+  errorMessage = false;
+
+  notifications = {
+    invalidURL: false,
+    loggedIn: false,
+    loggedOut: false,
+    formSuccess: false,
+    registration: false,
+    badCredentials: false,
+  };
+
+  queryNum: number;
   isMobile: boolean = false;
   mobileWidth: number = 760;
   backButtonClick = false;
   toonReference: string;
-  queryNum: number;
+  errorDescription: string | null;
+  userNotification: boolean | null;
 
   constructor(
     private _windowWidthService: WindowWidthService,
     private _localStorage: LocalStorageService,
     private _activatedRoute: ActivatedRoute,
     private _location: LocationStrategy,
+    private _authService: AuthService,
     private _httpService: HttpService,
     private _router: Router
   ) {
@@ -49,12 +63,12 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
         }
       }
       if (ev instanceof NavigationEnd) {
-        this.toonReference = this._activatedRoute.snapshot.queryParams["toon"];
-        this.queryNum = this._activatedRoute.snapshot.queryParams["num"];
+        this.queryNum = parseInt(
+          this._activatedRoute.snapshot.queryParams["num"]
+        );
         if (!this.backButtonClick) {
           this.backButtonClick = false;
           this.history.push({
-            toonReference: this.toonReference,
             num: this.queryNum,
           });
         }
@@ -63,6 +77,7 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   ngOnInit(): void {
+    // Back Button
     this._location.onPopState(() => {
       this.backButtonClick = true;
       if (this.history.length > 1) {
@@ -84,16 +99,77 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
       }
     });
 
+    // Notification: Invalid URL
     this._httpService.invalidURL$
       .pipe(takeUntil(this.unsubscribe$))
       .subscribe((val) => {
-        this.showRedirectMessage = val;
-
-        if (this.showRedirectMessage) {
+        this.notifications.invalidURL = val;
+        if (val) {
           setTimeout(() => {
-            this.showRedirectMessage = false;
+            this.notifications.invalidURL = this.userNotification = false;
           }, 5000);
         }
+      });
+
+    // Bad Credentials
+    this._authService.badCredentials$
+      .pipe(takeUntil(this.unsubscribe$))
+      .subscribe((val) => {
+        this.notifications.badCredentials = val;
+        this.userNotification = false;
+        setTimeout(() => {
+          this.notifications.badCredentials = false;
+        }, 5000);
+      });
+
+    // Notification: Logged In/ Out
+    this._authService
+      .getAuthStatusListener()
+      .pipe(takeUntil(this.unsubscribe$))
+      .subscribe((isAuthenticated) => {
+        if (isAuthenticated) {
+          this.notifications.loggedIn = this.userNotification = isAuthenticated;
+        }
+        if (!isAuthenticated) {
+          this.notifications.loggedOut = true;
+          this.userNotification = true;
+        }
+        setTimeout(() => {
+          this.userNotification = false;
+          this.notifications.loggedIn = false;
+          this.notifications.loggedOut = false;
+        }, 5000);
+      });
+
+    // Registration
+    this._authService.registrationSubject$.subscribe((response) => {
+      if (response["message"] === "Username already exists") {
+        this.notifications.registration = true;
+        this.userNotification = false;
+      }
+      if (response["message"] === "User created!") {
+        this.notifications.registration = true;
+        this.userNotification = true;
+      }
+      setTimeout(() => {
+        this.notifications.registration = false;
+        this.userNotification = false;
+      }, 5000);
+    });
+
+    // Form Submitted
+    this._httpService.formSubmitted$
+      .pipe(takeUntil(this.unsubscribe$))
+      .subscribe({
+        next: (val) => {
+          this.notifications.formSuccess = true;
+          val
+            ? (this.userNotification = true)
+            : (this.userNotification = false);
+          setTimeout(() => {
+            this.notifications.formSuccess = this.userNotification = false;
+          }, 5000);
+        },
       });
   }
 

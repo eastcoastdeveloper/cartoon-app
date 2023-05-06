@@ -1,11 +1,10 @@
 import { HttpClient, HttpHeaders } from "@angular/common/http";
 import { Injectable, OnDestroy } from "@angular/core";
-import { BehaviorSubject, Subject, map } from "rxjs";
+import { BehaviorSubject, Subject, catchError, map, throwError } from "rxjs";
 import { IUser } from "../interfaces/form.interface";
 import { LocalStorageInterface } from "../interfaces/local-storage.interface";
 import { UserDataInterface } from "../interfaces/user-data.interface";
 import { LocalStorageService } from "./local-storage.service";
-import { Router } from "@angular/router";
 
 @Injectable({
   providedIn: "root",
@@ -17,6 +16,7 @@ export class HttpService implements OnDestroy {
   storageObject: LocalStorageInterface | null;
   cartoonDataObject: UserDataInterface;
   itemIndex: number | undefined;
+  formSubmitted$ = new Subject<boolean>();
   responseSubject$ = new BehaviorSubject<UserDataInterface>({
     altText: "",
     captions: [],
@@ -30,7 +30,6 @@ export class HttpService implements OnDestroy {
 
   constructor(
     private _http: HttpClient,
-    private _router: Router,
     private _localStorageService: LocalStorageService
   ) {}
 
@@ -39,8 +38,6 @@ export class HttpService implements OnDestroy {
     const storage = this._localStorageService.getData("captions");
     this.currentDataObject = {};
     this.itemIndex = toonReference;
-
-    console.log(this.storageObject);
 
     // There IS Cache
     if (storage != "") {
@@ -105,7 +102,6 @@ export class HttpService implements OnDestroy {
                 }
                 // Redirect if URL does not exist
                 if (this.cartoonDataObject === null) {
-                  console.log("number does not exist");
                   const randomNumber = Math.floor(
                     Math.random() * this.totalItems$.value
                   );
@@ -155,10 +151,26 @@ export class HttpService implements OnDestroy {
 
   // Post Form Results
   postFormResults(formData: IUser) {
+    const data = {
+      formData: formData,
+      currentDataObject: this.currentDataObject,
+    };
+    console.log(data);
     return this._http
-      .post<IUser>("/api/form-submission", formData)
-      .subscribe((responseData) => {
-        console.log(responseData);
+      .post<IUser>("/api/form-submission", data)
+      .pipe(
+        catchError((err) => {
+          return throwError(() => new Error("ups something happened"));
+        })
+      )
+      .subscribe({
+        next: () => {
+          this.formSubmitted$.next(true);
+        },
+        error: (value) => {
+          console.log(value);
+          this.formSubmitted$.next(false);
+        },
       });
   }
 

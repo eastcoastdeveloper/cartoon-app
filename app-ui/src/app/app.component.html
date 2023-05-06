@@ -1,9 +1,71 @@
 <div
-  [ngClass]="{ 'show-redirect-message element-shadow': showRedirectMessage }"
+  *ngIf="notifications.invalidURL"
+  [style.background-color]="userNotification ? 'rgb(51,201,72)' : '#b33a3a'"
+  [ngClass]="{
+    'show-redirect-message element-shadow': notifications.invalidURL
+  }"
   class="redirect-message"
 >
-  URL was not found. Redirected.
+  Invalid URL. Redirected.
 </div>
+
+<div
+  *ngIf="notifications.loggedIn"
+  [style.background-color]="userNotification ? 'rgb(51,201,72)' : '#b33a3a'"
+  [ngClass]="{ 'show-redirect-message element-shadow': notifications.loggedIn }"
+  class="redirect-message"
+>
+  Logged In
+</div>
+
+<div
+  *ngIf="notifications.loggedOut"
+  [style.background-color]="userNotification ? 'rgb(51,201,72)' : '#b33a3a'"
+  [ngClass]="{
+    'show-redirect-message element-shadow': notifications.loggedOut
+  }"
+  class="redirect-message"
+>
+  Logged Out
+</div>
+
+<div
+  *ngIf="notifications.badCredentials"
+  [style.background-color]="userNotification ? 'rgb(51,201,72)' : '#b33a3a'"
+  [ngClass]="{
+    'show-redirect-message element-shadow': notifications.badCredentials
+  }"
+  class="redirect-message"
+>
+  Username or Password Incorrect
+</div>
+
+<div
+  *ngIf="notifications.formSuccess"
+  [style.background-color]="userNotification ? 'rgb(51,201,72)' : '#b33a3a'"
+  [ngClass]="{
+    'show-redirect-message element-shadow': notifications.formSuccess
+  }"
+  class="redirect-message"
+>
+  {{
+    userNotification
+      ? "Form submitted successfully."
+      : "Sorry. Form submission was unsuccessful."
+  }}
+</div>
+
+<div
+  *ngIf="notifications.registration"
+  [style.background-color]="userNotification ? 'rgb(51,201,72)' : '#b33a3a'"
+  [ngClass]="{
+    'show-redirect-message element-shadow': notifications.registration
+  }"
+  class="redirect-message"
+>
+  {{ userNotification ? "Registration successful." : "User already exists" }}
+</div>
+
 <app-header></app-header>
 <main>
   <div class="content">

@@ -4,13 +4,14 @@ import { AppRoutingModule, routingComponents } from "./app-routing.module";
 import { HttpClientModule, HTTP_INTERCEPTORS } from "@angular/common/http";
 import { AppComponent } from "./app.component";
 import { HeaderComponent } from "./components/header/header.component";
-import { LoadingInterceptor } from "./guards/loading.interceptor";
+import { LoadingInterceptor } from "./interceptors/loading.interceptor";
 import { FooterComponent } from "./components/footer/footer.component";
 import { LoaderComponent } from "./components/loader/loader.component";
 import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { EmailValidatorDirective } from "./directives/email-validator.directive";
 import { AdminComponent } from "./components/admin/admin.component";
-import { AuthInterceptor } from "./guards/auth.interceptor";
+import { AuthInterceptor } from "./interceptors/auth.interceptor";
+import { TrackCapsDirective } from "./directives/capslock.directive";
 
 @NgModule({
   declarations: [
@@ -21,6 +22,7 @@ import { AuthInterceptor } from "./guards/auth.interceptor";
     routingComponents,
     EmailValidatorDirective,
     AdminComponent,
+    TrackCapsDirective,
   ],
   imports: [
     HttpClientModule,

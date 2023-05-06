@@ -1,71 +1,67 @@
 <div id="signup">
-  <form [formGroup]="reactiveForm" #form="ngForm">
-    <div>
-      <label for="email">Email Address</label>
+  <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
+    <div class="email">
+      <label class="form-label">Email</label>
       <input
-        tabindex="1"
-        type="email"
-        id="email"
-        name="email"
+        type="text"
         formControlName="email"
-        placeholder="your-name@provider.com"
-        required
-        minlength="1"
-        maxlength="250"
-        class="form-control form-control-sm"
-        [class.is-invalid]="email.invalid && (email.dirty || email.touched)"
+        class="form-control"
+        [ngClass]="{ 'is-invalid': submitted && f['email'].errors }"
       />
-      <div
-        *ngIf="email.invalid && (email.dirty || email.touched)"
-        class="invalid-feedback"
-      >
-        <div *ngIf="email.errors?.['required']">This field is required.</div>
-        <div *ngIf="email.errors?.['minlength']">
-          This field must have at least 1 character.
+      <div *ngIf="submitted && f['email'].errors" class="invalid-feedback">
+        <div *ngIf="f['email'].errors['required']" class="validation-error">
+          Email is required
         </div>
-        <div *ngIf="email.errors?.['maxlength']">
-          This field must have at most 250 characters.
+        <div *ngIf="f['email'].errors['email']" class="validation-error">
+          Email must be a valid email address
         </div>
-        <div
-          *ngIf="!email.errors?.['required'] && !email.errors?.['minlength'] && !email.errors?.['maxlength'] && email.errors?.['emailValidator']"
-        >
-          Invalid email format.
+      </div>
+    </div>
+
+    <div (capsLock)="capsOn = $event">
+      <label class="form-label">Password</label>
+      <input
+        type="password"
+        formControlName="password"
+        class="form-control"
+        [ngClass]="{ 'is-invalid': submitted && f['password'].errors }"
+      />
+      <label *ngIf="capsOn" class="caps-warning">Caps Locked</label>
+      <div *ngIf="submitted && f['password'].errors" class="invalid-feedback">
+        <div *ngIf="f['password'].errors['required']" class="validation-error">
+          Password is required
+        </div>
+        <div *ngIf="f['password'].errors['minlength']" class="validation-error">
+          Password must be at least 6 characters
         </div>
       </div>
     </div>
 
     <div>
-      <label for="password">Password</label>
+      <label class="form-label">Confirm Password</label>
       <input
-        tabindex="2"
         type="password"
-        id="password"
-        name="password"
-        formControlName="password"
-        placeholder="Password"
-        required
-        minlength="1"
-        maxlength="250"
-        class="form-control form-control-sm"
+        formControlName="confirmPassword"
+        class="form-control"
+        [ngClass]="{
+          'is-invalid': submitted && f['confirmPassword'].errors
+        }"
       />
-      <!-- <div
-        *ngIf="password.invalid && (password.dirty || password.touched)"
-        class="invalid-feedback"
+      <div
+        *ngIf="submitted && f['confirmPassword'].errors"
+        class="validation-error"
       >
-        <div *ngIf="password.errors?.['required']">This field is required.</div>
-        <div *ngIf="password.errors?.['minlength']">
-          This field must have at least 1 character.
+        <div *ngIf="f['confirmPassword'].errors['required']">
+          Confirm Password is required
         </div>
-        <div *ngIf="password.errors?.['maxlength']">
-          This field must have at most 250 characters.
+        <div *ngIf="f['confirmPassword'].errors['mustMatch']">
+          Passwords must match
         </div>
-        <div
-          *ngIf="!password.errors?.['required'] && !password.errors?.['minlength'] && !password.errors?.['maxlength'] && password.errors?.['passwordValidator']"
-        >
-          Invalid email format.
-        </div>
-      </div> -->
+      </div>
     </div>
-    <button type="submit" tabindex="3" (click)="validate()">Signup</button>
+
+    <div class="register-cancel">
+      <button class="register">Register</button>
+    </div>
   </form>
 </div>

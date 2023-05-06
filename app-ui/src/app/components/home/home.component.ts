@@ -101,13 +101,13 @@ export class HomeComponent implements OnInit, OnDestroy {
     this.userIsAuthenticated
       ? this.reactiveForm.enable()
       : this.reactiveForm.disable();
-    console.log(this.userIsAuthenticated);
 
     this._authService.getAuthStatusListener().subscribe((isAuthenticated) => {
       this.userIsAuthenticated = isAuthenticated;
-      this.userIsAuthenticated ? this.reactiveForm.enable() : "";
-      console.log(this.reactiveForm.status);
-      console.log("Home Cmpt: Is Authenticated");
+      this.userIsAuthenticated
+        ? this.reactiveForm.enable()
+        : this.reactiveForm.reset(),
+        this.reactiveForm.disable();
     });
 
     const storage = this._localStorage.getData("captions");
@@ -198,7 +198,6 @@ export class HomeComponent implements OnInit, OnDestroy {
 
   // Form Validation & Post to Backend
   public validate(): void {
-    // console.log(this.reactiveForm);
     if (this.reactiveForm.invalid) {
       for (const control of Object.keys(this.reactiveForm.controls)) {
         this.reactiveForm.controls[control].markAsTouched();
@@ -206,18 +205,16 @@ export class HomeComponent implements OnInit, OnDestroy {
       return;
     }
     if (this.reactiveForm.valid) {
+      this.user = this.reactiveForm.value;
       this._httpService.postFormResults(this.user);
+      this.reactiveForm.reset();
     }
-
-    this.user = this.reactiveForm.value;
   }
 
   navigateNext() {
     this.totalItems - 1 > this.toonIndex
       ? this.toonIndex++
       : (this.toonIndex = 0);
-    console.log(this.toonIndex);
-    console.log(this.totalItems);
     this.fetchCartoonData(this.toonIndex);
   }
 

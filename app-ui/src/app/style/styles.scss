@@ -166,7 +166,9 @@ input {
   outline: none;
 }
 
-[type="submit"] {
+[type="submit"],
+[type="reset"],
+.register {
   outline: none;
   width: 100%;
   left: 0;
@@ -176,4 +178,23 @@ input {
   border: 1px solid $midnight;
   cursor: pointer;
   transition: all 0.25s;
+  &:focus {
+    background-color: $midnight;
+    color: $fog;
+  }
+}
+
+.caps-warning {
+  color: $white;
+  background-color: $warningRed;
+  font-size: 12px;
+  padding: 5px;
+  border-radius: 4px;
+  margin-top: 2px;
+}
+
+.validation-error {
+  color: $warningRed;
+  font-size: 13px;
+  margin-top: 5px;
 }

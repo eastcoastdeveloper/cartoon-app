@@ -37,13 +37,13 @@
     </div> -->
 
     <form [formGroup]="reactiveForm" #form="ngForm">
-      <!-- <fieldset [disabled]="userIsAuthenticated"> -->
       <div>
         <label [ngClass]="{ inactive: !userIsAuthenticated }" for="caption"
           >Caption</label
         >
         <input
           type="text"
+          tabindex="1"
           id="caption"
           name="caption"
           formControlName="caption"
@@ -60,13 +60,13 @@
           *ngIf="caption.invalid && (caption.dirty || caption.touched)"
           class="invalid-feedback"
         >
-          <div *ngIf="caption.errors?.['required']">
+          <div *ngIf="caption.errors?.['required']" class="validation-error">
             This field is required.
           </div>
-          <div *ngIf="caption.errors?.['minlength']">
+          <div *ngIf="caption.errors?.['minlength']" class="validation-error">
             This field must have at least 1 character.
           </div>
-          <div *ngIf="caption.errors?.['maxlength']">
+          <div *ngIf="caption.errors?.['maxlength']" class="validation-error">
             This field must have at most 250 characters.
           </div>
         </div>
@@ -78,6 +78,7 @@
           >
           <input
             type="text"
+            tabindex="2"
             id="firstname"
             name="firstname"
             formControlName="firstname"
@@ -94,13 +95,22 @@
             *ngIf="firstname.invalid && (firstname.dirty || firstname.touched)"
             class="invalid-feedback"
           >
-            <div *ngIf="firstname.errors?.['required']">
+            <div
+              *ngIf="firstname.errors?.['required']"
+              class="validation-error"
+            >
               This field is required.
             </div>
-            <div *ngIf="firstname.errors?.['minlength']">
+            <div
+              *ngIf="firstname.errors?.['minlength']"
+              class="validation-error"
+            >
               This field must have at least 1 character.
             </div>
-            <div *ngIf="firstname.errors?.['maxlength']">
+            <div
+              *ngIf="firstname.errors?.['maxlength']"
+              class="validation-error"
+            >
               This field must have at most 250 characters.
             </div>
           </div>
@@ -112,6 +122,7 @@
           >
           <input
             type="text"
+            tabindex="3"
             id="lastname"
             name="lastname"
             formControlName="lastname"
@@ -119,21 +130,24 @@
             minlength="1"
             maxlength="250"
             class="form-control form-control-sm"
-            [class.is-invalid]="
-              lastname.invalid && (lastname.dirty || lastname.touched)
-            "
           />
           <div
             *ngIf="lastname.invalid && (lastname.dirty || lastname.touched)"
             class="invalid-feedback"
           >
-            <div *ngIf="lastname.errors?.['required']">
+            <div *ngIf="lastname.errors?.['required']" class="validation-error">
               This field is required.
             </div>
-            <div *ngIf="lastname.errors?.['minlength']">
+            <div
+              *ngIf="lastname.errors?.['minlength']"
+              class="validation-error"
+            >
               This field must have at least 1 character.
             </div>
-            <div *ngIf="lastname.errors?.['maxlength']">
+            <div
+              *ngIf="lastname.errors?.['maxlength']"
+              class="validation-error"
+            >
               This field must have at most 250 characters.
             </div>
           </div>
@@ -147,6 +161,7 @@
           >
           <input
             type="text"
+            tabindex="4"
             id="city"
             name="city"
             formControlName="city"
@@ -154,17 +169,18 @@
             minlength="1"
             maxlength="250"
             class="form-control form-control-sm"
-            [class.is-invalid]="city.invalid && (city.dirty || city.touched)"
           />
           <div
             *ngIf="city.invalid && (city.dirty || city.touched)"
             class="invalid-feedback"
           >
-            <div *ngIf="city.errors?.['required']">This field is required.</div>
-            <div *ngIf="city.errors?.['minlength']">
+            <div *ngIf="city.errors?.['required']" class="validation-error">
+              This field is required.
+            </div>
+            <div *ngIf="city.errors?.['minlength']" class="validation-error">
               This field must have at least 1 character.
             </div>
-            <div *ngIf="city.errors?.['maxlength']">
+            <div *ngIf="city.errors?.['maxlength']" class="validation-error">
               This field must have at most 250 characters.
             </div>
           </div>
@@ -176,6 +192,7 @@
           >
           <input
             type="text"
+            tabindex="5"
             id="state"
             name="state"
             formControlName="state"
@@ -183,19 +200,18 @@
             minlength="1"
             maxlength="250"
             class="form-control form-control-sm"
-            [class.is-invalid]="state.invalid && (state.dirty || state.touched)"
           />
           <div
             *ngIf="state.invalid && (state.dirty || state.touched)"
             class="invalid-feedback"
           >
-            <div *ngIf="state.errors?.['required']">
+            <div *ngIf="state.errors?.['required']" class="validation-error">
               This field is required.
             </div>
-            <div *ngIf="state.errors?.['minlength']">
+            <div *ngIf="state.errors?.['minlength']" class="validation-error">
               This field must have at least 1 character.
             </div>
-            <div *ngIf="state.errors?.['maxlength']">
+            <div *ngIf="state.errors?.['maxlength']" class="validation-error">
               This field must have at most 250 characters.
             </div>
           </div>
@@ -208,7 +224,8 @@
         >
           <button
             type="submit"
-            tabindex="7"
+            [ngClass]="{ 'button-disabled': !userIsAuthenticated }"
+            tabindex="6"
             (click)="validate()"
             [disabled]="!userIsAuthenticated"
           >
@@ -216,7 +233,6 @@
           </button>
         </div>
       </div>
-      <!-- </fieldset> -->
     </form>
   </div>
 

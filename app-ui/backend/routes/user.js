@@ -1,17 +1,16 @@
 const express = require('express');
 const bcrypt = require('bcrypt');
 const User = require('../models/users');
-const { error } = require('console');
 const jwt = require('jsonwebtoken');
 const router = express.Router();
 
 router.post("/signup", (req, res, next) => {
-    bcrypt.hash(req.body.password, 10).then(hash => {
-      const user = new User({
-        email: req.body.email,
-        password: hash
-      });
-      user
+  bcrypt.hash(req.body.password, 10).then(hash => {
+    const user = new User({
+      email: req.body.email,
+      password: hash
+    });
+    user
         .save()
         .then(result => {
           res.status(201).json({
@@ -25,7 +24,7 @@ router.post("/signup", (req, res, next) => {
           });
         });
     });
-  });
+});
 
 router.post("/login", (req, res, next) => {
     let fetchedUser;
@@ -33,7 +32,7 @@ router.post("/login", (req, res, next) => {
       .then(user => {
         if (!user) {
           return res.status(401).json({
-            message: "Auth failed"
+            message: "Simething ha'klasdj"
           });
         }
         fetchedUser = user;
@@ -42,7 +41,7 @@ router.post("/login", (req, res, next) => {
       .then(result => {
         if (!result) {
           return res.status(401).json({
-            message: "Auth failed"
+            message: "Username or Password Incorrect"
           });
         }
         const token = jwt.sign(

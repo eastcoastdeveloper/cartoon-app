@@ -7,19 +7,34 @@
 
 .redirect-message {
   font: normal 14px sans-serif;
-  background-color: $warningRed;
   transition: all 0.25s;
   position: fixed;
   text-align: center;
-  padding: 10px 0;
+  padding: 20px 0;
   color: $white;
-  width: 100%;
+  width: 300px;
+  opacity: 0;
   z-index: 2;
-  top: -36px;
+  top: 29px;
+  right: 10px;
+  border-radius: 6px;
+  border: 2px solid white;
 }
 
 .show-redirect-message {
-  top: 0 !important;
+  animation: redirectMessage 5s linear forwards;
+}
+
+@keyframes redirectMessage {
+  0%,
+  100% {
+    opacity: 0;
+  }
+
+  5%,
+  95% {
+    opacity: 1;
+  }
 }
 
 @media screen and (max-width: 768px) {

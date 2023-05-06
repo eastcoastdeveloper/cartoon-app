@@ -4,9 +4,9 @@
     <div>Clever Cartoon Caption Contest</div>
   </div>
   <nav [ngClass]="userIsAuthenticated ? 'default-layout' : 'admin-layout'">
-    <span *ngIf="!userIsAuthenticated" routerLink="/login">Login</span>
-    <span *ngIf="userIsAuthenticated" (click)="onLogout()">Logout</span>
     <span *ngIf="!userIsAuthenticated" routerLink="/signup">Signup</span>
     <span *ngIf="userIsAuthenticated" routerLink="/admin">Admin</span>
+    <span *ngIf="!userIsAuthenticated" routerLink="/login">Login</span>
+    <span *ngIf="userIsAuthenticated" (click)="onLogout()">Logout</span>
   </nav>
 </header>

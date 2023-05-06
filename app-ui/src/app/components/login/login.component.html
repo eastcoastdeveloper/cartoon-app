@@ -19,22 +19,25 @@
         *ngIf="email.invalid && (email.dirty || email.touched)"
         class="invalid-feedback"
       >
-        <div *ngIf="email.errors?.['required']">This field is required.</div>
-        <div *ngIf="email.errors?.['minlength']">
+        <div *ngIf="email.errors?.['required']" class="validation-error">
+          This field is required.
+        </div>
+        <div *ngIf="email.errors?.['minlength']" class="validation-error">
           This field must have at least 1 character.
         </div>
-        <div *ngIf="email.errors?.['maxlength']">
+        <div *ngIf="email.errors?.['maxlength']" class="validation-error">
           This field must have at most 250 characters.
         </div>
         <div
           *ngIf="!email.errors?.['required'] && !email.errors?.['minlength'] && !email.errors?.['maxlength'] && email.errors?.['emailValidator']"
+          class="validation-error"
         >
           Invalid email format.
         </div>
       </div>
     </div>
 
-    <div>
+    <div (capsLock)="capsOn = $event">
       <label for="password">Password</label>
       <input
         tabindex="2"
@@ -48,23 +51,7 @@
         maxlength="250"
         class="form-control form-control-sm"
       />
-      <!-- <div
-        *ngIf="password.invalid && (password.dirty || password.touched)"
-        class="invalid-feedback"
-      >
-        <div *ngIf="password.errors?.['required']">This field is required.</div>
-        <div *ngIf="password.errors?.['minlength']">
-          This field must have at least 1 character.
-        </div>
-        <div *ngIf="password.errors?.['maxlength']">
-          This field must have at most 250 characters.
-        </div>
-        <div
-          *ngIf="!password.errors?.['required'] && !password.errors?.['minlength'] && !password.errors?.['maxlength'] && password.errors?.['passwordValidator']"
-        >
-          Invalid email format.
-        </div>
-      </div> -->
+      <label *ngIf="capsOn" class="caps-warning">Caps Locked</label>
     </div>
     <button type="submit" tabindex="3" (click)="validate()">Login</button>
   </form>

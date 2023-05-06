@@ -6,15 +6,16 @@
   form {
     margin: auto;
     min-width: 275px;
-    > div:first-child {
+    > div {
       margin-bottom: 10px;
     }
     [type="submit"] {
       margin-top: 20px;
-      &:focus {
-        background-color: $midnight;
-        color: $fog;
-      }
+    }
+    .register-cancel {
+      display: flex;
+      grid-column-gap: 15px;
+      margin-top: 15px;
     }
   }
 }

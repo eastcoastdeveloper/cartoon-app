@@ -6,17 +6,19 @@ const checkAuth = require('../middleware/check-auth');
 
 router.use(bodyParser.json());
 
-router.post('/', checkAuth, function (req, res, next) {
-  const formData = new CaptionData({
-    caption: req.body.caption,
-    email: req.body.email,
-    firstname: req.body.firstname,
-    lastName: req.body.lastname,
-    city: req.body.city,
-    state: req.body.state
+router.post('/', checkAuth, async function (req, res, next) {
+  const formData = {
+    caption: req.body.formData.caption,
+    firstname: req.body.formData.firstname,
+    lastName: req.body.formData.lastname,
+    city: req.body.formData.city,
+    state: req.body.formData.state
+  };
+  const id = req.body.currentDataObject._id;
+  await CaptionData.findOneAndUpdate(
+    { _id: id },
+    { $push: { captions: formData } 
   })
-  console.log(formData)
-  formData.save();
   res.status(201).json({
     message: 'Form submission added successfully'
   });

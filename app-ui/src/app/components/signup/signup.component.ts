@@ -1,12 +1,14 @@
 import { Component, OnInit } from "@angular/core";
 import {
-  UntypedFormControl,
+  FormBuilder,
+  FormGroup,
   UntypedFormGroup,
   Validators,
 } from "@angular/forms";
-import { emailValidator } from "src/app/directives/email-validator.directive";
 import { AuthService } from "src/app/services/auth.service";
-import { HttpService } from "src/app/services/http.service";
+import { MustMatch } from "./form-validators";
+import { Subject, takeUntil } from "rxjs";
+import { Router } from "@angular/router";
 
 @Component({
   selector: "app-signup",
@@ -17,48 +19,88 @@ export class SignupComponent implements OnInit {
   reactiveForm!: UntypedFormGroup;
   emailAdress: string;
   password: string;
+  confirm_password: string;
+  capsOn: any;
+
+  submitted = false;
+  registerForm!: FormGroup;
+  private unsubscribe$ = new Subject<void>();
 
   constructor(
-    private _httpService: HttpService,
-    private _authService: AuthService
+    private _authService: AuthService,
+    private formBuilder: FormBuilder,
+    private _router: Router
   ) {}
 
   ngOnInit(): void {
-    this.reactiveForm = new UntypedFormGroup({
-      email: new UntypedFormControl(this.emailAdress, [
-        Validators.required,
-        Validators.minLength(1),
-        Validators.maxLength(250),
-        emailValidator(),
-      ]),
-      password: new UntypedFormControl(this.password, [
-        Validators.required,
-        Validators.minLength(1),
-        Validators.maxLength(250),
-      ]),
-    });
+    this.registerForm = this.formBuilder.group(
+      {
+        // title: ["", Validators.required],
+        // firstName: ["", Validators.required],
+        // lastName: ["", Validators.required],
+        // // validates date format yyyy-mm-dd
+        // dob: [
+        //   "",
+        //   [
+        //     Validators.required,
+        //     Validators.pattern(
+        //       /^\d{4}\-(0[1-9]|1[012])\-(0[1-9]|[12][0-9]|3[01])$/
+        //     ),
+        //   ],
+        // ],
+        email: ["", [Validators.required, Validators.email]],
+        password: ["", [Validators.required, Validators.minLength(6)]],
+        confirmPassword: ["", Validators.required],
+        // acceptTerms: [false, Validators.requiredTrue],
+      },
+      {
+        validators: MustMatch("password", "confirmPassword"),
+      }
+    );
+
+    this._authService.registrationSubject$
+      .pipe(takeUntil(this.unsubscribe$))
+      .subscribe({
+        next: (response) => {
+          if (response["message"] === "Username already exists") {
+            this._router.navigate(["/login"]);
+            this._authService.registrationSubject$.next({ message: "" });
+          }
+          if (response["message"] === "User created!") {
+            this._router.navigate(["/login"]);
+            this._authService.registrationSubject$.next({
+              message: "",
+              result: { email: "", password: "" },
+            });
+          }
+        },
+      });
   }
 
   get email() {
     return this.reactiveForm.get("email")!;
   }
 
-  public validate(): void {
-    if (this.reactiveForm.invalid) {
-      for (const control of Object.keys(this.reactiveForm.controls)) {
-        this.reactiveForm.controls[control].markAsTouched();
-      }
-      return;
-    } else {
-      this.emailAdress = this.reactiveForm.value.email;
-      this.password = this.reactiveForm.value.password;
-      console.log(this.emailAdress);
-      this._authService.createUser(this.emailAdress, this.password);
-      // this._httpService.postEmail(this.emailAdress);
-    }
+  get f() {
+    return this.registerForm.controls;
   }
 
-  // onSignup(obj: any) {
+  onSubmit() {
+    this.submitted = true;
+    if (this.registerForm.invalid) {
+      return;
+    }
 
-  // }
+    this.emailAdress = this.registerForm.value.email;
+    this.password = this.registerForm.value.password;
+    this._authService.createUser(this.emailAdress, this.password);
+  }
+
+  onReset() {
+    this.submitted = false;
+    this.registerForm.reset();
+  }
 }
+// function MustMatch(arg0: string, arg1: string): any {
+//   throw new Error("Function not implemented.");
+// }
