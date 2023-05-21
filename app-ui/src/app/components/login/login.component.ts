@@ -16,6 +16,7 @@ export class LoginComponent implements OnInit {
   reactiveForm!: UntypedFormGroup;
   emailAdress: string;
   showPassword: boolean = false;
+  passwordVisibility: boolean = false;
   password: string;
   capsOn: any;
 
@@ -39,6 +40,12 @@ export class LoginComponent implements OnInit {
 
   togglePassword() {
     this.showPassword = !this.showPassword;
+  }
+
+  passwordFieldChanged() {
+    this.reactiveForm.value.password.length > 3
+      ? (this.passwordVisibility = true)
+      : (this.passwordVisibility = false);
   }
 
   get email() {

@@ -17,6 +17,7 @@ import { Router } from "@angular/router";
 })
 export class SignupComponent implements OnInit {
   reactiveForm!: UntypedFormGroup;
+  passwordVisibility: boolean = false;
   emailAdress: string;
   password: string;
   confirm_password: string;
@@ -78,12 +79,18 @@ export class SignupComponent implements OnInit {
       });
   }
 
+  passwordFieldChanged() {
+    this.registerForm.value.password.length > 3
+      ? (this.passwordVisibility = true)
+      : (this.passwordVisibility = false);
+  }
+
   togglePassword() {
     this.showPassword = !this.showPassword;
   }
 
   get email() {
-    return this.reactiveForm.get("email")!;
+    return this.registerForm.get("email")!;
   }
 
   get f() {

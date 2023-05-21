@@ -1,4 +1,5 @@
 import { Component } from "@angular/core";
+import { Router } from "@angular/router";
 import { HttpService } from "src/app/services/http.service";
 
 @Component({
@@ -8,7 +9,8 @@ import { HttpService } from "src/app/services/http.service";
 })
 export class AdminComponent {
   dataArray: any | undefined;
-  constructor(private _httpService: HttpService) {
+  imageUpload: boolean = false;
+  constructor(private _httpService: HttpService, private _router: Router) {
     this.checkForPendingComments();
   }
 
@@ -27,5 +29,13 @@ export class AdminComponent {
       }
     });
     this._httpService.getUnapprovedCaptions();
+  }
+
+  navigateToPage(toonReference: number) {
+    this._router.navigate(["home", toonReference], {
+      queryParams: {
+        num: toonReference,
+      },
+    });
   }
 }

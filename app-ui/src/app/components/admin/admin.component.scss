@@ -1,7 +1,35 @@
 @import "../../style/color";
 
-#admin {
-  padding: 30px 0 75px 0;
+.double-page-content {
+  max-width: 1000px;
+  margin: 0 auto;
+  nav {
+    position: fixed;
+    width: 100%;
+    top: 135px;
+    font: normal 14px sans-serif;
+    display: grid;
+    grid-template-columns: repeat(2, auto);
+    grid-column-gap: 10px;
+    max-width: 200px;
+    span {
+      padding: 5px 0;
+      border-radius: 3px;
+      background-color: $white;
+      color: $midnight;
+      cursor: pointer;
+      border: 1px solid $midnight;
+      text-align: center;
+    }
+  }
+  .active-page {
+    background-color: $midnight !important;
+    color: $white !important;
+  }
+}
+
+#commenting {
+  padding: 55px 0 75px 0;
   .repeating-group:not(:last-child) {
     border-bottom: 1px solid black;
     margin-bottom: 30px;
@@ -17,6 +45,7 @@
       margin: 0 30px;
       .image-url {
         border: 1px solid $midnight;
+        cursor: pointer;
         img {
           width: 100%;
           display: block;
@@ -52,8 +81,28 @@
   }
 }
 
+@media screen and (max-width: 1000px) {
+  .double-page-content {
+    nav {
+      left: 20px;
+    }
+  }
+}
+
 @media screen and (max-width: 768px) {
-  #admin {
+  .double-page-content {
+    nav {
+      top: 56px;
+      background-color: $white;
+      max-width: none;
+      padding: 10px 20px;
+      left: 0;
+      grid-template-columns: repeat(2, calc(50% - 25px));
+      border-bottom: 1px solid $midnight;
+    }
+  }
+  #commenting {
+    padding-top: 40px;
     .repeating-group {
       .group-layout {
         display: block;

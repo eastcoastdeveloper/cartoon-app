@@ -41,6 +41,7 @@
       <label for="password">Password</label>
       <input
         [type]="showPassword ? 'text' : 'password'"
+        (ngModelChange)="passwordFieldChanged()"
         tabindex="2"
         type="password"
         id="password"
@@ -54,6 +55,7 @@
       />
       <div
         class="show-password"
+        *ngIf="passwordVisibility"
         (click)="togglePassword()"
         [ngClass]="{ 'toggle-visibility': showPassword }"
       >

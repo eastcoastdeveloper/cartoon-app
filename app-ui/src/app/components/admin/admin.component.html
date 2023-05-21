@@ -1,18 +1,37 @@
-<div id="admin">
-  <div *ngFor="let data of dataArray" class="repeating-group">
-    <div class="group-layout">
-      <div>
-        <div class="image-url">
-          <img src="{{ data.imageUrl }}" />
+<div class="double-page-content">
+  <nav>
+    <span
+      (click)="imageUpload = false"
+      [ngClass]="{ 'active-page': !imageUpload }"
+      >Captions</span
+    >
+    <span
+      (click)="imageUpload = true"
+      [ngClass]="{ 'active-page': imageUpload }"
+      >Image Uploader</span
+    >
+  </nav>
+  <div *ngIf="!imageUpload" id="commenting">
+    <div *ngFor="let data of dataArray" class="repeating-group">
+      <div class="group-layout">
+        <div>
+          <div class="image-url">
+            <img
+              src="{{ data.imageUrl }}"
+              (click)="navigateToPage(data.itemIndex)"
+            />
+          </div>
         </div>
-      </div>
-      <div class="data-wrapper">
-        <div *ngFor="let item of data.captions" class="group-data">
-          <button type="button" class="approve">Approve</button>
-          <span>{{ item.caption }}</span>
-          <button type="button" class="edit">Edit</button>
+        <div class="data-wrapper">
+          <div *ngFor="let item of data.captions" class="group-data">
+            <button type="button" class="approve">Approve</button>
+            <span>{{ item.caption }}</span>
+            <button type="button" class="edit">Edit</button>
+          </div>
         </div>
       </div>
     </div>
   </div>
+
+  <div *ngIf="imageUpload" id="image-uploader"></div>
 </div>
