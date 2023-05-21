@@ -184,6 +184,24 @@ input {
   }
 }
 
+.password-wrapper {
+  position: relative;
+  .show-password {
+    width: 20px;
+    position: absolute;
+    cursor: pointer;
+    right: 10px;
+    top: 24px;
+    img {
+      width: 100%;
+    }
+  }
+}
+
+.toggle-visibility {
+  opacity: 0.5;
+}
+
 .caps-warning {
   color: $white;
   background-color: $warningRed;

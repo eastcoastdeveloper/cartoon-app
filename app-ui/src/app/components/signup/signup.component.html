@@ -18,14 +18,22 @@
       </div>
     </div>
 
-    <div (capsLock)="capsOn = $event">
+    <div class="password-wrapper" (capsLock)="capsOn = $event">
       <label class="form-label">Password</label>
       <input
+        [type]="showPassword ? 'text' : 'password'"
         type="password"
         formControlName="password"
         class="form-control"
         [ngClass]="{ 'is-invalid': submitted && f['password'].errors }"
       />
+      <div
+        class="show-password"
+        (click)="togglePassword()"
+        [ngClass]="{ 'toggle-visibility': showPassword }"
+      >
+        <img src="../../../assets/show-password.png" />
+      </div>
       <label *ngIf="capsOn" class="caps-warning">Caps Locked</label>
       <div *ngIf="submitted && f['password'].errors" class="invalid-feedback">
         <div *ngIf="f['password'].errors['required']" class="validation-error">

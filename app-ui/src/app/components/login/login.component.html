@@ -37,9 +37,10 @@
       </div>
     </div>
 
-    <div (capsLock)="capsOn = $event">
+    <div class="password-wrapper" (capsLock)="capsOn = $event">
       <label for="password">Password</label>
       <input
+        [type]="showPassword ? 'text' : 'password'"
         tabindex="2"
         type="password"
         id="password"
@@ -51,6 +52,13 @@
         maxlength="250"
         class="form-control form-control-sm"
       />
+      <div
+        class="show-password"
+        (click)="togglePassword()"
+        [ngClass]="{ 'toggle-visibility': showPassword }"
+      >
+        <img src="../../../assets/show-password.png" />
+      </div>
       <label *ngIf="capsOn" class="caps-warning">Caps Locked</label>
     </div>
     <button type="submit" tabindex="3" (click)="validate()">Login</button>

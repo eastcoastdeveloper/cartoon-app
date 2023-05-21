@@ -20,6 +20,7 @@ export class SignupComponent implements OnInit {
   emailAdress: string;
   password: string;
   confirm_password: string;
+  showPassword: boolean = false;
   capsOn: any;
 
   submitted = false;
@@ -77,6 +78,10 @@ export class SignupComponent implements OnInit {
       });
   }
 
+  togglePassword() {
+    this.showPassword = !this.showPassword;
+  }
+
   get email() {
     return this.reactiveForm.get("email")!;
   }
@@ -101,6 +106,3 @@ export class SignupComponent implements OnInit {
     this.registerForm.reset();
   }
 }
-// function MustMatch(arg0: string, arg1: string): any {
-//   throw new Error("Function not implemented.");
-// }

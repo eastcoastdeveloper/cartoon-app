@@ -12,13 +12,14 @@ router.post('/', checkAuth, async function (req, res, next) {
     firstname: req.body.formData.firstname,
     lastName: req.body.formData.lastname,
     city: req.body.formData.city,
-    state: req.body.formData.state
+    state: req.body.formData.state,
+    creator: req.userData.userId
   };
   const id = req.body.currentDataObject._id;
   await CaptionData.findOneAndUpdate(
     { _id: id },
-    { $push: { captions: formData } 
-  })
+    { $push: { captions: formData },
+    })
   res.status(201).json({
     message: 'Form submission added successfully'
   });

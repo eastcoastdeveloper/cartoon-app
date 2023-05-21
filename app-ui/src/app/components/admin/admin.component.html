@@ -1,1 +1,18 @@
-<p>admin works!</p>
+<div id="admin">
+  <div *ngFor="let data of dataArray" class="repeating-group">
+    <div class="group-layout">
+      <div>
+        <div class="image-url">
+          <img src="{{ data.imageUrl }}" />
+        </div>
+      </div>
+      <div class="data-wrapper">
+        <div *ngFor="let item of data.captions" class="group-data">
+          <button type="button" class="approve">Approve</button>
+          <span>{{ item.caption }}</span>
+          <button type="button" class="edit">Edit</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

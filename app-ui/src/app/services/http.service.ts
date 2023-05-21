@@ -15,14 +15,21 @@ export class HttpService implements OnDestroy {
   totalItems$ = new BehaviorSubject<number>(0);
   storageObject: LocalStorageInterface | null;
   cartoonDataObject: UserDataInterface;
+  data: UserDataInterface;
   itemIndex: number | undefined;
   formSubmitted$ = new Subject<boolean>();
+  adminResponse: UserDataInterface;
+  adminResponseSubject$ = new BehaviorSubject<UserDataInterface>({
+    altText: "",
+    captions: [],
+    imageUrl: "",
+    itemIndex: 0,
+  });
   responseSubject$ = new BehaviorSubject<UserDataInterface>({
     altText: "",
     captions: [],
     imageUrl: "",
     itemIndex: 0,
-    totalCaptions: 0,
   });
 
   // Update/ Deleted
@@ -86,7 +93,7 @@ export class HttpService implements OnDestroy {
 
     return this._http
       .get<UserDataInterface[]>(
-        `/api/getCaptions/?toonReference=${toonReference}`,
+        `/api/captions/?toonReference=${toonReference}&flag=true`,
         httpOptions
       )
       .pipe(
@@ -118,6 +125,21 @@ export class HttpService implements OnDestroy {
       )
       .subscribe(() => {
         this.responseSubject$.next(this.cartoonDataObject);
+      });
+  }
+
+  getUnapprovedCaptions(toonReference?: number) {
+    const httpOptions = {
+      headers: new HttpHeaders(),
+    };
+
+    return this._http
+      .get<UserDataInterface>(
+        `/api/captions/?toonReference=0&flag=false`,
+        httpOptions
+      )
+      .subscribe((data) => {
+        this.adminResponseSubject$.next(data);
       });
   }
 

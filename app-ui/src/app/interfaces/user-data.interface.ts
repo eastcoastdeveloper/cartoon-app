@@ -6,6 +6,7 @@ export class CaptionsInterface {
   state?: string;
   country?: string;
   votes?: number;
+  approved: boolean;
 }
 
 export class UserDataInterface {
@@ -13,5 +14,4 @@ export class UserDataInterface {
   captions: CaptionsInterface[];
   imageUrl: string;
   itemIndex: number;
-  totalCaptions: number;
 }

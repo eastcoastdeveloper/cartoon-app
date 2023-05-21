@@ -15,6 +15,7 @@ import { AuthService } from "src/app/services/auth.service";
 export class LoginComponent implements OnInit {
   reactiveForm!: UntypedFormGroup;
   emailAdress: string;
+  showPassword: boolean = false;
   password: string;
   capsOn: any;
 
@@ -34,6 +35,10 @@ export class LoginComponent implements OnInit {
         Validators.maxLength(250),
       ]),
     });
+  }
+
+  togglePassword() {
+    this.showPassword = !this.showPassword;
   }
 
   get email() {

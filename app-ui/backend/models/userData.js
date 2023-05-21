@@ -3,7 +3,7 @@ const mongoose = require('mongoose');
 const userData = mongoose.Schema({
   imageUrl: { type: String },
   altText: { type: String },
-  totalCaptions: { type: Number },
+  // totalCaptions: { type: Number },
   captions: { type: Array },
   itemIndex: { type: Number }
 });

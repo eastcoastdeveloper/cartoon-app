@@ -131,15 +131,17 @@ export class HomeComponent implements OnInit, OnDestroy {
         if (val) {
           this.currentImage = val.imageUrl;
           this.altText = val.altText;
-          this.totalCaptions = val.totalCaptions;
           this.captionsArray = val.captions;
           this.toonIndex = val.itemIndex;
+          // this.creator = val.creator
           const uiid = nanoid().slice(0, 5);
           this._router.navigate(["home", uiid], {
             queryParams: {
               num: this.toonIndex,
             },
           });
+
+          this.totalCaptions = this.captionsArray.length;
         }
       });
   }

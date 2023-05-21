@@ -27,7 +27,7 @@ app.use((req, res, next) => {
 });
 
 app.use('/api/form-submission', require('./routes/form-submission'));
-app.use('/api/getCaptions', require('./routes/approved-captions'));
+app.use('/api/captions', require('./routes/captions-process'));
 app.use('/api/user', require('./routes/user'));
 app.use('/api/init', require('./routes/init'));
 
