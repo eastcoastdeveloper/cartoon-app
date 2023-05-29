@@ -5,4 +5,5 @@ export class IUser {
   city: string;
   state: string;
   country: string;
+  approved: boolean;
 }

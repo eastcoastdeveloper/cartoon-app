@@ -14,4 +14,5 @@ export class UserDataInterface {
   captions: CaptionsInterface[];
   imageUrl: string;
   itemIndex: number;
+  _id: string;
 }

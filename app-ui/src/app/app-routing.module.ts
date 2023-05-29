@@ -9,11 +9,15 @@ import { AuthGuard } from "./guards/auth.guard";
 const routes: Routes = [
   {
     path: "",
-    redirectTo: "home",
+    redirectTo: "caption-contest",
     pathMatch: "full",
   },
   {
-    path: "home",
+    path: "caption-contest",
+    component: HomeComponent,
+  },
+  {
+    path: "edit",
     component: HomeComponent,
   },
   {
@@ -31,7 +35,7 @@ const routes: Routes = [
   },
   {
     path: "**",
-    redirectTo: "home",
+    redirectTo: "caption-contest",
   },
 ];
 

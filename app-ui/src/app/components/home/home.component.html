@@ -1,7 +1,10 @@
-<div id="home-page">
-  <div class="cartoon">
+<div [ngClass]="{ 'home-page-editing-mode': mode === 'edit' }" id="home-page">
+  <div
+    [ngClass]="{ 'cartoon-layout-default': mode === 'create' }"
+    class="cartoon"
+  >
     <div
-      *ngIf="windowWidth! > 768"
+      *ngIf="windowWidth! > 768 && mode === 'create'"
       (click)="navigatePrevious()"
       class="arrow-left"
     >
@@ -13,7 +16,7 @@
       <img [src]="currentImage" [alt]="altText" />
     </div>
     <div
-      *ngIf="windowWidth! > 768"
+      *ngIf="windowWidth! > 768 && mode === 'create'"
       (click)="navigateNext()"
       class="arrow-right"
     >
@@ -21,13 +24,13 @@
         <span>&#11157;</span>
       </div>
     </div>
-    <div *ngIf="windowWidth! < 769" class="arrow-buttons">
+    <div *ngIf="windowWidth! < 769 && mode === 'create'" class="arrow-buttons">
       <button type="button" (click)="navigatePrevious()">Previous</button>
       <button type="button" (click)="navigateNext()">Next</button>
     </div>
   </div>
 
-  <div class="user-input">
+  <div class="user-input" [ngClass]="{ 'form-spacing': mode === 'edit' }">
     <!-- <div class="caption-details">
       <div class="votes">
         <span id="vote-down"></span>
@@ -38,15 +41,16 @@
 
     <form [formGroup]="reactiveForm" #form="ngForm">
       <div>
-        <label [ngClass]="{ inactive: !userIsAuthenticated }" for="caption"
-          >Caption</label
-        >
+        <label [ngClass]="{ inactive: !userIsAuthenticated }" for="caption">{{
+          mode === "create" ? "Caption" : "Revised Caption"
+        }}</label>
         <input
           type="text"
           tabindex="1"
           id="caption"
           name="caption"
           formControlName="caption"
+          [ngModel]="captionBeingEdited"
           placeholder="Please submit your caption"
           required
           minlength="1"
@@ -71,7 +75,7 @@
           </div>
         </div>
       </div>
-      <div class="first-last">
+      <div *ngIf="mode === 'create'" class="first-last">
         <div>
           <label [ngClass]="{ inactive: !userIsAuthenticated }" for="name"
             >First Name</label
@@ -154,8 +158,8 @@
         </div>
       </div>
 
-      <div class="city-state-submit">
-        <div>
+      <div *ngIf="mode === 'create'" class="city-state-submit">
+        <div *ngIf="mode === 'create'">
           <label [ngClass]="{ inactive: !userIsAuthenticated }" for="city"
             >City</label
           >
@@ -217,6 +221,7 @@
           </div>
         </div>
 
+        <!-- User Submit Button -->
         <div
           class="submit-caption"
           (mouseover)="hover = true"
@@ -233,14 +238,33 @@
           </button>
         </div>
       </div>
+
+      <!-- Update Caption Button -->
+      <div
+        *ngIf="mode === 'edit'"
+        class="edit-caption"
+        (mouseover)="hover = true"
+        (mouseleave)="hover = false"
+      >
+        <br />
+        <button
+          type="submit"
+          [ngClass]="{ 'button-disabled': !userIsAuthenticated }"
+          tabindex="6"
+          (click)="updateCaption()"
+          [disabled]="!userIsAuthenticated"
+        >
+          Update Caption
+        </button>
+      </div>
     </form>
   </div>
 
-  <div class="total-comments">
+  <div *ngIf="mode === 'create'" class="total-comments">
     {{ totalCaptions + " captions" }}
   </div>
 
-  <div class="published-content">
+  <div *ngIf="mode === 'create'" class="published-content">
     <div
       *ngFor="let data of captionsArray; let i = index"
       class="repeating-block element-shadow"

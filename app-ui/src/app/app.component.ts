@@ -138,7 +138,7 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
           this.userNotification = false;
           this.notifications.loggedIn = false;
           this.notifications.loggedOut = false;
-        }, 5000);
+        }, 3000);
       });
 
     // Registration

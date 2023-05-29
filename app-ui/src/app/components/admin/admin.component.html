@@ -1,18 +1,27 @@
 <div class="double-page-content">
-  <nav>
-    <span
-      (click)="imageUpload = false"
-      [ngClass]="{ 'active-page': !imageUpload }"
-      >Captions</span
-    >
-    <span
-      (click)="imageUpload = true"
-      [ngClass]="{ 'active-page': imageUpload }"
-      >Image Uploader</span
-    >
-  </nav>
-  <div *ngIf="!imageUpload" id="commenting">
-    <div *ngFor="let data of dataArray" class="repeating-group">
+  <div class="editing-nav-bar">
+    <div class="nav-wrapper">
+      <nav>
+        <span
+          (click)="tabNavigation('captions')"
+          [ngClass]="{ 'active-page': currentTab === 'captions' }"
+          >Captions</span
+        >
+        <span
+          (click)="tabNavigation('uploader')"
+          [ngClass]="{ 'active-page': currentTab === 'uploader' }"
+          >Uploader</span
+        >
+        <span
+          (click)="tabNavigation('export')"
+          [ngClass]="{ 'active-page': currentTab === 'export' }"
+          >Export</span
+        >
+      </nav>
+    </div>
+  </div>
+  <div *ngIf="currentTab === 'captions'" id="commenting">
+    <div *ngFor="let data of dataArray; let i = index" class="repeating-group">
       <div class="group-layout">
         <div>
           <div class="image-url">
@@ -23,15 +32,46 @@
           </div>
         </div>
         <div class="data-wrapper">
-          <div *ngFor="let item of data.captions" class="group-data">
-            <button type="button" class="approve">Approve</button>
-            <span>{{ item.caption }}</span>
-            <button type="button" class="edit">Edit</button>
+          <div
+            *ngFor="let item of data.captions; let j = index"
+            [ngClass]="{
+              'group-grid': !item.approved,
+              approved: item.approved
+            }"
+          >
+            <span class="item-number">{{ j + 1 + ")" }}</span>
+            <button
+              type="button"
+              class="approve"
+              *ngIf="!item.approved"
+              (click)="approveCaption(data, j, i)"
+            >
+              Approve
+            </button>
+            <span class="item-caption">{{ item.caption }}</span>
+            <button
+              type="button"
+              *ngIf="!item.approved"
+              (click)="editCaption(i, data, item.caption, j)"
+              class="edit"
+            >
+              Edit
+            </button>
+            <button
+              type="button"
+              *ngIf="!item.approved"
+              class="reject"
+              (click)="rejectCaption()"
+            >
+              Reject
+            </button>
           </div>
         </div>
       </div>
     </div>
   </div>
 
-  <div *ngIf="imageUpload" id="image-uploader"></div>
+  <div *ngIf="currentTab === 'uploader'" id="image-uploader"></div>
+
+  <div *ngIf="currentTab === 'export'" id="export"></div>
 </div>

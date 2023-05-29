@@ -1,6 +1,8 @@
 import { Component } from "@angular/core";
 import { Router } from "@angular/router";
+import { UserDataInterface } from "src/app/interfaces/user-data.interface";
 import { HttpService } from "src/app/services/http.service";
+import { LocalStorageService } from "src/app/services/local-storage.service";
 
 @Component({
   selector: "app-admin",
@@ -9,8 +11,12 @@ import { HttpService } from "src/app/services/http.service";
 })
 export class AdminComponent {
   dataArray: any | undefined;
-  imageUpload: boolean = false;
-  constructor(private _httpService: HttpService, private _router: Router) {
+  currentTab: string = "captions";
+  constructor(
+    private _httpService: HttpService,
+    private _router: Router,
+    private _localStorage: LocalStorageService
+  ) {
     this.checkForPendingComments();
   }
 
@@ -18,23 +24,60 @@ export class AdminComponent {
     this._httpService.adminResponseSubject$.subscribe((val) => {
       if (val.captions === undefined) {
         this.dataArray = val;
-        this.dataArray.forEach((item: any) => {
-          let filteredArray = item.captions.filter(
-            (caption: { approved: any }) => {
-              return !caption.approved;
-            }
-          );
-          item.captions = filteredArray;
-        });
       }
     });
     this._httpService.getUnapprovedCaptions();
   }
 
+  tabNavigation(name: string) {
+    this.currentTab = name;
+  }
+
   navigateToPage(toonReference: number) {
-    this._router.navigate(["home", toonReference], {
+    this._router.navigate(["caption-contest", toonReference], {
       queryParams: {
         num: toonReference,
+      },
+    });
+  }
+
+  rejectCaption() {
+    console.log("send message in user user profile");
+  }
+
+  // Approve Caption
+  approveCaption(
+    data: UserDataInterface,
+    captionIndex: number,
+    toonReference: number
+  ) {
+    data.captions[captionIndex].approved = true;
+    this._httpService.updateCaption(
+      data.altText,
+      data.captions,
+      data.imageUrl,
+      data.itemIndex,
+      data._id
+    );
+    const storage = this._localStorage.getData("captions");
+    const parsed = JSON.parse(storage);
+    const updatedObject = data.captions[captionIndex];
+    parsed[toonReference].captions.push(updatedObject);
+    this._localStorage.saveData("captions", JSON.stringify(parsed));
+  }
+
+  editCaption(
+    toonReference: number,
+    data: UserDataInterface,
+    caption: any,
+    captionIndex: number
+  ) {
+    this._httpService.adminResponseSubject$.next(data);
+    this._router.navigate(["/edit"], {
+      queryParams: {
+        num: toonReference,
+        caption: encodeURI(caption),
+        captionIndex: captionIndex,
       },
     });
   }

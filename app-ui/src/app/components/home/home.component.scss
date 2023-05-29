@@ -25,11 +25,22 @@
     margin-top: 20px;
   }
 
+  .form-spacing {
+    margin-bottom: 25px;
+  }
+
+  .edit-image-layout {
+    display: block !important;
+  }
+
+  .cartoon-layout-default {
+    display: grid;
+    grid-template-columns: 40px 600px 40px;
+  }
+
   .cartoon {
     padding-top: 30px;
     margin: 0 auto;
-    display: grid;
-    grid-template-columns: 40px auto 40px;
     max-width: 710px;
     grid-column-gap: 15px;
 
@@ -269,6 +280,10 @@
       }
     }
   }
+}
+
+.home-page-editing-mode {
+  max-width: 400px !important;
 }
 
 @media screen and (max-width: 992px) {

@@ -13,8 +13,10 @@ router.post('/', checkAuth, async function (req, res, next) {
     lastName: req.body.formData.lastname,
     city: req.body.formData.city,
     state: req.body.formData.state,
-    creator: req.userData.userId
+    creator: req.userData.userId,
+    approved: false
   };
+  console.log(formData)
   const id = req.body.currentDataObject._id;
   await CaptionData.findOneAndUpdate(
     { _id: id },

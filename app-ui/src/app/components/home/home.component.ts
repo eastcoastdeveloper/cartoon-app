@@ -1,20 +1,18 @@
 import { Component, OnDestroy, OnInit } from "@angular/core";
-import { Subject, take, takeUntil } from "rxjs";
+import { Subject, takeUntil } from "rxjs";
 import { HttpService } from "src/app/services/http.service";
 import { WindowWidthService } from "src/app/services/window-width.service";
-import { nanoid } from "nanoid";
 import {
   UntypedFormControl,
   UntypedFormGroup,
   Validators,
 } from "@angular/forms";
-import { Router, ActivatedRoute } from "@angular/router";
+import { Router, ActivatedRoute, Params } from "@angular/router";
 import { IUser } from "src/app/interfaces/form.interface";
 import {
   CaptionsInterface,
   UserDataInterface,
 } from "src/app/interfaces/user-data.interface";
-import { Meta, Title } from "@angular/platform-browser";
 import { LocalStorageService } from "src/app/services/local-storage.service";
 import { AuthService } from "src/app/services/auth.service";
 
@@ -27,12 +25,16 @@ export class HomeComponent implements OnInit, OnDestroy {
   destroy$: Subject<boolean> = new Subject<boolean>();
   captionsArray: CaptionsInterface[] = [];
   userIsAuthenticated = false;
-  dataObject: UserDataInterface;
   captionsGroupIndex: number = 1;
   currentImage: string;
+  mode: string = "create";
   totalCaptions: number;
   altText: string;
   reactiveForm!: UntypedFormGroup;
+  editingData: UserDataInterface;
+  captionFromAdmin: string;
+  captionIndex: number;
+  captionBeingEdited: string;
   totalItems: number;
   manualURL: string;
   hover: boolean = false;
@@ -45,6 +47,7 @@ export class HomeComponent implements OnInit, OnDestroy {
     city: "",
     state: "",
     country: "",
+    approved: false,
   };
 
   constructor(
@@ -53,12 +56,8 @@ export class HomeComponent implements OnInit, OnDestroy {
     private _activateRoute: ActivatedRoute,
     private _localStorage: LocalStorageService,
     private _httpService: HttpService,
-    private _metaService: Meta,
-    private _router: Router,
-    private _title: Title
-  ) {
-    this.addTags();
-  }
+    private _router: Router
+  ) {}
 
   ngOnInit(): void {
     this.reactiveForm = new UntypedFormGroup({
@@ -93,10 +92,47 @@ export class HomeComponent implements OnInit, OnDestroy {
         this.windowWidth = val;
       });
 
-    this._activateRoute.queryParams.pipe(take(1)).subscribe((val) => {
+    // Set Values & Append Date to URL
+    if (this._router.url.includes("caption-contest")) {
+      this.mode = "create";
+      this._httpService.responseSubject$
+        .pipe(takeUntil(this.destroy$))
+        .subscribe((val) => {
+          if (val) {
+            this.currentImage = val.imageUrl;
+            this.altText = val.altText;
+            this.captionsArray = val.captions;
+            this.toonIndex = val.itemIndex;
+            // this.creator = val.creator
+            this.totalCaptions = this.captionsArray.length;
+
+            this._router.navigate(["caption-contest"], {
+              queryParams: {
+                num: this.toonIndex,
+              },
+            });
+          }
+        });
+    }
+
+    // Capture manual value entered
+    // Capture caption being edited & associated image
+    this._activateRoute.queryParams.subscribe((val: Params) => {
       this.manualURL = val["num"];
+      if (null != val["caption"]) {
+        this.mode = "edit";
+        this.captionFromAdmin = val["caption"];
+        this.captionIndex = val["captionIndex"];
+        this.editingData = this._httpService.adminResponseSubject$.getValue();
+        this.currentImage = this.editingData.imageUrl;
+        this.captionBeingEdited = this.captionFromAdmin.replace(/%20/g, " ");
+
+        // Redirect to login if logged out while editing a caption
+        this.currentImage === "" ? this._router.navigate(["/login"]) : "";
+      }
     });
 
+    // Is User Authenticated?
     this.userIsAuthenticated = this._authService.getIsAuth();
     this.userIsAuthenticated
       ? this.reactiveForm.enable()
@@ -118,32 +154,39 @@ export class HomeComponent implements OnInit, OnDestroy {
       this.fetchCartoonData(parseInt(this.manualURL));
     }
 
+    // Total Items Available!
     this._httpService.totalItems$
       .pipe(takeUntil(this.destroy$))
       .subscribe((val) => {
         this.totalItems = val;
       });
+  }
 
-    // Set Values & Append Date to URL
-    this._httpService.responseSubject$
-      .pipe(takeUntil(this.destroy$))
-      .subscribe((val) => {
-        if (val) {
-          this.currentImage = val.imageUrl;
-          this.altText = val.altText;
-          this.captionsArray = val.captions;
-          this.toonIndex = val.itemIndex;
-          // this.creator = val.creator
-          const uiid = nanoid().slice(0, 5);
-          this._router.navigate(["home", uiid], {
-            queryParams: {
-              num: this.toonIndex,
-            },
-          });
+  // Update Approved Caption
+  updateCaption() {
+    const updatedCaption = this.reactiveForm.controls["caption"].value;
+    this.editingData.captions[this.captionIndex].caption = updatedCaption;
+    this.editingData.captions[this.captionIndex].approved = true;
+    this._httpService.updateCaption(
+      this.editingData.altText,
+      this.editingData.captions,
+      this.editingData.imageUrl,
+      this.editingData.itemIndex,
+      this.editingData._id
+    );
+    this._router.navigate(["/admin"]);
+    this.cacheNewlyEditedCaption();
+    const storage = this._localStorage.getData("captions");
+    const parsed = JSON.parse(storage);
+  }
 
-          this.totalCaptions = this.captionsArray.length;
-        }
-      });
+  // Cache Edited Caption
+  cacheNewlyEditedCaption() {
+    const storage = this._localStorage.getData("captions");
+    const parsed = JSON.parse(storage);
+    const updatedObject = this.editingData.captions[this.captionIndex];
+    parsed[this.manualURL].captions.push(updatedObject);
+    this._localStorage.saveData("captions", JSON.stringify(parsed));
   }
 
   // Called Once on Load
@@ -152,24 +195,6 @@ export class HomeComponent implements OnInit, OnDestroy {
       const randomNumber = Math.floor(Math.random() * 5);
       resolve(this.fetchCartoonData(randomNumber));
     });
-  }
-
-  addTags() {
-    this._metaService.addTags([
-      { name: "robots", content: "index, follow" },
-      {
-        name: "keywords",
-        content: "Angular SEO Integration, Music CRUD, Angular Universal",
-      },
-      { name: "author", content: "Eric Scott" },
-      { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { name: "description", content: "Free Web tutorials" },
-      { name: "date.created", content: "2022-10-15", scheme: "YYYY-MM-DD" },
-      { name: "date.updated", content: "2023-02-05", scheme: "YYYY-MM-DD" },
-      { name: "date.modified", content: "2023-03-25", scheme: "YYYY-MM-DD" },
-      { charset: "UTF-8" },
-    ]);
-    this._title.setTitle("APOD Nasa Gov");
   }
 
   // Check Cache Before Fetch
@@ -213,6 +238,7 @@ export class HomeComponent implements OnInit, OnDestroy {
     }
   }
 
+  // Next Image
   navigateNext() {
     this.totalItems - 1 > this.toonIndex
       ? this.toonIndex++
@@ -220,6 +246,7 @@ export class HomeComponent implements OnInit, OnDestroy {
     this.fetchCartoonData(this.toonIndex);
   }
 
+  // Previous Image
   navigatePrevious() {
     this.toonIndex === 0
       ? (this.toonIndex = this.totalItems - 1)

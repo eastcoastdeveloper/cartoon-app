@@ -3,7 +3,10 @@ import { Injectable, OnDestroy } from "@angular/core";
 import { BehaviorSubject, Subject, catchError, map, throwError } from "rxjs";
 import { IUser } from "../interfaces/form.interface";
 import { LocalStorageInterface } from "../interfaces/local-storage.interface";
-import { UserDataInterface } from "../interfaces/user-data.interface";
+import {
+  CaptionsInterface,
+  UserDataInterface,
+} from "../interfaces/user-data.interface";
 import { LocalStorageService } from "./local-storage.service";
 
 @Injectable({
@@ -24,12 +27,14 @@ export class HttpService implements OnDestroy {
     captions: [],
     imageUrl: "",
     itemIndex: 0,
+    _id: "",
   });
   responseSubject$ = new BehaviorSubject<UserDataInterface>({
     altText: "",
     captions: [],
     imageUrl: "",
     itemIndex: 0,
+    _id: "",
   });
 
   // Update/ Deleted
@@ -79,6 +84,7 @@ export class HttpService implements OnDestroy {
         "captions",
         JSON.stringify(this.storageObject)
       );
+      console.log(this.storageObject);
     }
     if (this.storageObject === undefined) {
       this.getTotal();
@@ -143,6 +149,26 @@ export class HttpService implements OnDestroy {
       });
   }
 
+  // Update Caption
+  updateCaption(
+    altText: string,
+    captions: CaptionsInterface[],
+    imageUrl: string,
+    itemIndex: number,
+    id: string
+  ) {
+    const data: UserDataInterface = {
+      altText: altText,
+      captions: captions,
+      imageUrl: imageUrl,
+      itemIndex: itemIndex,
+      _id: id,
+    };
+    this._http
+      .put("/api/update/" + id, data)
+      .subscribe((response) => console.log(response));
+  }
+
   // Get Captions
   getTotal() {
     const httpOptions = {
@@ -195,13 +221,6 @@ export class HttpService implements OnDestroy {
         },
       });
   }
-
-  // Post Form Results
-  // postEmail(signUpEmail: String) {
-  //   // return this._http
-  //   //   .post<IUser>("/api/form-submission", formData)
-  //   //   .subscribe((responseData) => {});
-  // }
 
   ngOnDestroy(): void {
     this.unsubscribe$.next(true);

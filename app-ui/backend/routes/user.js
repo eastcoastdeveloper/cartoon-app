@@ -59,6 +59,6 @@ router.post("/login", (req, res, next) => {
           message: "Auth failed"
         });
       });
-  });
+});
 
 module.exports = router;
