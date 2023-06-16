@@ -5,6 +5,9 @@ import { LoginComponent } from "./components/login/login.component";
 import { SignupComponent } from "./components/signup/signup.component";
 import { AdminComponent } from "./components/admin/admin.component";
 import { AuthGuard } from "./guards/auth.guard";
+import { ProfileComponent } from "./components/profile/profile.component";
+import { ResetPasswordComponent } from "./components/reset-password/reset-password.component";
+import { ForgotPasswordComponent } from "./components/forgot-password/forgot-password.component";
 
 const routes: Routes = [
   {
@@ -21,6 +24,14 @@ const routes: Routes = [
     component: HomeComponent,
   },
   {
+    path: "forgot-password",
+    component: ForgotPasswordComponent,
+  },
+  {
+    path: "reset-password/:id/:token",
+    component: ResetPasswordComponent,
+  },
+  {
     path: "signup",
     component: SignupComponent,
   },
@@ -32,6 +43,10 @@ const routes: Routes = [
     path: "admin",
     component: AdminComponent,
     canActivate: [AuthGuard],
+  },
+  {
+    path: "profile",
+    component: ProfileComponent,
   },
   {
     path: "**",
@@ -50,4 +65,6 @@ export const routingComponents = [
   HomeComponent,
   SignupComponent,
   LoginComponent,
+  ResetPasswordComponent,
+  ForgotPasswordComponent,
 ];

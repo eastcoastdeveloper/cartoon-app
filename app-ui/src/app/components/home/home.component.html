@@ -75,7 +75,7 @@
           </div>
         </div>
       </div>
-      <div *ngIf="mode === 'create'" class="first-last">
+      <!-- <div *ngIf="mode === 'create'" class="first-last">
         <div>
           <label [ngClass]="{ inactive: !userIsAuthenticated }" for="name"
             >First Name</label
@@ -156,10 +156,10 @@
             </div>
           </div>
         </div>
-      </div>
+      </div> -->
 
-      <div *ngIf="mode === 'create'" class="city-state-submit">
-        <div *ngIf="mode === 'create'">
+      <div *ngIf="mode === 'create'" class="submit">
+        <!-- <div *ngIf="mode === 'create'">
           <label [ngClass]="{ inactive: !userIsAuthenticated }" for="city"
             >City</label
           >
@@ -188,9 +188,9 @@
               This field must have at most 250 characters.
             </div>
           </div>
-        </div>
+        </div> -->
 
-        <div>
+        <!-- <div>
           <label [ngClass]="{ inactive: !userIsAuthenticated }" for="state"
             >State/ Province</label
           >
@@ -219,7 +219,7 @@
               This field must have at most 250 characters.
             </div>
           </div>
-        </div>
+        </div> -->
 
         <!-- User Submit Button -->
         <div
@@ -271,7 +271,7 @@
     >
       <div class="submission">
         <p>{{ data.caption }}</p>
-        <div class="full-name">
+        <!-- <div class="full-name">
           <span>{{ data.firstName }}</span>
           <span *ngIf="data.lastName != ''">{{ data.lastName }}</span>
         </div>
@@ -285,7 +285,7 @@
           <span *ngIf="data.city != ''">{{ data.city }}</span>
           <span *ngIf="data.state != ''">{{ data.state }}</span>
           <span *ngIf="data.country != ''">{{ data.country }}</span>
-        </div>
+        </div> -->
       </div>
       <div class="votes">
         <!-- <div (click)="voteUp(data.votes!)" class="vote-up">

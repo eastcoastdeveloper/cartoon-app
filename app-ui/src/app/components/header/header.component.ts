@@ -12,6 +12,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
   destroy$: Subject<boolean> = new Subject<boolean>();
   windowWidth?: number;
   userIsAuthenticated = false;
+  hasRole = false;
   default: true;
 
   constructor(
@@ -26,8 +27,14 @@ export class HeaderComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
+    this.userIsAuthenticated = this._authService.getIsAuth();
+    this.hasRole = this._authService.getRole();
     this._authService.getAuthStatusListener().subscribe((isAuthenticated) => {
       this.userIsAuthenticated = isAuthenticated;
+    });
+    this._authService.getHasRoleListener().subscribe((user) => {
+      this.hasRole = user;
+      console.log(this.hasRole);
     });
   }
 

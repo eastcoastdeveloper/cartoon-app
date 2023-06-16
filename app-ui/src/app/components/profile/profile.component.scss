@@ -1,0 +1,36 @@
+.profile {
+  max-width: 500px;
+  margin: 0 auto;
+  padding-top: 40px;
+  font: normal 14px sans-serif;
+  form {
+    margin-top: 30px;
+    .settings {
+      .location-wrapper {
+        display: grid;
+        grid-template-columns: repeat(2, 50%);
+        .location {
+          .city,
+          .state {
+            margin-bottom: 10px;
+          }
+        }
+        .vertical-center {
+          display: flex;
+          .show-location {
+            margin: auto;
+            display: grid;
+            grid-template-columns: 15px auto;
+            grid-column-gap: 5px;
+            > div {
+              border: 1px solid black;
+            }
+          }
+        }
+      }
+      .location-wrapper:first-child {
+        margin-bottom: 20px;
+      }
+    }
+  }
+}

@@ -171,6 +171,8 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
           }, 5000);
         },
       });
+
+    this._authService.autoAuthUser();
   }
 
   // Initialize Window Width Service

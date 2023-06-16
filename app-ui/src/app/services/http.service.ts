@@ -84,7 +84,6 @@ export class HttpService implements OnDestroy {
         "captions",
         JSON.stringify(this.storageObject)
       );
-      console.log(this.storageObject);
     }
     if (this.storageObject === undefined) {
       this.getTotal();
@@ -203,7 +202,6 @@ export class HttpService implements OnDestroy {
       formData: formData,
       currentDataObject: this.currentDataObject,
     };
-    console.log(data);
     return this._http
       .post<IUser>("/api/form-submission", data)
       .pipe(

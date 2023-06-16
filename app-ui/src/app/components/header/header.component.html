@@ -5,8 +5,13 @@
   </div>
   <nav [ngClass]="userIsAuthenticated ? 'default-layout' : 'admin-layout'">
     <span *ngIf="!userIsAuthenticated" routerLink="/signup">Signup</span>
-    <span *ngIf="userIsAuthenticated" routerLink="/admin">Admin</span>
     <span *ngIf="!userIsAuthenticated" routerLink="/login">Login</span>
+    <span *ngIf="userIsAuthenticated && hasRole" routerLink="/admin"
+      >Admin</span
+    >
+    <span *ngIf="userIsAuthenticated && !hasRole" routerLink="/profile"
+      >Profile</span
+    >
     <span *ngIf="userIsAuthenticated" (click)="onLogout()">Logout</span>
   </nav>
 </header>

@@ -17,7 +17,7 @@ export class AuthGuard {
     route: ActivatedRouteSnapshot,
     state: RouterStateSnapshot
   ): boolean | Observable<boolean> | Promise<boolean> {
-    const isAuth = this._authService.getIsAuth();
+    const isAuth = this._authService.getRole();
     if (!isAuth) {
       this._router.navigate(["/login"]);
     }

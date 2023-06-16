@@ -3,10 +3,12 @@ const bodyParser = require('body-parser');
 const router = express.Router();
 const CaptionData = require('../models/userData'); 
 const checkAuth = require('../middleware/check-auth');
+const verifyRoles = require('../middleware/verify-roles');
+const ROLES_LIST = require('../config/roles-list');
 
 router.use(bodyParser.json());
 
-router.post('/', checkAuth, async function (req, res, next) {
+router.post('/', verifyRoles(ROLES_LIST.admin), checkAuth, async function (req, res, next) {
   const formData = {
     caption: req.body.formData.caption,
     firstname: req.body.formData.firstname,
@@ -16,7 +18,6 @@ router.post('/', checkAuth, async function (req, res, next) {
     creator: req.userData.userId,
     approved: false
   };
-  console.log(formData)
   const id = req.body.currentDataObject._id;
   await CaptionData.findOneAndUpdate(
     { _id: id },

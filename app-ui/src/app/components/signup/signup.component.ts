@@ -16,10 +16,18 @@ import { Router } from "@angular/router";
   styleUrls: ["./signup.component.scss"],
 })
 export class SignupComponent implements OnInit {
-  reactiveForm!: UntypedFormGroup;
   passwordVisibility: boolean = false;
   emailAdress: string;
+  username: string;
   password: string;
+
+  city: string = "";
+  state: string = "";
+  country: string = "";
+  showLocation: boolean = false;
+  showCountry: boolean = false;
+  captions: [];
+
   confirm_password: string;
   showPassword: boolean = false;
   capsOn: any;
@@ -50,6 +58,7 @@ export class SignupComponent implements OnInit {
         //     ),
         //   ],
         // ],
+        username: ["", [Validators.required]],
         email: ["", [Validators.required, Validators.email]],
         password: ["", [Validators.required, Validators.minLength(6)]],
         confirmPassword: ["", Validators.required],
@@ -103,9 +112,20 @@ export class SignupComponent implements OnInit {
       return;
     }
 
+    this.username = this.registerForm.value.username;
     this.emailAdress = this.registerForm.value.email;
     this.password = this.registerForm.value.password;
-    this._authService.createUser(this.emailAdress, this.password);
+    this._authService.createUser(
+      this.username,
+      this.emailAdress,
+      this.password,
+      this.city,
+      this.state,
+      this.country,
+      this.showLocation,
+      this.showCountry,
+      this.captions
+    );
   }
 
   onReset() {

@@ -28,7 +28,7 @@ export class AuthInterceptor implements HttpInterceptor {
           console.log("This is client side error");
           errorMsg = `Error: ${error.error.message}`;
         } else {
-          console.log("This is server side error");
+          console.log(error);
           errorMsg = `Error Code: ${error.status},  Message: ${error.message}`;
         }
         console.log(errorMsg);

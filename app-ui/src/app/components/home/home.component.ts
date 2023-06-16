@@ -42,11 +42,11 @@ export class HomeComponent implements OnInit, OnDestroy {
   toonIndex: number;
   user: IUser = {
     caption: "",
-    firstname: "",
-    lastname: "",
-    city: "",
-    state: "",
-    country: "",
+    // firstname: "",
+    // lastname: "",
+    // city: "",
+    // state: "",
+    // country: "",
     approved: false,
   };
 
@@ -66,23 +66,23 @@ export class HomeComponent implements OnInit, OnDestroy {
         Validators.minLength(1),
         Validators.maxLength(250),
       ]),
-      firstname: new UntypedFormControl(this.user.firstname, [
-        Validators.required,
-        Validators.minLength(1),
-        Validators.maxLength(250),
-      ]),
-      lastname: new UntypedFormControl(this.user.lastname, [
-        Validators.minLength(1),
-        Validators.maxLength(250),
-      ]),
-      city: new UntypedFormControl(this.user.city, [
-        Validators.minLength(1),
-        Validators.maxLength(250),
-      ]),
-      state: new UntypedFormControl(this.user.state, [
-        Validators.minLength(1),
-        Validators.maxLength(250),
-      ]),
+      // firstname: new UntypedFormControl(this.user.firstname, [
+      //   Validators.required,
+      //   Validators.minLength(1),
+      //   Validators.maxLength(250),
+      // ]),
+      // lastname: new UntypedFormControl(this.user.lastname, [
+      //   Validators.minLength(1),
+      //   Validators.maxLength(250),
+      // ]),
+      // city: new UntypedFormControl(this.user.city, [
+      //   Validators.minLength(1),
+      //   Validators.maxLength(250),
+      // ]),
+      // state: new UntypedFormControl(this.user.state, [
+      //   Validators.minLength(1),
+      //   Validators.maxLength(250),
+      // ]),
     });
 
     // Subscribe to Window Width
@@ -176,8 +176,8 @@ export class HomeComponent implements OnInit, OnDestroy {
     );
     this._router.navigate(["/admin"]);
     this.cacheNewlyEditedCaption();
-    const storage = this._localStorage.getData("captions");
-    const parsed = JSON.parse(storage);
+    // const storage = this._localStorage.getData("captions");
+    // const parsed = JSON.parse(storage);
   }
 
   // Cache Edited Caption
@@ -207,21 +207,21 @@ export class HomeComponent implements OnInit, OnDestroy {
     return this.reactiveForm.get("caption")!;
   }
 
-  get firstname() {
-    return this.reactiveForm.get("firstname")!;
-  }
+  // get firstname() {
+  //   return this.reactiveForm.get("firstname")!;
+  // }
 
-  get lastname() {
-    return this.reactiveForm.get("lastname")!;
-  }
+  // get lastname() {
+  //   return this.reactiveForm.get("lastname")!;
+  // }
 
-  get city() {
-    return this.reactiveForm.get("city")!;
-  }
+  // get city() {
+  //   return this.reactiveForm.get("city")!;
+  // }
 
-  get state() {
-    return this.reactiveForm.get("state")!;
-  }
+  // get state() {
+  //   return this.reactiveForm.get("state")!;
+  // }
 
   // Form Validation & Post to Backend
   public validate(): void {
