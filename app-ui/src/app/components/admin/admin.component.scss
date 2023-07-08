@@ -1,48 +1,9 @@
 @import "../../style/color";
 
-.double-page-content {
-  max-width: 800px;
-  margin: 0 auto;
-  .editing-nav-bar {
-    background-color: $white;
-    box-shadow: 2px 1px 5px 3px rgb(0 0 0 / 25%);
-    padding: 5px;
-    width: calc(100% - 10px);
-    top: 123px;
-    left: 0;
-    position: fixed;
-    .nav-wrapper {
-      max-width: 800px;
-      margin: 0 auto;
-      nav {
-        width: 100%;
-        font: normal 14px sans-serif;
-        display: grid;
-        grid-template-columns: repeat(3, auto);
-        grid-column-gap: 10px;
-        max-width: 250px;
-        span {
-          padding: 5px 0;
-          border-radius: 3px;
-          background-color: $white;
-          color: $midnight;
-          cursor: pointer;
-          border: 1px solid $midnight;
-          text-align: center;
-        }
-      }
-    }
-  }
-  .active-page {
-    background-color: $midnight !important;
-    color: $white !important;
-  }
-}
-
 #commenting {
   padding: 55px 0 75px 0;
   .repeating-group:not(:last-child) {
-    border-bottom: 1px solid black;
+    border-bottom: 1px solid $midnight;
     margin-bottom: 30px;
     padding-bottom: 30px;
   }

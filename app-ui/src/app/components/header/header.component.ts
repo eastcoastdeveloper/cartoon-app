@@ -10,8 +10,8 @@ import { WindowWidthService } from "src/app/services/window-width.service";
 })
 export class HeaderComponent implements OnInit, OnDestroy {
   destroy$: Subject<boolean> = new Subject<boolean>();
-  windowWidth?: number;
   userIsAuthenticated = false;
+  windowWidth?: number;
   hasRole = false;
   default: true;
 
@@ -28,21 +28,23 @@ export class HeaderComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.userIsAuthenticated = this._authService.getIsAuth();
-    this.hasRole = this._authService.getRole();
-    this._authService.getAuthStatusListener().subscribe((isAuthenticated) => {
-      this.userIsAuthenticated = isAuthenticated;
-    });
-    this._authService.getHasRoleListener().subscribe((user) => {
-      this.hasRole = user;
-      console.log(this.hasRole);
-    });
+    this._authService
+      .getAuthStatusListener()
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((isAuthenticated) => {
+        this.userIsAuthenticated = isAuthenticated;
+      });
+    this._authService.hasRoleListener$
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((user: boolean) => {
+        this.hasRole = user;
+      });
   }
 
   onLogout() {
     this._authService.logout();
   }
 
-  // Kill Subscriptions
   ngOnDestroy(): void {
     this.destroy$.next(true);
     this.destroy$.complete();

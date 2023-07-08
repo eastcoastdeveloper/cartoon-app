@@ -1,6 +1,14 @@
 import { HttpClient, HttpHeaders } from "@angular/common/http";
 import { Injectable, OnDestroy } from "@angular/core";
-import { BehaviorSubject, Subject, catchError, map, throwError } from "rxjs";
+import {
+  BehaviorSubject,
+  Observable,
+  Subject,
+  catchError,
+  map,
+  takeUntil,
+  throwError,
+} from "rxjs";
 import { IUser } from "../interfaces/form.interface";
 import { LocalStorageInterface } from "../interfaces/local-storage.interface";
 import {
@@ -8,12 +16,13 @@ import {
   UserDataInterface,
 } from "../interfaces/user-data.interface";
 import { LocalStorageService } from "./local-storage.service";
+import { ProfileInterface } from "../interfaces/profile.interface";
 
 @Injectable({
   providedIn: "root",
 })
 export class HttpService implements OnDestroy {
-  unsubscribe$: Subject<boolean> = new Subject<boolean>();
+  private unsubscribe$: Subject<boolean> = new Subject<boolean>();
   invalidURL$ = new BehaviorSubject<boolean>(false);
   totalItems$ = new BehaviorSubject<number>(0);
   storageObject: LocalStorageInterface | null;
@@ -22,6 +31,13 @@ export class HttpService implements OnDestroy {
   itemIndex: number | undefined;
   formSubmitted$ = new Subject<boolean>();
   adminResponse: UserDataInterface;
+  profileData: ProfileInterface;
+  profileData$ = new BehaviorSubject<ProfileInterface>({
+    imageUrl: "",
+    caption: "",
+    id: "",
+    status: "",
+  });
   adminResponseSubject$ = new BehaviorSubject<UserDataInterface>({
     altText: "",
     captions: [],
@@ -102,6 +118,7 @@ export class HttpService implements OnDestroy {
         httpOptions
       )
       .pipe(
+        takeUntil(this.unsubscribe$),
         map((responseData) => {
           if (null != responseData) {
             Object.keys(responseData).filter((currentVal, index) => {
@@ -143,6 +160,7 @@ export class HttpService implements OnDestroy {
         `/api/captions/?toonReference=0&flag=false`,
         httpOptions
       )
+      .pipe(takeUntil(this.unsubscribe$))
       .subscribe((data) => {
         this.adminResponseSubject$.next(data);
       });
@@ -154,18 +172,35 @@ export class HttpService implements OnDestroy {
     captions: CaptionsInterface[],
     imageUrl: string,
     itemIndex: number,
-    id: string
+    id: string,
+    creator?: string,
+    captionReferenceID?: string
   ) {
-    const data: UserDataInterface = {
+    const data: {
+      altText: string;
+      captions: CaptionsInterface[];
+      imageUrl: string;
+      itemIndex: number;
+      _id: string;
+      creator?: string;
+      captionReferenceID?: string;
+    } = {
       altText: altText,
       captions: captions,
       imageUrl: imageUrl,
       itemIndex: itemIndex,
       _id: id,
+      creator: creator,
+      captionReferenceID: captionReferenceID,
     };
     this._http
       .put("/api/update/" + id, data)
+      .pipe(takeUntil(this.unsubscribe$))
       .subscribe((response) => console.log(response));
+  }
+
+  flagCaption() {
+    console.log("caption flagged");
   }
 
   // Get Captions
@@ -177,6 +212,7 @@ export class HttpService implements OnDestroy {
     return this._http
       .get<LocalStorageInterface>(`/api/init`, httpOptions)
       .pipe(
+        takeUntil(this.unsubscribe$),
         map((response) => {
           this.storageObject = response;
           this.totalItems$.next(Object.keys(this.storageObject).length);
@@ -193,6 +229,7 @@ export class HttpService implements OnDestroy {
       .post<UserDataInterface>("/api/updateVoteCount", {
         title: "User Up or Down Voted",
       })
+      .pipe(takeUntil(this.unsubscribe$))
       .subscribe((data) => {});
   }
 
@@ -205,6 +242,7 @@ export class HttpService implements OnDestroy {
     return this._http
       .post<IUser>("/api/form-submission", data)
       .pipe(
+        takeUntil(this.unsubscribe$),
         catchError((err) => {
           return throwError(() => new Error("ups something happened"));
         })
@@ -214,9 +252,20 @@ export class HttpService implements OnDestroy {
           this.formSubmitted$.next(true);
         },
         error: (value) => {
-          console.log(value);
           this.formSubmitted$.next(false);
         },
+      });
+  }
+
+  getProfileCaptions(id: string) {
+    const httpOptions = {
+      headers: new HttpHeaders(),
+    };
+
+    return this._http
+      .get<ProfileInterface>(`/api/profile/${id}`, httpOptions)
+      .subscribe((item) => {
+        this.profileData$.next(item);
       });
   }
 

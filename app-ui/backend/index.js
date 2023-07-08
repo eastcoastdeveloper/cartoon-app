@@ -40,6 +40,7 @@ app.use('/api/captions', require('./routes/captions-process'));
 app.use('/api/reset', require('./routes/password'));
 app.use('/api/update', require('./routes/update'))
 app.use('/api/user', require('./routes/user'));
+app.use('/api/profile', require('./routes/profile'));
 app.use('/api/init', require('./routes/init'));
 
 module.exports = app;

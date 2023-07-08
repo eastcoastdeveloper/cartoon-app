@@ -10,37 +10,6 @@
 </div>
 
 <div
-  *ngIf="notifications.loggedIn"
-  [style.background-color]="userNotification ? 'rgb(51,201,72)' : '#b33a3a'"
-  [ngClass]="{ 'show-redirect-message element-shadow': notifications.loggedIn }"
-  class="redirect-message"
->
-  Logged In
-</div>
-
-<div
-  *ngIf="notifications.loggedOut"
-  [style.background-color]="userNotification ? 'rgb(51,201,72)' : '#b33a3a'"
-  [ngClass]="{
-    'show-redirect-message element-shadow': notifications.loggedOut
-  }"
-  class="redirect-message"
->
-  Logged Out
-</div>
-
-<div
-  *ngIf="notifications.badCredentials"
-  [style.background-color]="userNotification ? 'rgb(51,201,72)' : '#b33a3a'"
-  [ngClass]="{
-    'show-redirect-message element-shadow': notifications.badCredentials
-  }"
-  class="redirect-message"
->
-  Username or Password Incorrect
-</div>
-
-<div
   *ngIf="notifications.formSuccess"
   [style.background-color]="userNotification ? 'rgb(51,201,72)' : '#b33a3a'"
   [ngClass]="{
@@ -55,7 +24,7 @@
   }}
 </div>
 
-<div
+<!-- <div
   *ngIf="notifications.registration"
   [style.background-color]="userNotification ? 'rgb(51,201,72)' : '#b33a3a'"
   [ngClass]="{
@@ -64,7 +33,7 @@
   class="redirect-message"
 >
   {{ userNotification ? "Registration successful." : "User already exists" }}
-</div>
+</div> -->
 
 <app-header></app-header>
 <main>

@@ -67,4 +67,6 @@ export const routingComponents = [
   LoginComponent,
   ResetPasswordComponent,
   ForgotPasswordComponent,
+  AdminComponent,
+  ProfileComponent,
 ];

@@ -1,5 +1,6 @@
-import { Component } from "@angular/core";
+import { Component, OnDestroy } from "@angular/core";
 import { Router } from "@angular/router";
+import { Subject, takeUntil } from "rxjs";
 import { UserDataInterface } from "src/app/interfaces/user-data.interface";
 import { HttpService } from "src/app/services/http.service";
 import { LocalStorageService } from "src/app/services/local-storage.service";
@@ -9,7 +10,8 @@ import { LocalStorageService } from "src/app/services/local-storage.service";
   templateUrl: "./admin.component.html",
   styleUrls: ["./admin.component.scss"],
 })
-export class AdminComponent {
+export class AdminComponent implements OnDestroy {
+  private unsubscribe$ = new Subject<void>();
   dataArray: any | undefined;
   currentTab: string = "captions";
   constructor(
@@ -21,11 +23,13 @@ export class AdminComponent {
   }
 
   checkForPendingComments() {
-    this._httpService.adminResponseSubject$.subscribe((val) => {
-      if (val.captions === undefined) {
-        this.dataArray = val;
-      }
-    });
+    this._httpService.adminResponseSubject$
+      .pipe(takeUntil(this.unsubscribe$))
+      .subscribe((val) => {
+        if (val.captions === undefined) {
+          this.dataArray = val;
+        }
+      });
     this._httpService.getUnapprovedCaptions();
   }
 
@@ -42,7 +46,7 @@ export class AdminComponent {
   }
 
   rejectCaption() {
-    console.log("send message in user user profile");
+    this._httpService.flagCaption();
   }
 
   // Approve Caption
@@ -57,7 +61,9 @@ export class AdminComponent {
       data.captions,
       data.imageUrl,
       data.itemIndex,
-      data._id
+      data._id,
+      data.captions[captionIndex].creator,
+      data.captions[captionIndex].id
     );
     const storage = this._localStorage.getData("captions");
     const parsed = JSON.parse(storage);
@@ -66,19 +72,19 @@ export class AdminComponent {
     this._localStorage.saveData("captions", JSON.stringify(parsed));
   }
 
-  editCaption(
-    toonReference: number,
-    data: UserDataInterface,
-    caption: any,
-    captionIndex: number
-  ) {
+  editCaption(toonReference: number, data: UserDataInterface, caption: any) {
     this._httpService.adminResponseSubject$.next(data);
     this._router.navigate(["/edit"], {
       queryParams: {
         num: toonReference,
         caption: encodeURI(caption),
-        captionIndex: captionIndex,
+        captionIndex: data.itemIndex,
       },
     });
+  }
+
+  ngOnDestroy(): void {
+    this.unsubscribe$.next();
+    this.unsubscribe$.complete();
   }
 }

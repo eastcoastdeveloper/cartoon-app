@@ -166,19 +166,62 @@ input {
   outline: none;
 }
 
+.double-page-content {
+  max-width: 800px;
+  height: 100%;
+  margin: 0 auto;
+  .editing-nav-bar {
+    background-color: $white;
+    box-shadow: 2px 1px 5px 3px rgb(0 0 0 / 25%);
+    padding: 5px;
+    width: calc(100% - 10px);
+    top: 123px;
+    left: 0;
+    position: fixed;
+    .nav-wrapper {
+      max-width: 800px;
+      margin: 0 auto;
+      nav {
+        width: 100%;
+        font: normal 14px sans-serif;
+        display: grid;
+        grid-template-columns: repeat(3, auto);
+        grid-column-gap: 10px;
+        max-width: 250px;
+        span {
+          padding: 5px 0;
+          border-radius: 3px;
+          background-color: $white;
+          color: $midnight;
+          cursor: pointer;
+          border: 1px solid $midnight;
+          text-align: center;
+        }
+      }
+    }
+  }
+  .active-page {
+    background-color: $midnight !important;
+    color: $white !important;
+  }
+}
+
 [type="submit"],
 [type="reset"],
+.forgot-password,
+.change-password,
 .register {
   outline: none;
   width: 100%;
   left: 0;
   padding: 5px 15px;
-  font-weight: 600;
+  font: 600 14px sans-serif;
   border-radius: 3px;
   border: 1px solid $midnight;
   cursor: pointer;
   transition: all 0.25s;
-  &:focus {
+  &:focus,
+  &:hover {
     background-color: $midnight;
     color: $fog;
   }
@@ -211,8 +254,44 @@ input {
   margin-top: 2px;
 }
 
+.validation-error,
+.notification {
+  font: normal 14px sans-serif;
+  text-align: center;
+  border-bottom-left-radius: 3px;
+  border-bottom-right-radius: 3px;
+  color: $white;
+  padding: 4px;
+}
+
+.notification {
+  background-color: $editGreen;
+  width: 200px;
+  margin: 0 calc(50% - 100px);
+}
+
 .validation-error {
-  color: $warningRed;
-  font-size: 13px;
-  margin-top: 5px;
+  background-color: $warningRed;
+  max-width: 330px;
+  margin: 5px 0;
+}
+
+@media screen and (max-width: 992px) {
+  .double-page-content {
+    margin: 0 20px;
+    padding-top: 15px;
+    .editing-nav-bar {
+      .nav-wrapper {
+        margin: 0 13px;
+      }
+    }
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .double-page-content {
+    .editing-nav-bar {
+      top: 56px;
+    }
+  }
 }

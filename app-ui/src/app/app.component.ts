@@ -29,11 +29,7 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
 
   notifications = {
     invalidURL: false,
-    loggedIn: false,
-    loggedOut: false,
     formSuccess: false,
-    registration: false,
-    badCredentials: false,
   };
 
   queryNum: number;
@@ -110,52 +106,6 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
           }, 5000);
         }
       });
-
-    // Bad Credentials
-    this._authService.badCredentials$
-      .pipe(takeUntil(this.unsubscribe$))
-      .subscribe((val) => {
-        this.notifications.badCredentials = val;
-        this.userNotification = false;
-        setTimeout(() => {
-          this.notifications.badCredentials = false;
-        }, 5000);
-      });
-
-    // Notification: Logged In/ Out
-    this._authService
-      .getAuthStatusListener()
-      .pipe(takeUntil(this.unsubscribe$))
-      .subscribe((isAuthenticated) => {
-        if (isAuthenticated) {
-          this.notifications.loggedIn = this.userNotification = isAuthenticated;
-        }
-        if (!isAuthenticated) {
-          this.notifications.loggedOut = true;
-          this.userNotification = true;
-        }
-        setTimeout(() => {
-          this.userNotification = false;
-          this.notifications.loggedIn = false;
-          this.notifications.loggedOut = false;
-        }, 3000);
-      });
-
-    // Registration
-    this._authService.registrationSubject$.subscribe((response) => {
-      if (response["message"] === "Username already exists") {
-        this.notifications.registration = true;
-        this.userNotification = false;
-      }
-      if (response["message"] === "User created!") {
-        this.notifications.registration = true;
-        this.userNotification = true;
-      }
-      setTimeout(() => {
-        this.notifications.registration = false;
-        this.userNotification = false;
-      }, 5000);
-    });
 
     // Form Submitted
     this._httpService.formSubmitted$

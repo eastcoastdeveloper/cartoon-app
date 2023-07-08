@@ -17,39 +17,38 @@ router.post('/forgot', (req, res, next) => {
     }
       
     if (user) {
-        const secret = JWT_SECRET + user.password;
-        const payload = {
-            email: user.email,
-            id: user.id
-        }
-        const token = jwt.sign(payload, secret, { expiresIn: '15m' });
-        const link = `http://localhost:4200/reset-password/${user.id}/${token}`;
+      const secret = JWT_SECRET + user.password;
+      const payload = {
+        email: user.email,
+        id: user.id
+      }
+      const token = jwt.sign(payload, secret, { expiresIn: '600s' });
+      const link = `http://localhost:4200/reset-password/${user.id}/${token}`;
 
-      main(link).catch(e => console.log(e))
-      res.send({message: "Password link has been sent to your email."});
+      main(link, user).catch(e => console.log(e))
+      res.send({message: "Password link has been sent to your email. Please whitelist email/ check spam."});
     }     
   })
 })
 
-async function main(url) {
+async function main(url, user) {
   const transporter = nodemailer.createTransport({
-      host: 'smtp.gmail.com',
-      port: 465,
+    host: 'smtp.gmail.com',
+    port: 465,
+      
       secure: true,
       auth: {
-        user: 'efeldberg22204@gmail.com',
-        pass: 'dtkviivvylnpdbnc'
+        user: 'cartoon.caption.reset@gmail.com',
+        pass: 'hdnsjetpitoalkbh'
       }
   })
   
   const info = await transporter.sendMail({
-    from: 'Cartoon Caption Contest <efeldberg22204@gmail.com>',
-    to: 'uxdeveloper@protonmail.com',
+    from: 'Cartoon Caption Contest <cartoon.caption.reset@gmail.com>',
+    to: user.email,
     subject: 'Password Reset',
     html: `Please reset your password with the link below:<br /><br /><a href="${url}">${url}</a>`
   })
-
-  console.log("Message sent: " + info.messageId);
 }
 
 router.get('/:id/:token', (req, res, next) => {
@@ -70,7 +69,6 @@ router.get('/:id/:token', (req, res, next) => {
         email: user.email
       })
     } catch (error) {
-      console.log(error.message);
       res.send(error.message);
     }
   })

@@ -11,6 +11,7 @@ import { AuthService } from "../services/auth.service";
 
 @Injectable()
 export class AuthInterceptor implements HttpInterceptor {
+  errorMsg: string;
   constructor(private authService: AuthService) {}
 
   intercept(
@@ -23,16 +24,13 @@ export class AuthInterceptor implements HttpInterceptor {
     });
     return next.handle(authRequest).pipe(
       catchError((error: HttpErrorResponse) => {
-        let errorMsg = "";
         if (error.error instanceof ErrorEvent) {
-          console.log("This is client side error");
-          errorMsg = `Error: ${error.error.message}`;
+          this.errorMsg = `Error: ${error.error.message}`;
         } else {
-          console.log(error);
-          errorMsg = `Error Code: ${error.status},  Message: ${error.message}`;
+          this.errorMsg = `Error Code: ${error.status},  Message: ${error.message}`;
         }
-        console.log(errorMsg);
-        return throwError(errorMsg);
+        console.log(this.errorMsg);
+        return throwError(this.errorMsg);
       })
     );
   }

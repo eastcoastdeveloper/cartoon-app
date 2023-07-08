@@ -1,24 +1,33 @@
 import { HttpClient, HttpHeaders } from "@angular/common/http";
-import { Injectable } from "@angular/core";
+import { Injectable, OnDestroy } from "@angular/core";
 import { AuthData } from "../interfaces/auth-data";
-import { BehaviorSubject, Subject, catchError, map, of } from "rxjs";
+import {
+  BehaviorSubject,
+  EMPTY,
+  Subject,
+  catchError,
+  takeUntil,
+  throwError,
+} from "rxjs";
 import { Router } from "@angular/router";
 import { LocalStorageService } from "./local-storage.service";
-import { error } from "console";
 
 @Injectable({
   providedIn: "root",
 })
-export class AuthService {
+export class AuthService implements OnDestroy {
+  private authStatusListener = new Subject<boolean>();
+  private unsubscribe$ = new Subject<void>();
   private token: string | null;
   private isAuthenticated = false;
-  private hasRole = false;
   private tokenTimer: any;
   private userId: string | null;
   private username: string | null;
-  private authStatusListener = new Subject<boolean>();
-  private hasRoleListener = new Subject<boolean>();
   private roles: number[] = [];
+
+  hasRoleListener$ = new BehaviorSubject<boolean>(false);
+  tokenExpired$ = new BehaviorSubject<boolean>(false);
+  emailMessage$ = new BehaviorSubject<{ message: string }>({ message: "" });
 
   resetPassword$ = new BehaviorSubject<{
     username: string;
@@ -26,9 +35,8 @@ export class AuthService {
     email: string;
   }>({ username: "", password: "", email: "" });
 
-  // errorMsg: string;
-  emailMessage$ = new BehaviorSubject<{ message: string }>({ message: "" });
   userObject: any;
+  userLevel: string;
   badCredentials$ = new Subject<boolean>();
   username$ = new BehaviorSubject<string | null>(null);
   registrationSubject$ = new BehaviorSubject<{
@@ -50,16 +58,8 @@ export class AuthService {
     return this.isAuthenticated;
   }
 
-  getRole() {
-    return this.hasRole;
-  }
-
   getAuthStatusListener() {
     return this.authStatusListener.asObservable();
-  }
-
-  getHasRoleListener() {
-    return this.hasRoleListener.asObservable();
   }
 
   getUserId() {
@@ -88,16 +88,19 @@ export class AuthService {
       showCountry: showCountry,
       captions: [],
     };
-    this._http.post("/api/user/signup", authData).subscribe({
-      next: (value) => {
-        console.log(value);
-        this.registrationSubject$.next(value);
-      },
-      error: (err) => {
-        console.log("User already exists");
-        this.registrationSubject$.next({ message: "Username already exists" });
-      },
-    });
+    this._http
+      .post("/api/user/signup", authData)
+      .pipe(takeUntil(this.unsubscribe$))
+      .subscribe({
+        next: (value) => {
+          this.registrationSubject$.next(value);
+        },
+        error: (err) => {
+          this.registrationSubject$.next({
+            message: "Username already exists",
+          });
+        },
+      });
   }
 
   login(email: string, password: string) {
@@ -110,6 +113,7 @@ export class AuthService {
         username: string;
         roles: [user: number];
       }>("/api/user/login", authData)
+      .pipe(takeUntil(this.unsubscribe$))
       .subscribe({
         next: (response) => {
           const token = response.token;
@@ -123,20 +127,9 @@ export class AuthService {
             this.username$.next(this.username);
             this.authStatusListener.next(true);
             this.roles = response.roles;
-
-            this.roles.map((user) => {
-              if (user === 5015) {
-                this.hasRole = true;
-                this.hasRoleListener.next(this.hasRole);
-                return;
-              } else {
-                this.hasRole = false;
-                this.hasRoleListener.next(this.hasRole);
-              }
-            });
+            this.calculateRoles();
 
             const now = new Date();
-            this.getRole();
             const expirationDate = new Date(
               now.getTime() + expiresInDuration * 1000
             );
@@ -144,15 +137,31 @@ export class AuthService {
               token,
               expirationDate,
               this.userId,
-              this.username
+              this.username,
+              this.userLevel
             );
             this._router.navigate(["/"]);
           }
         },
-        error: (err) => {
+        error: (response) => {
           this.badCredentials$.next(true);
+          return EMPTY;
         },
       });
+  }
+
+  calculateRoles() {
+    this.roles.map((user) => {
+      if (user === 5015) {
+        this.userLevel = "true";
+        this.hasRoleListener$.next(true);
+        return;
+      }
+      if (user != 5015) {
+        this.userLevel = "false";
+        this.hasRoleListener$.next(false);
+      }
+    });
   }
 
   autoAuthUser() {
@@ -171,6 +180,9 @@ export class AuthService {
       this.setAuthTimer(expiresIn / 1000);
       this.authStatusListener.next(true);
       this.username$.next(this.username);
+      let boolString = authInformation.level;
+      let boolValue = boolString === "true";
+      this.hasRoleListener$.next(boolValue);
     }
   }
 
@@ -181,10 +193,12 @@ export class AuthService {
   }
 
   private getAuthData() {
-    const token = localStorage.getItem("token");
-    const expirationDate = localStorage.getItem("expiration");
-    const userId = localStorage.getItem("userId");
-    const username = localStorage.getItem("username");
+    const token = this._localStorage.getData("token");
+    const expirationDate = this._localStorage.getData("expiration");
+    const userId = this._localStorage.getData("userId");
+    const username = this._localStorage.getData("username");
+    const level = this._localStorage.getData("level");
+
     if (!token || !expirationDate) {
       return;
     }
@@ -193,6 +207,7 @@ export class AuthService {
       expirationDate: new Date(expirationDate),
       userId: userId,
       username: username,
+      level: level,
     };
   }
 
@@ -211,12 +226,14 @@ export class AuthService {
     token: string,
     expirationDate: Date,
     userId: string,
-    username: string
+    username: string,
+    userLevel: string
   ) {
     this._localStorage.saveData("token", token);
     this._localStorage.saveData("expiration", expirationDate.toISOString());
     this._localStorage.saveData("userId", userId);
     this._localStorage.saveData("username", username);
+    this._localStorage.saveData("level", userLevel);
   }
 
   private clearAuthData() {
@@ -224,29 +241,38 @@ export class AuthService {
     this._localStorage.removeData("expiration");
     this._localStorage.removeData("userId");
     this._localStorage.removeData("username");
+    this._localStorage.removeData("level");
   }
 
   forgotPassword(email: string) {
     const body = { email: email };
     return this._http
       .post<{ message: string }>("api/reset/forgot", body)
-      .pipe()
+      .pipe(takeUntil(this.unsubscribe$))
       .subscribe((obj) => {
         this.emailMessage$.next(obj);
       });
   }
 
   resetPassword(id: string, token: string) {
+    this.tokenExpired$.next(false);
     const httpOptions = {
       headers: new HttpHeaders(),
     };
 
     return this._http
       .get<AuthData>(`/api/reset/${id}/${token}`, httpOptions)
+      .pipe(
+        takeUntil(this.unsubscribe$),
+        catchError((err) => {
+          this.tokenExpired$.next(true);
+          this._router.navigateByUrl("/forgot-password");
+          return throwError(err);
+        })
+      )
       .subscribe((item) => {
         this.userObject = item;
         this.resetPassword$.next(this.userObject);
-        console.log(this.userObject);
       });
   }
 
@@ -254,8 +280,14 @@ export class AuthService {
     const body = { password: password };
     return this._http
       .post<{ value: string }>(`/api/reset/${id}/${token}`, body)
+      .pipe(takeUntil(this.unsubscribe$))
       .subscribe((val) => {
         console.log(val);
       });
+  }
+
+  ngOnDestroy(): void {
+    this.unsubscribe$.next();
+    this.unsubscribe$.complete();
   }
 }

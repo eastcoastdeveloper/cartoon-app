@@ -20,3 +20,12 @@ footer {
     }
   }
 }
+
+@media screen and (max-width: 400px) {
+  footer {
+    .copyright {
+      margin: 0 20px;
+      line-height: 20px;
+    }
+  }
+}

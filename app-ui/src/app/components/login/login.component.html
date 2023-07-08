@@ -1,68 +1,82 @@
 <div id="login">
-  <form [formGroup]="reactiveForm" #form="ngForm">
-    <div>
-      <label for="email">Email Address</label>
-      <input
-        tabindex="1"
-        type="email"
-        id="email"
-        name="email"
-        formControlName="email"
-        placeholder="your-name@provider.com"
-        required
-        minlength="1"
-        maxlength="250"
-        class="form-control form-control-sm"
-        [class.is-invalid]="email.invalid && (email.dirty || email.touched)"
-      />
-      <div
-        *ngIf="email.invalid && (email.dirty || email.touched)"
-        class="invalid-feedback"
-      >
-        <div *ngIf="email.errors?.['required']" class="validation-error">
-          This field is required.
-        </div>
-        <div *ngIf="email.errors?.['minlength']" class="validation-error">
-          This field must have at least 1 character.
-        </div>
-        <div *ngIf="email.errors?.['maxlength']" class="validation-error">
-          This field must have at most 250 characters.
-        </div>
+  <div>
+    <div *ngIf="badCredentials" class="validation-error">
+      Username or password incorrect. Please try again.
+    </div>
+    <form [formGroup]="reactiveForm" #form="ngForm">
+      <div>
+        <label for="email">Email Address</label>
+        <input
+          tabindex="1"
+          type="email"
+          id="email"
+          name="email"
+          formControlName="email"
+          placeholder="your-name@provider.com"
+          (focus)="onFocusEvent($event)"
+          required
+          minlength="1"
+          maxlength="250"
+          class="form-control form-control-sm"
+          [class.is-invalid]="email.invalid && (email.dirty || email.touched)"
+        />
         <div
-          *ngIf="!email.errors?.['required'] && !email.errors?.['minlength'] && !email.errors?.['maxlength'] && email.errors?.['emailValidator']"
-          class="validation-error"
+          *ngIf="email.invalid && (email.dirty || email.touched)"
+          class="invalid-feedback"
         >
-          Invalid email format.
+          <div *ngIf="email.errors?.['required']" class="validation-error">
+            This field is required.
+          </div>
+          <div *ngIf="email.errors?.['minlength']" class="validation-error">
+            This field must have at least 1 character.
+          </div>
+          <div *ngIf="email.errors?.['maxlength']" class="validation-error">
+            This field must have at most 250 characters.
+          </div>
+          <div
+            *ngIf="!email.errors?.['required'] && !email.errors?.['minlength'] && !email.errors?.['maxlength'] && email.errors?.['emailValidator']"
+            class="validation-error"
+          >
+            Invalid email format.
+          </div>
         </div>
       </div>
-    </div>
 
-    <div class="password-wrapper" (capsLock)="capsOn = $event">
-      <label for="password">Password</label>
-      <input
-        [type]="showPassword ? 'text' : 'password'"
-        (ngModelChange)="passwordFieldChanged()"
-        tabindex="2"
-        type="password"
-        id="password"
-        name="password"
-        formControlName="password"
-        placeholder="Password"
-        required
-        minlength="1"
-        maxlength="250"
-        class="form-control form-control-sm"
-      />
-      <div
-        class="show-password"
-        *ngIf="passwordVisibility"
-        (click)="togglePassword()"
-        [ngClass]="{ 'toggle-visibility': showPassword }"
-      >
-        <img src="../../../assets/show-password.png" />
+      <div class="password-wrapper" (capsLock)="capsOn = $event">
+        <label for="password">Password</label>
+        <input
+          [type]="showPassword ? 'text' : 'password'"
+          (ngModelChange)="passwordFieldChanged()"
+          tabindex="2"
+          type="password"
+          id="password"
+          name="password"
+          formControlName="password"
+          placeholder="Password"
+          required
+          minlength="1"
+          maxlength="250"
+          class="form-control form-control-sm"
+        />
+        <div
+          class="show-password"
+          *ngIf="passwordVisibility"
+          (click)="togglePassword()"
+          [ngClass]="{ 'toggle-visibility': showPassword }"
+        >
+          <img src="../../../assets/show-password.png" />
+        </div>
+        <label *ngIf="capsOn" class="caps-warning">Caps Locked</label>
       </div>
-      <label *ngIf="capsOn" class="caps-warning">Caps Locked</label>
-    </div>
-    <button type="submit" tabindex="3" (click)="validate()">Login</button>
-  </form>
+      <button type="submit" tabindex="3" (click)="validate()">Login</button>
+    </form>
+    <button
+      (click)="forgotPassword()"
+      tabindex="3"
+      type="button"
+      class="forgot-password"
+    >
+      Forgot Password
+    </button>
+  </div>
 </div>

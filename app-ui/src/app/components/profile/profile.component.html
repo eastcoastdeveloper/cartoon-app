@@ -1,44 +1,86 @@
-<div class="profile">
-  <div>
-    <span>Username: </span>
-    <span>{{ username }}</span>
+<div class="double-page-content">
+  <div class="editing-nav-bar">
+    <div class="nav-wrapper">
+      <nav>
+        <span
+          (click)="tabNavigation('settings')"
+          [ngClass]="{ 'active-page': currentTab === 'settings' }"
+          >Settings</span
+        >
+        <span
+          (click)="tabNavigation('captions')"
+          [ngClass]="{ 'active-page': currentTab === 'captions' }"
+          >Captions</span
+        >
+      </nav>
+    </div>
   </div>
 
-  <form>
-    <div class="settings">
-      <div class="location-wrapper">
-        <div class="location">
-          <div class="city">
-            <label for="location"> City</label>
-            <input type="text" placeholder="Please enter a city" />
-          </div>
-          <div class="state">
-            <label for="location"> State/ Region</label>
-            <input type="text" placeholder="Please enter a state or region" />
-          </div>
-        </div>
-        <div class="vertical-center">
-          <div class="show-location">
-            <div></div>
-            <span>Show Location</span>
-          </div>
-        </div>
+  <div class="profile">
+    <div *ngIf="currentTab === 'settings'">
+      <div class="username">
+        <span>{{ username }}</span>
       </div>
 
-      <div class="location-wrapper">
-        <div class="location">
-          <div class="city">
-            <label for="location"> Country</label>
-            <input type="text" placeholder="Please enter a country" />
+      <form>
+        <div class="settings">
+          <div class="location-wrapper">
+            <div class="location">
+              <div class="city">
+                <label for="location"> City</label>
+                <input type="text" placeholder="Please enter a city" />
+              </div>
+              <div class="state">
+                <label for="location"> State/ Region</label>
+                <input
+                  type="text"
+                  placeholder="Please enter a state or region"
+                />
+              </div>
+            </div>
+            <div class="vertical-center">
+              <div class="show-location">
+                <div></div>
+                <span>Show Location</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="location-wrapper">
+            <div class="location">
+              <div class="city">
+                <label for="location"> Country</label>
+                <input type="text" placeholder="Please enter a country" />
+              </div>
+            </div>
+            <div class="vertical-center">
+              <div class="show-location">
+                <div></div>
+                <span>Show Country</span>
+              </div>
+            </div>
           </div>
         </div>
-        <div class="vertical-center">
-          <div class="show-location">
-            <div></div>
-            <span>Show Country</span>
+      </form>
+
+      <div class="change-password" (click)="changePassword()">
+        Change Password
+      </div>
+    </div>
+
+    <div *ngIf="currentTab === 'captions'" class="profile-wrapper">
+      <div class="profile-data" *ngFor="let item of profileData">
+        <div *ngIf="profileData.length > 0">
+          <div class="image">
+            <img src="{{ item.imageUrl }}" />
+          </div>
+          <div>
+            <span class="caption">{{ "caption: " + item.caption }}</span>
+            <span class="status">{{ "status: " + item.status }}</span>
           </div>
         </div>
       </div>
+      <div *ngIf="profileData.length === 0">Please submit a caption.</div>
     </div>
-  </form>
+  </div>
 </div>

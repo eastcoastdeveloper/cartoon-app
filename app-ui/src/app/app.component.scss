@@ -1,12 +1,13 @@
 @import "./style/color.scss";
 
 .content {
-  margin-top: 124px;
+  margin-top: 123px;
   height: 100%;
 }
 
 .redirect-message {
   font: normal 14px sans-serif;
+  border: 2px solid $white;
   transition: all 0.25s;
   position: fixed;
   text-align: center;
@@ -18,7 +19,6 @@
   top: 29px;
   right: 10px;
   border-radius: 6px;
-  border: 2px solid white;
 }
 
 .show-redirect-message {

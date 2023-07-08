@@ -1,9 +1,10 @@
-import { Component } from "@angular/core";
+import { Component, OnDestroy } from "@angular/core";
 import {
   UntypedFormControl,
   UntypedFormGroup,
   Validators,
 } from "@angular/forms";
+import { Subject, takeUntil } from "rxjs";
 import { emailValidator } from "src/app/directives/email-validator.directive";
 import { AuthService } from "src/app/services/auth.service";
 
@@ -12,11 +13,13 @@ import { AuthService } from "src/app/services/auth.service";
   templateUrl: "./forgot-password.component.html",
   styleUrls: ["./forgot-password.component.scss"],
 })
-export class ForgotPasswordComponent {
+export class ForgotPasswordComponent implements OnDestroy {
+  private unsubscribe$ = new Subject<void>();
   reactiveForm!: UntypedFormGroup;
   emailAdress: string;
   emailSent: boolean = false;
   message: string;
+  tokenExpired: boolean = false;
 
   constructor(private _authSerivce: AuthService) {}
 
@@ -30,12 +33,20 @@ export class ForgotPasswordComponent {
       ]),
     });
 
-    this._authSerivce.emailMessage$.pipe().subscribe((val) => {
-      if (val.message != "") {
-        this.emailSent = true;
-        this.message = val.message;
-      }
-    });
+    this._authSerivce.emailMessage$
+      .pipe(takeUntil(this.unsubscribe$))
+      .subscribe((val) => {
+        if (val.message != "") {
+          this.emailSent = true;
+          this.message = val.message;
+        }
+      });
+
+    this._authSerivce.tokenExpired$
+      .pipe(takeUntil(this.unsubscribe$))
+      .subscribe((val) => {
+        this.tokenExpired = val;
+      });
   }
 
   get email() {
@@ -52,5 +63,14 @@ export class ForgotPasswordComponent {
 
     this._authSerivce.forgotPassword(this.reactiveForm.value.email);
     this.reactiveForm.reset();
+  }
+
+  onFocusEvent(e: any) {
+    this.tokenExpired = false;
+  }
+
+  ngOnDestroy(): void {
+    this.unsubscribe$.next();
+    this.unsubscribe$.complete();
   }
 }

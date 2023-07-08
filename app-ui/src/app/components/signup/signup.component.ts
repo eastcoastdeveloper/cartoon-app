@@ -1,10 +1,5 @@
 import { Component, OnInit } from "@angular/core";
-import {
-  FormBuilder,
-  FormGroup,
-  UntypedFormGroup,
-  Validators,
-} from "@angular/forms";
+import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { AuthService } from "src/app/services/auth.service";
 import { MustMatch } from "./form-validators";
 import { Subject, takeUntil } from "rxjs";
@@ -20,7 +15,8 @@ export class SignupComponent implements OnInit {
   emailAdress: string;
   username: string;
   password: string;
-
+  userExists: boolean = false;
+  userRegistered: boolean = false;
   city: string = "";
   state: string = "";
   country: string = "";
@@ -74,16 +70,23 @@ export class SignupComponent implements OnInit {
       .subscribe({
         next: (response) => {
           if (response["message"] === "Username already exists") {
-            this._router.navigate(["/login"]);
-            this._authService.registrationSubject$.next({ message: "" });
+            this.userExists = true;
+            this.userRegistered = false;
           }
           if (response["message"] === "User created!") {
-            this._router.navigate(["/login"]);
-            this._authService.registrationSubject$.next({
-              message: "",
-              result: { email: "", password: "" },
-            });
+            this.userExists = false;
+            this.userRegistered = true;
+            setTimeout(() => {
+              this._router.navigate(["/login"]);
+              this._authService.registrationSubject$.next({
+                message: "",
+                result: { email: "", password: "" },
+              });
+            }, 3500);
           }
+        },
+        error: (error) => {
+          console.log(error);
         },
       });
   }

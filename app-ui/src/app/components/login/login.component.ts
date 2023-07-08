@@ -1,9 +1,11 @@
-import { Component, OnInit } from "@angular/core";
+import { Component, OnDestroy, OnInit } from "@angular/core";
 import {
   UntypedFormControl,
   UntypedFormGroup,
   Validators,
 } from "@angular/forms";
+import { Router } from "@angular/router";
+import { Subject, takeUntil } from "rxjs";
 import { emailValidator } from "src/app/directives/email-validator.directive";
 import { AuthService } from "src/app/services/auth.service";
 
@@ -12,15 +14,17 @@ import { AuthService } from "src/app/services/auth.service";
   templateUrl: "./login.component.html",
   styleUrls: ["./login.component.scss"],
 })
-export class LoginComponent implements OnInit {
+export class LoginComponent implements OnInit, OnDestroy {
+  private unsubscribe$ = new Subject<void>();
   reactiveForm!: UntypedFormGroup;
   emailAdress: string;
   showPassword: boolean = false;
+  badCredentials: boolean = false;
   passwordVisibility: boolean = false;
   password: string;
   capsOn: any;
 
-  constructor(private _authSerivce: AuthService) {}
+  constructor(private _authSerivce: AuthService, private _router: Router) {}
 
   ngOnInit(): void {
     this.reactiveForm = new UntypedFormGroup({
@@ -36,10 +40,20 @@ export class LoginComponent implements OnInit {
         Validators.maxLength(250),
       ]),
     });
+
+    this._authSerivce.badCredentials$
+      .pipe(takeUntil(this.unsubscribe$))
+      .subscribe((val) => {
+        this.badCredentials = val;
+      });
   }
 
   togglePassword() {
     this.showPassword = !this.showPassword;
+  }
+
+  onFocusEvent(e: any) {
+    this.badCredentials = false;
   }
 
   passwordFieldChanged() {
@@ -50,6 +64,10 @@ export class LoginComponent implements OnInit {
 
   get email() {
     return this.reactiveForm.get("email")!;
+  }
+
+  forgotPassword() {
+    this._router.navigateByUrl("/forgot-password");
   }
 
   public validate(): void {
@@ -65,5 +83,10 @@ export class LoginComponent implements OnInit {
       this.reactiveForm.value.password
     );
     this.reactiveForm.reset();
+  }
+
+  ngOnDestroy(): void {
+    this.unsubscribe$.next();
+    this.unsubscribe$.complete();
   }
 }

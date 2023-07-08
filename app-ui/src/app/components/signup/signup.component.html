@@ -1,5 +1,11 @@
 <div id="signup">
   <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
+    <div *ngIf="userExists" class="validation-error">
+      User already registered. Please try again.
+    </div>
+    <div *ngIf="userRegistered" class="notification">
+      Signup successful. Redirecting.
+    </div>
     <div class="username">
       <label class="form-label">Username</label>
       <input

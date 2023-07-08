@@ -1,14 +1,22 @@
+@import "../../style/color";
+
 .profile {
-  max-width: 500px;
-  margin: 0 auto;
-  padding-top: 40px;
+  padding-top: 60px;
   font: normal 14px sans-serif;
+  height: calc(100% - 20px);
+  overflow: auto;
+  padding-bottom: 0;
+  box-sizing: border-box;
+  .username {
+    font-weight: 600;
+    text-transform: capitalize;
+  }
   form {
-    margin-top: 30px;
+    margin: 10px 0 20px 0;
     .settings {
       .location-wrapper {
         display: grid;
-        grid-template-columns: repeat(2, 50%);
+        grid-template-columns: 250px 175px;
         .location {
           .city,
           .state {
@@ -23,13 +31,78 @@
             grid-template-columns: 15px auto;
             grid-column-gap: 5px;
             > div {
-              border: 1px solid black;
+              border: 1px solid $midnight;
             }
           }
         }
       }
-      .location-wrapper:first-child {
-        margin-bottom: 20px;
+    }
+  }
+  .change-password {
+    font-weight: 600;
+    width: 125px;
+  }
+
+  .profile-data {
+    > div {
+      display: grid;
+      grid-template-columns: 100px auto;
+      grid-column-gap: 10px;
+
+      .image {
+        img {
+          width: 100%;
+          display: block;
+          border: 1px solid $midnight;
+        }
+      }
+
+      .image + div {
+        display: grid;
+        grid-template-rows: repeat(2, 25px);
+        align-items: end;
+      }
+    }
+  }
+
+  .profile-data:not(:last-child) {
+    margin-bottom: 20px;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .profile {
+    padding-top: 15px;
+    height: 100%;
+  }
+}
+
+@media screen and (max-width: 500px) {
+  .profile {
+    .profile-data {
+      grid-template-columns: none;
+      grid-template-rows: 100px 60px;
+      grid-column-gap: 0;
+      .image {
+        height: 150px;
+        max-width: 140px;
+      }
+    }
+
+    form {
+      .settings {
+        .location-wrapper {
+          grid-template-columns: none;
+          grid-template-rows: auto 15px;
+          .vertical-center {
+            .show-location {
+              margin: 0;
+            }
+          }
+        }
+        .location-wrapper:first-child {
+          margin-bottom: 30px;
+        }
       }
     }
   }

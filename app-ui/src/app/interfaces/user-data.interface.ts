@@ -1,12 +1,15 @@
 export class CaptionsInterface {
   caption?: string;
-  firstName?: string;
-  lastName?: string;
-  city?: string;
-  state?: string;
-  country?: string;
+  // firstName?: string;
+  // lastName?: string;
+  // city?: string;
+  // state?: string;
+  // country?: string;
   votes?: number;
   approved: boolean;
+  id?: string;
+  captionIndex?: string;
+  creator: string;
 }
 
 export class UserDataInterface {

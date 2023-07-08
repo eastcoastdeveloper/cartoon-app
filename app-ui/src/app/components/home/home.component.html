@@ -1,4 +1,6 @@
 <div [ngClass]="{ 'home-page-editing-mode': mode === 'edit' }" id="home-page">
+  <div *ngIf="loggedIn" class="notification">Logged In.</div>
+  <div *ngIf="!loggedIn" class="validation-error">Logged Out.</div>
   <div
     [ngClass]="{ 'cartoon-layout-default': mode === 'create' }"
     class="cartoon"

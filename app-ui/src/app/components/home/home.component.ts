@@ -22,7 +22,7 @@ import { AuthService } from "src/app/services/auth.service";
   styleUrls: ["./home.component.scss"],
 })
 export class HomeComponent implements OnInit, OnDestroy {
-  destroy$: Subject<boolean> = new Subject<boolean>();
+  private destroy$: Subject<boolean> = new Subject<boolean>();
   captionsArray: CaptionsInterface[] = [];
   userIsAuthenticated = false;
   captionsGroupIndex: number = 1;
@@ -38,15 +38,11 @@ export class HomeComponent implements OnInit, OnDestroy {
   totalItems: number;
   manualURL: string;
   hover: boolean = false;
+  loggedIn: boolean = false;
   windowWidth?: number;
   toonIndex: number;
   user: IUser = {
     caption: "",
-    // firstname: "",
-    // lastname: "",
-    // city: "",
-    // state: "",
-    // country: "",
     approved: false,
   };
 
@@ -66,23 +62,6 @@ export class HomeComponent implements OnInit, OnDestroy {
         Validators.minLength(1),
         Validators.maxLength(250),
       ]),
-      // firstname: new UntypedFormControl(this.user.firstname, [
-      //   Validators.required,
-      //   Validators.minLength(1),
-      //   Validators.maxLength(250),
-      // ]),
-      // lastname: new UntypedFormControl(this.user.lastname, [
-      //   Validators.minLength(1),
-      //   Validators.maxLength(250),
-      // ]),
-      // city: new UntypedFormControl(this.user.city, [
-      //   Validators.minLength(1),
-      //   Validators.maxLength(250),
-      // ]),
-      // state: new UntypedFormControl(this.user.state, [
-      //   Validators.minLength(1),
-      //   Validators.maxLength(250),
-      // ]),
     });
 
     // Subscribe to Window Width
@@ -103,7 +82,6 @@ export class HomeComponent implements OnInit, OnDestroy {
             this.altText = val.altText;
             this.captionsArray = val.captions;
             this.toonIndex = val.itemIndex;
-            // this.creator = val.creator
             this.totalCaptions = this.captionsArray.length;
 
             this._router.navigate(["caption-contest"], {
@@ -117,34 +95,42 @@ export class HomeComponent implements OnInit, OnDestroy {
 
     // Capture manual value entered
     // Capture caption being edited & associated image
-    this._activateRoute.queryParams.subscribe((val: Params) => {
-      this.manualURL = val["num"];
-      if (null != val["caption"]) {
-        this.mode = "edit";
-        this.captionFromAdmin = val["caption"];
-        this.captionIndex = val["captionIndex"];
-        this.editingData = this._httpService.adminResponseSubject$.getValue();
-        this.currentImage = this.editingData.imageUrl;
-        this.captionBeingEdited = this.captionFromAdmin.replace(/%20/g, " ");
+    this._activateRoute.queryParams
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((val: Params) => {
+        this.manualURL = val["num"];
+        if (null != val["caption"]) {
+          this.mode = "edit";
+          this.captionFromAdmin = val["caption"];
+          this.captionIndex = val["captionIndex"];
+          this.editingData = this._httpService.adminResponseSubject$.getValue();
+          this.currentImage = this.editingData.imageUrl;
+          this.captionBeingEdited = this.captionFromAdmin.replace(/%20/g, " ");
 
-        // Redirect to login if logged out while editing a caption
-        this.currentImage === "" ? this._router.navigate(["/login"]) : "";
-      }
-    });
+          // Redirect to login if logged out while editing a caption
+          this.currentImage === "" ? this._router.navigate(["/login"]) : "";
+        }
+      });
 
     // Is User Authenticated?
     this.userIsAuthenticated = this._authService.getIsAuth();
-    this.userIsAuthenticated
-      ? this.reactiveForm.enable()
-      : this.reactiveForm.disable();
+    if (this.userIsAuthenticated) {
+      this.reactiveForm.enable();
+      this.loggedIn = true;
+    } else {
+      this.reactiveForm.disable();
+    }
 
-    this._authService.getAuthStatusListener().subscribe((isAuthenticated) => {
-      this.userIsAuthenticated = isAuthenticated;
-      this.userIsAuthenticated
-        ? this.reactiveForm.enable()
-        : this.reactiveForm.reset(),
-        this.reactiveForm.disable();
-    });
+    this._authService
+      .getAuthStatusListener()
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((isAuthenticated) => {
+        this.userIsAuthenticated = isAuthenticated;
+        this.userIsAuthenticated
+          ? this.reactiveForm.enable()
+          : this.reactiveForm.reset(),
+          this.reactiveForm.disable();
+      });
 
     const storage = this._localStorage.getData("captions");
     if (storage === "" || this.manualURL === undefined) {
@@ -159,6 +145,14 @@ export class HomeComponent implements OnInit, OnDestroy {
       .pipe(takeUntil(this.destroy$))
       .subscribe((val) => {
         this.totalItems = val;
+      });
+
+    // Logged In
+    this._authService
+      .getAuthStatusListener()
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((isAuthenticated) => {
+        this.loggedIn = isAuthenticated;
       });
   }
 
@@ -176,8 +170,6 @@ export class HomeComponent implements OnInit, OnDestroy {
     );
     this._router.navigate(["/admin"]);
     this.cacheNewlyEditedCaption();
-    // const storage = this._localStorage.getData("captions");
-    // const parsed = JSON.parse(storage);
   }
 
   // Cache Edited Caption
@@ -206,22 +198,6 @@ export class HomeComponent implements OnInit, OnDestroy {
   get caption() {
     return this.reactiveForm.get("caption")!;
   }
-
-  // get firstname() {
-  //   return this.reactiveForm.get("firstname")!;
-  // }
-
-  // get lastname() {
-  //   return this.reactiveForm.get("lastname")!;
-  // }
-
-  // get city() {
-  //   return this.reactiveForm.get("city")!;
-  // }
-
-  // get state() {
-  //   return this.reactiveForm.get("state")!;
-  // }
 
   // Form Validation & Post to Backend
   public validate(): void {

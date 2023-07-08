@@ -1,11 +1,9 @@
 import { Injectable } from "@angular/core";
 import {
   ActivatedRouteSnapshot,
-  CanActivate,
   Router,
   RouterStateSnapshot,
 } from "@angular/router";
-import { error } from "console";
 import { Observable } from "rxjs";
 import { AuthService } from "../services/auth.service";
 
@@ -17,7 +15,7 @@ export class AuthGuard {
     route: ActivatedRouteSnapshot,
     state: RouterStateSnapshot
   ): boolean | Observable<boolean> | Promise<boolean> {
-    const isAuth = this._authService.getRole();
+    const isAuth = this._authService.hasRoleListener$.getValue();
     if (!isAuth) {
       this._router.navigate(["/login"]);
     }
