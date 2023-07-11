@@ -68,7 +68,10 @@ export class AdminComponent implements OnDestroy {
     const storage = this._localStorage.getData("captions");
     const parsed = JSON.parse(storage);
     const updatedObject = data.captions[captionIndex];
-    parsed[toonReference].captions.push(updatedObject);
+    // console.log(parsed);
+    null != parsed[toonReference]
+      ? parsed[toonReference].captions.push(updatedObject)
+      : "";
     this._localStorage.saveData("captions", JSON.stringify(parsed));
   }
 

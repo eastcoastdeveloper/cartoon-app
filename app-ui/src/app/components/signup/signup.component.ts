@@ -1,21 +1,23 @@
-import { Component, OnInit } from "@angular/core";
+import { Component, OnDestroy, OnInit } from "@angular/core";
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { AuthService } from "src/app/services/auth.service";
 import { MustMatch } from "./form-validators";
 import { Subject, takeUntil } from "rxjs";
 import { Router } from "@angular/router";
+import { generateUsername } from "friendly-username-generator";
 
 @Component({
   selector: "app-signup",
   templateUrl: "./signup.component.html",
   styleUrls: ["./signup.component.scss"],
 })
-export class SignupComponent implements OnInit {
+export class SignupComponent implements OnInit, OnDestroy {
+  private unsubscribe$ = new Subject<boolean>();
   passwordVisibility: boolean = false;
   emailAdress: string;
   username: string;
   password: string;
-  userExists: boolean = false;
+  userAlreadyRegisteredError = false;
   userRegistered: boolean = false;
   city: string = "";
   state: string = "";
@@ -30,7 +32,7 @@ export class SignupComponent implements OnInit {
 
   submitted = false;
   registerForm!: FormGroup;
-  private unsubscribe$ = new Subject<void>();
+  // private unsubscribe$:Subject<boolean> = new Subject<void>();
 
   constructor(
     private _authService: AuthService,
@@ -54,7 +56,7 @@ export class SignupComponent implements OnInit {
         //     ),
         //   ],
         // ],
-        username: ["", [Validators.required]],
+        // username: ["", [Validators.required]],
         email: ["", [Validators.required, Validators.email]],
         password: ["", [Validators.required, Validators.minLength(6)]],
         confirmPassword: ["", Validators.required],
@@ -69,24 +71,23 @@ export class SignupComponent implements OnInit {
       .pipe(takeUntil(this.unsubscribe$))
       .subscribe({
         next: (response) => {
-          if (response["message"] === "Username already exists") {
-            this.userExists = true;
-            this.userRegistered = false;
-          }
+          // if (response["message"] === "Username already exists") {
+          //   this.userAlreadyRegisteredError = true;
+          //   this.userRegistered = false;
+          // }
           if (response["message"] === "User created!") {
-            this.userExists = false;
+            this.userAlreadyRegisteredError = false;
             this.userRegistered = true;
             setTimeout(() => {
               this._router.navigate(["/login"]);
               this._authService.registrationSubject$.next({
                 message: "",
-                result: { email: "", password: "" },
               });
             }, 3500);
           }
         },
         error: (error) => {
-          console.log(error);
+          this.userAlreadyRegisteredError = true;
         },
       });
   }
@@ -115,7 +116,7 @@ export class SignupComponent implements OnInit {
       return;
     }
 
-    this.username = this.registerForm.value.username;
+    this.username = generateUsername();
     this.emailAdress = this.registerForm.value.email;
     this.password = this.registerForm.value.password;
     this._authService.createUser(
@@ -129,10 +130,17 @@ export class SignupComponent implements OnInit {
       this.showCountry,
       this.captions
     );
+
+    console.log(this.username);
   }
 
   onReset() {
     this.submitted = false;
     this.registerForm.reset();
+  }
+
+  ngOnDestroy(): void {
+    this.unsubscribe$.next(true);
+    this.unsubscribe$.complete();
   }
 }

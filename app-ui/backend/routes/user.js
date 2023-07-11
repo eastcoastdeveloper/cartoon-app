@@ -20,6 +20,8 @@ router.post("/signup", (req, res, next) => {
       showCountry: req.body.showCountry,
       captions: req.body.captions
     });
+
+    console.log(user)
     user
       .save()
       .then(result => {

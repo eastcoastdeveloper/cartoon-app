@@ -78,6 +78,7 @@ export class HomeComponent implements OnInit, OnDestroy {
         .pipe(takeUntil(this.destroy$))
         .subscribe((val) => {
           if (val) {
+            console.log(val);
             this.currentImage = val.imageUrl;
             this.altText = val.altText;
             this.captionsArray = val.captions;
@@ -224,6 +225,7 @@ export class HomeComponent implements OnInit, OnDestroy {
 
   // Previous Image
   navigatePrevious() {
+    console.log(this.toonIndex);
     this.toonIndex === 0
       ? (this.toonIndex = this.totalItems - 1)
       : this.toonIndex--;

@@ -41,8 +41,7 @@ export class AuthService implements OnDestroy {
   username$ = new BehaviorSubject<string | null>(null);
   registrationSubject$ = new BehaviorSubject<{
     message?: string;
-    result?: { email: string; password: string };
-  }>({ message: "", result: { email: "", password: "" } });
+  }>({ message: "" });
 
   constructor(
     private _http: HttpClient,
@@ -96,7 +95,8 @@ export class AuthService implements OnDestroy {
           this.registrationSubject$.next(value);
         },
         error: (err) => {
-          this.registrationSubject$.next({
+          console.log(err);
+          this.registrationSubject$.error({
             message: "Username already exists",
           });
         },

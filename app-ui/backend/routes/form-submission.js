@@ -15,6 +15,12 @@ router.post('/', checkAuth, async function (req, res, next) {
     approved: false,
     id: uuidv4()
   };
+  let username;
+
+  await User.findById({ _id: formData.creator}).then((val) => {
+    username = val.username;
+    formData.username = username;
+  })
 
   const id = req.body.currentDataObject._id;
   await CaptionData.findOneAndUpdate(
@@ -38,6 +44,8 @@ router.post('/', checkAuth, async function (req, res, next) {
       }
     }
   )
+
+  console.log(formData)
 
 });
 

@@ -1,6 +1,6 @@
 <div [ngClass]="{ 'home-page-editing-mode': mode === 'edit' }" id="home-page">
-  <div *ngIf="loggedIn" class="notification">Logged In.</div>
-  <div *ngIf="!loggedIn" class="validation-error">Logged Out.</div>
+  <div *ngIf="loggedIn" class="notification margin-auto">Logged In.</div>
+  <div *ngIf="!loggedIn" class="validation-error margin-auto">Logged Out.</div>
   <div
     [ngClass]="{ 'cartoon-layout-default': mode === 'create' }"
     class="cartoon"
@@ -66,9 +66,9 @@
           *ngIf="caption.invalid && (caption.dirty || caption.touched)"
           class="invalid-feedback"
         >
-          <div *ngIf="caption.errors?.['required']" class="validation-error">
+          <!-- <div *ngIf="caption.errors?.['required']" class="validation-error">
             This field is required.
-          </div>
+          </div> -->
           <div *ngIf="caption.errors?.['minlength']" class="validation-error">
             This field must have at least 1 character.
           </div>
@@ -272,6 +272,7 @@
       class="repeating-block element-shadow"
     >
       <div class="submission">
+        <span class="nickname">{{ data.username }}</span>
         <p>{{ data.caption }}</p>
         <!-- <div class="full-name">
           <span>{{ data.firstName }}</span>

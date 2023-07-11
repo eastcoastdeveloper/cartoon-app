@@ -8,8 +8,12 @@
   padding-bottom: 0;
   box-sizing: border-box;
   .username {
-    font-weight: 600;
-    text-transform: capitalize;
+    > span:first-child {
+      font-weight: 600;
+    }
+    > span:last-child {
+      text-transform: capitalize;
+    }
   }
   form {
     margin: 10px 0 20px 0;
