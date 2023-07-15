@@ -232,6 +232,10 @@
           text-transform: capitalize;
           font-size: 12px;
         }
+        .location {
+          float: right;
+          font-size: 12px;
+        }
         > p {
           font: italic 14px "Yantramanav-Regular", sans-serif;
           background-color: $midnight;

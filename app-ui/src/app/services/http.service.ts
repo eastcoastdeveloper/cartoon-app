@@ -2,7 +2,6 @@ import { HttpClient, HttpHeaders } from "@angular/common/http";
 import { Injectable, OnDestroy } from "@angular/core";
 import {
   BehaviorSubject,
-  Observable,
   Subject,
   catchError,
   map,
@@ -23,6 +22,10 @@ import { ProfileInterface } from "../interfaces/profile.interface";
 })
 export class HttpService implements OnDestroy {
   private unsubscribe$: Subject<boolean> = new Subject<boolean>();
+  userLocation$ = new BehaviorSubject<{ city: string; country: string }>({
+    city: "",
+    country: "",
+  });
   invalidURL$ = new BehaviorSubject<boolean>(false);
   totalItems$ = new BehaviorSubject<number>(0);
   storageObject: LocalStorageInterface | null;
@@ -32,6 +35,10 @@ export class HttpService implements OnDestroy {
   formSubmitted$ = new Subject<boolean>();
   adminResponse: UserDataInterface;
   profileData: ProfileInterface;
+  location$ = new BehaviorSubject<{ city: string; country: string }>({
+    city: "",
+    country: "",
+  });
   profileData$ = new BehaviorSubject<ProfileInterface>({
     imageUrl: "",
     caption: "",
@@ -120,6 +127,7 @@ export class HttpService implements OnDestroy {
       .pipe(
         takeUntil(this.unsubscribe$),
         map((responseData) => {
+          console.log(responseData);
           if (null != responseData) {
             Object.keys(responseData).filter((currentVal, index) => {
               if (currentVal === "results") {
@@ -147,6 +155,23 @@ export class HttpService implements OnDestroy {
       )
       .subscribe(() => {
         this.responseSubject$.next(this.cartoonDataObject);
+      });
+  }
+
+  getCoordinates(lat: number, long: number) {
+    const httpOptions = {
+      headers: new HttpHeaders(),
+    };
+
+    return this._http
+      .get<
+        [{ geometry: object; properties: { city: string; country: string } }]
+      >(`/api/map/?lat=${lat}&long=${long}`, httpOptions)
+      .subscribe((val) => {
+        const result = Object.values(val);
+        let city = result[0].properties.city;
+        let country = result[0].properties.country;
+        this.location$.next({ city, country });
       });
   }
 
@@ -266,6 +291,23 @@ export class HttpService implements OnDestroy {
       .get<ProfileInterface>(`/api/profile/${id}`, httpOptions)
       .subscribe((item) => {
         this.profileData$.next(item);
+      });
+  }
+
+  saveGeolocation(city: string, country: string, id: string) {
+    const data = {
+      city: city,
+      country: country,
+      id: id,
+    };
+    return this._http
+      .post<{ city: string; country: string; id: string }>(
+        `/api/profile/location`,
+        data
+      )
+      .pipe(takeUntil(this.unsubscribe$))
+      .subscribe((val) => {
+        console.log(val);
       });
   }
 

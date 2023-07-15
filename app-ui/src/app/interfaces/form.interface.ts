@@ -1,5 +1,6 @@
 export class IUser {
   caption: string;
+  // location: string;
   // firstname: string;
   // lastname: string;
   // city: string;

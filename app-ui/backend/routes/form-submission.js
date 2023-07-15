@@ -13,13 +13,16 @@ router.post('/', checkAuth, async function (req, res, next) {
     caption: req.body.formData.caption,
     creator: req.userData.userId,
     approved: false,
-    id: uuidv4()
+    id: uuidv4(),
+    location: ""
   };
   let username;
 
-  await User.findById({ _id: formData.creator}).then((val) => {
+  await User.findById({ _id: formData.creator }).then((val) => {
     username = val.username;
+    location = val.location;
     formData.username = username;
+    formData.location = location;
   })
 
   const id = req.body.currentDataObject._id;
@@ -39,13 +42,12 @@ router.post('/', checkAuth, async function (req, res, next) {
           imageUrl: req.body.currentDataObject.imageUrl,
           caption: formData.caption,
           id: formData.id,
-          status: 'pending'
+          status: 'pending',
+          location: formData.location
         }
       }
     }
   )
-
-  console.log(formData)
 
 });
 

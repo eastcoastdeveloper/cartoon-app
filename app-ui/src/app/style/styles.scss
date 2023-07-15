@@ -189,13 +189,15 @@ input {
         grid-column-gap: 10px;
         max-width: 250px;
         span {
-          padding: 5px 0;
+          padding: 5px;
           border-radius: 3px;
           background-color: $white;
           color: $midnight;
           cursor: pointer;
           border: 1px solid $midnight;
           text-align: center;
+          white-space: nowrap;
+          font: normal 13px sans-serif;
         }
       }
     }
@@ -209,13 +211,13 @@ input {
 [type="submit"],
 [type="reset"],
 .forgot-password,
-.change-password,
-.register {
+.register,
+.refresh-page {
   outline: none;
   width: 100%;
   left: 0;
   padding: 5px 15px;
-  font: 600 14px sans-serif;
+  font: 600 13px sans-serif;
   border-radius: 3px;
   border: 1px solid $midnight;
   cursor: pointer;

@@ -12,6 +12,7 @@
           [ngClass]="{ 'active-page': currentTab === 'captions' }"
           >Captions</span
         >
+        <span (click)="changePassword()"> Change Password </span>
       </nav>
     </div>
   </div>
@@ -23,49 +24,32 @@
         <span>{{ username }}</span>
       </div>
 
-      <form>
-        <div class="settings">
-          <div class="location-wrapper">
-            <div class="location">
-              <div class="city">
-                <label for="location"> City</label>
-                <input type="text" placeholder="Please enter a city" />
-              </div>
-              <div class="state">
-                <label for="location"> State/ Region</label>
-                <input
-                  type="text"
-                  placeholder="Please enter a state or region"
-                />
-              </div>
-            </div>
-            <div class="vertical-center">
-              <div class="show-location">
-                <div></div>
-                <span>Show Location</span>
-              </div>
-            </div>
-          </div>
+      <div class="location" *ngIf="city != ''">
+        <span>Location: </span>
+        <span>{{ city + ", " + country }}</span>
+      </div>
 
-          <div class="location-wrapper">
-            <div class="location">
-              <div class="city">
-                <label for="location"> Country</label>
-                <input type="text" placeholder="Please enter a country" />
-              </div>
-            </div>
-            <div class="vertical-center">
-              <div class="show-location">
-                <div></div>
-                <span>Show Country</span>
-              </div>
-            </div>
-          </div>
+      <div class="map" *ngIf="locationEnabled">
+        <div leaflet [leafletOptions]="options"></div>
+      </div>
+      <div class="location-message" *ngIf="!mapLoaded">
+        Your location is
+        {{
+          locationEnabled
+            ? ""
+            : " disabled. Enable your location to display it with your captions."
+        }}
+        <div class="update-page">
+          <span>Location already enabled?</span>
+          <button
+            class="refresh-page"
+            type="button"
+            tabindex="6"
+            (click)="refreshPage()"
+          >
+            Refresh Page
+          </button>
         </div>
-      </form>
-
-      <div class="change-password" (click)="changePassword()">
-        Change Password
       </div>
     </div>
 

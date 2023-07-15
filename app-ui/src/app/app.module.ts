@@ -12,6 +12,8 @@ import { EmailValidatorDirective } from "./directives/email-validator.directive"
 import { AdminComponent } from "./components/admin/admin.component";
 import { AuthInterceptor } from "./interceptors/auth.interceptor";
 import { TrackCapsDirective } from "./directives/capslock.directive";
+import { CommonModule } from "@angular/common";
+import { LeafletModule } from "@asymmetrik/ngx-leaflet";
 
 @NgModule({
   declarations: [
@@ -25,6 +27,8 @@ import { TrackCapsDirective } from "./directives/capslock.directive";
     TrackCapsDirective,
   ],
   imports: [
+    CommonModule,
+    LeafletModule,
     HttpClientModule,
     BrowserModule,
     AppRoutingModule,

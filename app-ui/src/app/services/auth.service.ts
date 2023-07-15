@@ -69,22 +69,14 @@ export class AuthService implements OnDestroy {
     username: string,
     email: string,
     password: string,
-    city: string,
-    state: string,
-    country: string,
     showLocation: boolean,
-    showCountry: boolean,
     captions: []
   ) {
     const authData: AuthData = {
       username: username,
       email: email,
       password: password,
-      city: city,
-      state: state,
-      country: country,
       showLocation: showLocation,
-      showCountry: showCountry,
       captions: [],
     };
     this._http

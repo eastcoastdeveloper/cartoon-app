@@ -13,15 +13,11 @@ router.post("/signup", (req, res, next) => {
       },
       password: hash,
       username: req.body.username,
-      city: req.body.city,
-      state: req.body.state,
-      country: req.body.country,
-      showLocation: req.body.showLocation,
-      showCountry: req.body.showCountry,
+      showLocation: false,
+      location: "",
       captions: req.body.captions
     });
 
-    console.log(user)
     user
       .save()
       .then(result => {

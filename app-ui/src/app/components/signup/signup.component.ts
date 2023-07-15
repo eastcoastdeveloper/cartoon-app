@@ -19,11 +19,7 @@ export class SignupComponent implements OnInit, OnDestroy {
   password: string;
   userAlreadyRegisteredError = false;
   userRegistered: boolean = false;
-  city: string = "";
-  state: string = "";
-  country: string = "";
   showLocation: boolean = false;
-  showCountry: boolean = false;
   captions: [];
 
   confirm_password: string;
@@ -123,15 +119,9 @@ export class SignupComponent implements OnInit, OnDestroy {
       this.username,
       this.emailAdress,
       this.password,
-      this.city,
-      this.state,
-      this.country,
       this.showLocation,
-      this.showCountry,
       this.captions
     );
-
-    console.log(this.username);
   }
 
   onReset() {

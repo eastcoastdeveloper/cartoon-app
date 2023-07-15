@@ -8,7 +8,7 @@ function cT() {
         var storageObject = {};
 
         await query.countDocuments({}).exec()
-        .then((count) => {
+            .then((count) => {
             for (var i = 0; i < count; i++) {
                 storageObject[i] = null;
             }

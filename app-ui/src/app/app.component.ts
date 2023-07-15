@@ -36,7 +36,7 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
   isMobile: boolean = false;
   mobileWidth: number = 760;
   backButtonClick = false;
-  toonReference: string;
+  // toonReference: string;
   errorDescription: string | null;
   userNotification: boolean | null;
 
@@ -81,11 +81,13 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
         setTimeout(() => {
           const dataObject = this._httpService.storageObject;
           for (let item of Object.values(dataObject!)) {
-            if (
-              item.itemIndex ===
-              Number(this.history[this.history.length - 1].num)
-            ) {
-              this._httpService.responseSubject$.next(item);
+            if (null != item) {
+              if (
+                item.itemIndex ===
+                Number(this.history[this.history.length - 1].num)
+              ) {
+                this._httpService.responseSubject$.next(item);
+              }
             }
           }
         });

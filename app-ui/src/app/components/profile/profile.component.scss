@@ -7,6 +7,20 @@
   overflow: auto;
   padding-bottom: 0;
   box-sizing: border-box;
+  .location-message {
+    margin-top: 25px;
+    font: normal 13px/20px sans-serif;
+    .update-page {
+      display: grid;
+      grid-template-columns: 160px 120px;
+      align-items: baseline;
+      font-size: inherit;
+      margin-top: 20px;
+      button {
+        font-weight: normal;
+      }
+    }
+  }
   .username {
     > span:first-child {
       font-weight: 600;
@@ -15,36 +29,19 @@
       text-transform: capitalize;
     }
   }
-  form {
-    margin: 10px 0 20px 0;
-    .settings {
-      .location-wrapper {
-        display: grid;
-        grid-template-columns: 250px 175px;
-        .location {
-          .city,
-          .state {
-            margin-bottom: 10px;
-          }
-        }
-        .vertical-center {
-          display: flex;
-          .show-location {
-            margin: auto;
-            display: grid;
-            grid-template-columns: 15px auto;
-            grid-column-gap: 5px;
-            > div {
-              border: 1px solid $midnight;
-            }
-          }
-        }
-      }
+
+  .location {
+    margin: 10px 0 15px;
+    > span:first-child {
+      font-weight: bold;
     }
   }
-  .change-password {
-    font-weight: 600;
-    width: 125px;
+  .map {
+    margin: 10px 0 20px 0;
+    border: 1px solid $midnight;
+    > div {
+      height: 300px;
+    }
   }
 
   .profile-data {

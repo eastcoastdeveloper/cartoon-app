@@ -272,23 +272,9 @@
       class="repeating-block element-shadow"
     >
       <div class="submission">
-        <span class="nickname">{{ data.username }}</span>
+        <span *ngIf="data.username" class="nickname">{{ data.username }}</span>
+        <span *ngIf="data.location" class="location">{{ data.location }}</span>
         <p>{{ data.caption }}</p>
-        <!-- <div class="full-name">
-          <span>{{ data.firstName }}</span>
-          <span *ngIf="data.lastName != ''">{{ data.lastName }}</span>
-        </div>
-        <div
-          [ngClass]="{
-            marginZero:
-              data.city === '' && data.state === '' && data.country === ''
-          }"
-          class="location"
-        >
-          <span *ngIf="data.city != ''">{{ data.city }}</span>
-          <span *ngIf="data.state != ''">{{ data.state }}</span>
-          <span *ngIf="data.country != ''">{{ data.country }}</span>
-        </div> -->
       </div>
       <div class="votes">
         <!-- <div (click)="voteUp(data.votes!)" class="vote-up">

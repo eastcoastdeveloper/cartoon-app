@@ -6,6 +6,7 @@ export class CaptionsInterface {
   captionIndex?: string;
   creator: string;
   username: string;
+  location: string;
 }
 
 export class UserDataInterface {

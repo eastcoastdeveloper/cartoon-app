@@ -1,13 +1,9 @@
 const express = require('express');
 const helmet = require('helmet');
-const bodyParser = require("body-parser");
+// const bodyParser = require("body-parser");
 const mongoose = require('mongoose');
 const port = process.env.PORT || 8080;
-const CaptionData = require('./models/userData');
-
-/* new */
-// const User = require('./models/users');
-
+// const CaptionData = require('./models/userData');
 const app = express();
 
 mongoose.set("strictQuery", false);
@@ -22,9 +18,6 @@ mongoose.connect("mongodb+srv://uxdeveloper_DB:Jjn7i4ZDFrAPeeLT@cluster0.kndgbma
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.set('view engine', 'ejs');
-
-// app.use(bodyParser.json());
-// app.use(bodyParser.urlencoded({ extended: false }));
 
 app.use(helmet());
 
@@ -42,5 +35,6 @@ app.use('/api/update', require('./routes/update'))
 app.use('/api/user', require('./routes/user'));
 app.use('/api/profile', require('./routes/profile'));
 app.use('/api/init', require('./routes/init'));
+app.use('/api/map', require('./routes/map'));
 
 module.exports = app;

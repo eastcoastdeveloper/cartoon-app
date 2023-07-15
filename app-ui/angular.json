@@ -30,7 +30,10 @@
             "tsConfig": "tsconfig.app.json",
             "inlineStyleLanguage": "scss",
             "assets": ["src/favicon.ico", "src/assets"],
-            "styles": ["src/app/style/styles.scss"],
+            "styles": [
+              "src/app/style/styles.scss",
+              "./node_modules/leaflet/dist/leaflet.css"
+            ],
             "scripts": []
           },
           "configurations": {
@@ -93,7 +96,10 @@
             "karmaConfig": "karma.conf.js",
             "inlineStyleLanguage": "scss",
             "assets": ["src/favicon.ico", "src/assets"],
-            "styles": ["src/app/style/styles.scss"],
+            "styles": [
+              "src/app/style/styles.scss",
+              "./node_modules/leaflet/dist/leaflet.css"
+            ],
             "scripts": []
           }
         }
