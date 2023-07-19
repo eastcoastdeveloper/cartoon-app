@@ -187,6 +187,18 @@ export class HttpService implements OnDestroy {
       )
       .pipe(takeUntil(this.unsubscribe$))
       .subscribe((data) => {
+        let obj = Object.values(data);
+        for (var i = 0; i < obj.length; i++) {
+          for (var j = 0; j < obj[i].captions.length; j++) {
+            if (obj[i].captions[j].approved) {
+              obj[i].captions = obj[i].captions.filter(
+                (item: any, index: number) => {
+                  return obj[i].captions[index].approved === false;
+                }
+              );
+            }
+          }
+        }
         this.adminResponseSubject$.next(data);
       });
   }
@@ -198,8 +210,11 @@ export class HttpService implements OnDestroy {
     imageUrl: string,
     itemIndex: number,
     id: string,
+    captionsIndex: number,
+    outcome: string,
     creator?: string,
-    captionReferenceID?: string
+    captionReferenceID?: string,
+    flagged?: boolean
   ) {
     const data: {
       altText: string;
@@ -207,17 +222,24 @@ export class HttpService implements OnDestroy {
       imageUrl: string;
       itemIndex: number;
       _id: string;
+      captionsIndex: number;
+      outcome: string;
       creator?: string;
       captionReferenceID?: string;
+      flagged?: boolean;
     } = {
       altText: altText,
       captions: captions,
       imageUrl: imageUrl,
       itemIndex: itemIndex,
       _id: id,
+      captionsIndex: captionsIndex,
+      outcome: outcome,
       creator: creator,
       captionReferenceID: captionReferenceID,
+      flagged: flagged,
     };
+    console.log(data);
     this._http
       .put("/api/update/" + id, data)
       .pipe(takeUntil(this.unsubscribe$))
@@ -264,6 +286,7 @@ export class HttpService implements OnDestroy {
       formData: formData,
       currentDataObject: this.currentDataObject,
     };
+    console.log(data);
     return this._http
       .post<IUser>("/api/form-submission", data)
       .pipe(
@@ -290,6 +313,7 @@ export class HttpService implements OnDestroy {
     return this._http
       .get<ProfileInterface>(`/api/profile/${id}`, httpOptions)
       .subscribe((item) => {
+        console.log(item);
         this.profileData$.next(item);
       });
   }

@@ -13,6 +13,7 @@ router.post('/', checkAuth, async function (req, res, next) {
     caption: req.body.formData.caption,
     creator: req.userData.userId,
     approved: false,
+    flagged: false,
     id: uuidv4(),
     location: ""
   };

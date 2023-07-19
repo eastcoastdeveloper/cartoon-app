@@ -60,12 +60,59 @@
         <img src="../../../assets/show-password.png" />
       </div>
       <label *ngIf="capsOn" class="caps-warning">Caps Locked</label>
+
+      <!-- Form Errors -->
       <div *ngIf="submitted && f['password'].errors" class="invalid-feedback">
         <div *ngIf="f['password'].errors['required']" class="validation-error">
           Password is required
         </div>
-        <div *ngIf="f['password'].errors['minlength']" class="validation-error">
-          Password must be at least 6 characters
+        <div
+          [ngClass]="{
+            'text-success': minLengthValid,
+            'validation-error': !minLengthValid
+          }"
+        >
+          Must be at least 8 characters long
+        </div>
+
+        <!-- requires digit -->
+        <div
+          [ngClass]="{
+            'text-success': requiresDigitValid,
+            'validation-error': !requiresDigitValid
+          }"
+        >
+          Must contain at least 1 digit
+        </div>
+
+        <!-- requires uppercase -->
+        <div
+          [ngClass]="{
+            'text-success': requiresUppercaseValid,
+            'validation-error': !requiresUppercaseValid
+          }"
+        >
+          Must contain at least 1 uppercase character
+        </div>
+
+        <!-- requires lowercase -->
+        <div
+          [ngClass]="{
+            'text-success': requiresLowercaseValid,
+            'validation-error': !requiresLowercaseValid
+          }"
+        >
+          Must contain at least 1 lowercase character
+        </div>
+
+        <!-- requires special characters -->
+        <div
+          [ngClass]="{
+            'text-success': requiresSpecialCharsValid,
+            'validation-error': !requiresSpecialCharsValid
+          }"
+        >
+          Must contain at least 1 special character
         </div>
       </div>
     </div>

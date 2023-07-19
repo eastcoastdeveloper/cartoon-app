@@ -4,6 +4,17 @@
   height: 100%;
   display: flex;
   form {
+    .text-success {
+      color: $white;
+      margin: 5px 0;
+      background-color: $editGreen;
+      font: normal 14px sans-serif;
+      text-align: center;
+      border-bottom-left-radius: 3px;
+      border-bottom-right-radius: 3px;
+      padding: 4px;
+    }
+
     margin: auto;
     min-width: 275px;
     > div {

@@ -55,6 +55,7 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
         const storage = this._localStorage.getData("captions");
         if (storage != "") {
           let parsed = JSON.parse(storage);
+          console.log(parsed);
           this._httpService.totalItems$.next(parsed.length);
         }
       }

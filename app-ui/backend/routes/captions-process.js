@@ -12,6 +12,7 @@ function populateUI() {
 };
 
 function processQuery(req, res, flag, query, results, next) {
+    console.log(flag)
     if (flag === 'true') {
         CaptionData.findOne({
             itemIndex: query
@@ -37,6 +38,7 @@ function processQuery(req, res, flag, query, results, next) {
         CaptionData.find({
             "captions.approved": false
         }).then((doc) => {
+            console.log(doc)
             res.populateUI = doc;
             next();
         })

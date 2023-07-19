@@ -5,6 +5,7 @@ import { MustMatch } from "./form-validators";
 import { Subject, takeUntil } from "rxjs";
 import { Router } from "@angular/router";
 import { generateUsername } from "friendly-username-generator";
+import { PasswordValidators } from "../home/password-validators";
 
 @Component({
   selector: "app-signup",
@@ -54,7 +55,28 @@ export class SignupComponent implements OnInit, OnDestroy {
         // ],
         // username: ["", [Validators.required]],
         email: ["", [Validators.required, Validators.email]],
-        password: ["", [Validators.required, Validators.minLength(6)]],
+        password: [
+          "",
+          [
+            Validators.required,
+            Validators.minLength(8),
+            PasswordValidators.patternValidator(new RegExp("(?=.*[0-9])"), {
+              requiresDigit: true,
+            }),
+            PasswordValidators.patternValidator(new RegExp("(?=.*[A-Z])"), {
+              requiresUppercase: true,
+            }),
+            PasswordValidators.patternValidator(new RegExp("(?=.*[a-z])"), {
+              requiresLowercase: true,
+            }),
+            PasswordValidators.patternValidator(
+              new RegExp("(?=.*[$@^!%*?&])"),
+              {
+                requiresSpecialChars: true,
+              }
+            ),
+          ],
+        ],
         confirmPassword: ["", Validators.required],
         // acceptTerms: [false, Validators.requiredTrue],
       },
@@ -67,10 +89,6 @@ export class SignupComponent implements OnInit, OnDestroy {
       .pipe(takeUntil(this.unsubscribe$))
       .subscribe({
         next: (response) => {
-          // if (response["message"] === "Username already exists") {
-          //   this.userAlreadyRegisteredError = true;
-          //   this.userRegistered = false;
-          // }
           if (response["message"] === "User created!") {
             this.userAlreadyRegisteredError = false;
             this.userRegistered = true;
@@ -81,9 +99,11 @@ export class SignupComponent implements OnInit, OnDestroy {
               });
             }, 3500);
           }
-        },
-        error: (error) => {
-          this.userAlreadyRegisteredError = true;
+
+          if (response["message"] === "Username already exists") {
+            this.userAlreadyRegisteredError = true;
+            this.userRegistered = false;
+          }
         },
       });
   }
@@ -104,6 +124,32 @@ export class SignupComponent implements OnInit, OnDestroy {
 
   get f() {
     return this.registerForm.controls;
+  }
+
+  get minLengthValid() {
+    return !this.registerForm.controls["password"].hasError("minlength");
+  }
+
+  get requiresDigitValid() {
+    return !this.registerForm.controls["password"].hasError("requiresDigit");
+  }
+
+  get requiresUppercaseValid() {
+    return !this.registerForm.controls["password"].hasError(
+      "requiresUppercase"
+    );
+  }
+
+  get requiresLowercaseValid() {
+    return !this.registerForm.controls["password"].hasError(
+      "requiresLowercase"
+    );
+  }
+
+  get requiresSpecialCharsValid() {
+    return !this.registerForm.controls["password"].hasError(
+      "requiresSpecialChars"
+    );
   }
 
   onSubmit() {

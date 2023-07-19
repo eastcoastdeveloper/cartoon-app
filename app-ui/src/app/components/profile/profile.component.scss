@@ -1,12 +1,15 @@
 @import "../../style/color";
 
 .profile {
-  padding-top: 60px;
+  padding: 35px 0 15px 0;
   font: normal 14px sans-serif;
   height: calc(100% - 20px);
   overflow: auto;
   padding-bottom: 0;
   box-sizing: border-box;
+  .username-wrapper {
+    padding-top: 20px;
+  }
   .location-message {
     margin-top: 25px;
     font: normal 13px/20px sans-serif;
@@ -43,31 +46,55 @@
       height: 300px;
     }
   }
+  .profile-wrapper {
+    padding-top: 20px;
+    .profile-data {
+      > div {
+        display: grid;
+        grid-template-columns: 100px auto;
+        grid-column-gap: 10px;
 
-  .profile-data {
-    > div {
-      display: grid;
-      grid-template-columns: 100px auto;
-      grid-column-gap: 10px;
+        .image {
+          img {
+            width: 100%;
+            display: block;
+            border: 1px solid $midnight;
+          }
+        }
 
-      .image {
-        img {
-          width: 100%;
-          display: block;
-          border: 1px solid $midnight;
+        .image + div {
+          display: grid;
+          grid-template-rows: repeat(2, 25px);
+          align-items: end;
         }
       }
+    }
 
-      .image + div {
-        display: grid;
-        grid-template-rows: repeat(2, 25px);
-        align-items: end;
-      }
+    .profile-data:not(:last-child) {
+      margin-bottom: 20px;
     }
   }
+  .clear-cache {
+    line-height: 20px;
+    padding: 10px;
+    border-radius: 4px;
+    button {
+      margin-top: 10px;
+      display: block;
+    }
+  }
+}
 
-  .profile-data:not(:last-child) {
-    margin-bottom: 20px;
+@media screen and (max-width: 992px) {
+  .profile {
+    padding-top: 35px;
+    .username-wrapper {
+      padding-top: 5px;
+    }
+    .profile-wrapper {
+      padding-top: 10px;
+      padding-bottom: 15px;
+    }
   }
 }
 
@@ -75,6 +102,16 @@
   .profile {
     padding-top: 15px;
     height: 100%;
+    .profile-wrapper {
+      display: unset;
+      .clear-cache {
+        margin-top: 20px;
+        padding: 0;
+        button {
+          width: 170px;
+        }
+      }
+    }
   }
 }
 
@@ -84,10 +121,6 @@
       grid-template-columns: none;
       grid-template-rows: 100px 60px;
       grid-column-gap: 0;
-      .image {
-        height: 150px;
-        max-width: 140px;
-      }
     }
 
     form {

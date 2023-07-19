@@ -28,6 +28,7 @@ export class AdminComponent implements OnDestroy {
       .subscribe((val) => {
         if (val.captions === undefined) {
           this.dataArray = val;
+          console.log(this.dataArray);
         }
       });
     this._httpService.getUnapprovedCaptions();
@@ -45,8 +46,19 @@ export class AdminComponent implements OnDestroy {
     });
   }
 
-  rejectCaption() {
-    this._httpService.flagCaption();
+  rejectCaption(
+    data: UserDataInterface,
+    captionIndex: number,
+    toonReference: number
+  ) {
+    this.approveOrDelete(
+      data,
+      captionIndex,
+      toonReference,
+      "Irrelevant/ Inappropriate",
+      false,
+      true
+    );
   }
 
   // Approve Caption
@@ -55,34 +67,61 @@ export class AdminComponent implements OnDestroy {
     captionIndex: number,
     toonReference: number
   ) {
-    data.captions[captionIndex].approved = true;
+    this.approveOrDelete(data, captionIndex, toonReference, "Approved", true);
+  }
+
+  // result is approved: boolean
+  approveOrDelete(
+    data: UserDataInterface,
+    captionIndex: number,
+    toonReference: number,
+    outcome: string,
+    result: boolean,
+    flagged?: boolean
+  ) {
+    data.captions[captionIndex].approved = result;
     this._httpService.updateCaption(
       data.altText,
       data.captions,
       data.imageUrl,
       data.itemIndex,
       data._id,
+      captionIndex,
+      outcome,
       data.captions[captionIndex].creator,
-      data.captions[captionIndex].id
+      data.captions[captionIndex].id,
+      flagged
     );
-    const storage = this._localStorage.getData("captions");
-    const parsed = JSON.parse(storage);
-    const updatedObject = data.captions[captionIndex];
-    null != parsed[toonReference]
-      ? parsed[toonReference].captions.push(updatedObject)
-      : "";
-    this._localStorage.saveData("captions", JSON.stringify(parsed));
+    this.updateCacheAfterEditOrApprove(data, captionIndex, toonReference);
   }
 
   editCaption(toonReference: number, data: UserDataInterface, caption: any) {
+    this.updateCacheAfterEditOrApprove(data, data.itemIndex, toonReference);
     this._httpService.adminResponseSubject$.next(data);
     this._router.navigate(["/edit"], {
       queryParams: {
-        num: toonReference,
+        num: data.itemIndex,
         caption: encodeURI(caption),
-        captionIndex: data.itemIndex,
+        captionIndex: toonReference,
       },
     });
+  }
+
+  updateCacheAfterEditOrApprove(
+    data: UserDataInterface,
+    captionIndex: number,
+    toonReference: number
+  ) {
+    const storage = this._localStorage.getData("captions");
+    if (storage != "") {
+      const parsed = JSON.parse(storage);
+      const updatedObject = data.captions[captionIndex];
+      null != parsed[toonReference]
+        ? parsed[toonReference].captions.push(updatedObject)
+        : "";
+      this._localStorage.saveData("captions", JSON.stringify(parsed));
+      this._httpService.getUnapprovedCaptions();
+    }
   }
 
   ngOnDestroy(): void {

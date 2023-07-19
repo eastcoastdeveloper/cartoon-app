@@ -35,7 +35,7 @@
           <div
             *ngFor="let item of data.captions; let j = index"
             [ngClass]="{
-              'group-grid': !item.approved,
+              'group-grid': !item.approved && !item.flagged,
               approved: item.approved
             }"
           >
@@ -43,25 +43,29 @@
             <button
               type="button"
               class="approve"
-              *ngIf="!item.approved"
+              *ngIf="!item.approved && !item.flagged"
               (click)="approveCaption(data, j, i)"
             >
               Approve
             </button>
-            <span class="item-caption">{{ item.caption }}</span>
+            <span
+              [ngClass]="item.flagged ? 'flagged' : ''"
+              class="item-caption"
+              >{{ item.caption }}</span
+            >
             <button
               type="button"
-              *ngIf="!item.approved"
-              (click)="editCaption(i, data, item.caption)"
+              *ngIf="!item.approved && !item.flagged"
+              (click)="editCaption(j, data, item.caption)"
               class="edit"
             >
               Edit
             </button>
             <button
               type="button"
-              *ngIf="!item.approved"
+              *ngIf="!item.approved && !item.flagged"
               class="reject"
-              (click)="rejectCaption()"
+              (click)="rejectCaption(data, j, i)"
             >
               Reject
             </button>

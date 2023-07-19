@@ -25,6 +25,10 @@
       }
       .data-wrapper {
         line-height: 22px;
+        .flagged {
+          padding-left: 10px;
+          color: $warningRed;
+        }
         > div {
           padding: 2px 0 2px 5px;
         }

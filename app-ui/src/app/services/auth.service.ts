@@ -7,6 +7,7 @@ import {
   Subject,
   catchError,
   takeUntil,
+  tap,
   throwError,
 } from "rxjs";
 import { Router } from "@angular/router";
@@ -76,7 +77,7 @@ export class AuthService implements OnDestroy {
       username: username,
       email: email,
       password: password,
-      showLocation: showLocation,
+      // showLocation: showLocation,
       captions: [],
     };
     this._http
@@ -87,8 +88,7 @@ export class AuthService implements OnDestroy {
           this.registrationSubject$.next(value);
         },
         error: (err) => {
-          console.log(err);
-          this.registrationSubject$.error({
+          this.registrationSubject$.next({
             message: "Username already exists",
           });
         },

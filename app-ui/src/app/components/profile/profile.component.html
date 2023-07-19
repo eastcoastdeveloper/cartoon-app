@@ -18,7 +18,7 @@
   </div>
 
   <div class="profile">
-    <div *ngIf="currentTab === 'settings'">
+    <div class="username-wrapper" *ngIf="currentTab === 'settings'">
       <div class="username">
         <span>Username: </span>
         <span>{{ username }}</span>
@@ -54,18 +54,30 @@
     </div>
 
     <div *ngIf="currentTab === 'captions'" class="profile-wrapper">
-      <div class="profile-data" *ngFor="let item of profileData">
-        <div *ngIf="profileData.length > 0">
-          <div class="image">
-            <img src="{{ item.imageUrl }}" />
-          </div>
-          <div>
-            <span class="caption">{{ "caption: " + item.caption }}</span>
-            <span class="status">{{ "status: " + item.status }}</span>
+      <div>
+        <div class="profile-data" *ngFor="let item of profileData">
+          <div *ngIf="profileData.length > 0">
+            <div class="image">
+              <img src="{{ item.imageUrl }}" />
+            </div>
+            <div>
+              <span class="caption">{{ "caption: " + item.caption }}</span>
+              <span class="status">{{ "status: " + item.status }}</span>
+            </div>
           </div>
         </div>
       </div>
-      <div *ngIf="profileData.length === 0">Please submit a caption.</div>
+      <!-- <div class="clear-cache" *ngIf="cachedCaptions">
+        <span>Approved captions not showing under the cartoon?</span>
+        <button
+          type="button"
+          class="refresh-page"
+          (click)="clearCaptionCache()"
+        >
+          Clear Caption History
+        </button>
+      </div> -->
     </div>
+    <div *ngIf="profileData.length === 0">Please submit a caption.</div>
   </div>
 </div>

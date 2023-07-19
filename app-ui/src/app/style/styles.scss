@@ -258,24 +258,22 @@ input {
 
 .validation-error,
 .notification {
-  font: normal 14px sans-serif;
-  text-align: center;
   border-bottom-left-radius: 3px;
   border-bottom-right-radius: 3px;
+  font: normal 14px sans-serif;
+  text-align: center;
+  max-width: 330px;
+  margin: 5px 0;
   color: $white;
   padding: 4px;
 }
 
 .notification {
   background-color: $editGreen;
-  width: 200px;
-  margin: 0 calc(50% - 100px);
 }
 
 .validation-error {
   background-color: $warningRed;
-  max-width: 330px;
-  margin: 5px 0;
 }
 
 @media screen and (max-width: 992px) {

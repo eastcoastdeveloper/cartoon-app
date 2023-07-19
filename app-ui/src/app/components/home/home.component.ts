@@ -44,7 +44,6 @@ export class HomeComponent implements OnInit, OnDestroy {
   user: IUser = {
     caption: "",
     approved: false,
-    // location: "",
   };
 
   constructor(
@@ -167,7 +166,11 @@ export class HomeComponent implements OnInit, OnDestroy {
       this.editingData.captions,
       this.editingData.imageUrl,
       this.editingData.itemIndex,
-      this.editingData._id
+      this.editingData._id,
+      this.captionIndex,
+      "Edited & Approved",
+      this.editingData.captions[this.captionIndex].creator,
+      this.editingData.captions[this.captionIndex].id
     );
     this._router.navigate(["/admin"]);
     this.cacheNewlyEditedCaption();

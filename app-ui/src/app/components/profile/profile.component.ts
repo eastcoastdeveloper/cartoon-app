@@ -1,7 +1,7 @@
 import { Component, OnDestroy, OnInit } from "@angular/core";
 import { Router } from "@angular/router";
 import { latLng, Map, tileLayer } from "leaflet";
-import { Subject, takeUntil } from "rxjs";
+import { Subject, takeUntil, tap } from "rxjs";
 import { ProfileInterface } from "src/app/interfaces/profile.interface";
 import { AuthService } from "src/app/services/auth.service";
 import { HttpService } from "src/app/services/http.service";
@@ -18,6 +18,7 @@ export class ProfileComponent implements OnInit, OnDestroy {
   city: string;
   country: string;
   mapLoaded = false;
+  cachedCaptions = false;
   userId: string | null;
   userIsAuthenticated = false;
   username: string | null;
@@ -39,6 +40,7 @@ export class ProfileComponent implements OnInit, OnDestroy {
 
   constructor(
     private _authService: AuthService,
+    // private _localStorage: LocalStorageService,
     private _http: HttpService,
     private _router: Router
   ) {}
@@ -73,6 +75,7 @@ export class ProfileComponent implements OnInit, OnDestroy {
       .subscribe({
         next: (isAuthenticated) => {
           this.userIsAuthenticated = isAuthenticated;
+          !this.userIsAuthenticated ? this._router.navigateByUrl("/login") : "";
           this.userId = this._authService.getUserId();
         },
       });
@@ -98,6 +101,8 @@ export class ProfileComponent implements OnInit, OnDestroy {
         this.reverseGeocode(pos.lat, pos.lng);
       }
     });
+
+    // this.isThereCachedCaptions();
   }
 
   reverseGeocode(lat: number, long: number) {
@@ -119,6 +124,22 @@ export class ProfileComponent implements OnInit, OnDestroy {
       });
     });
   }
+
+  // isThereCachedCaptions() {
+  //   const storage = this._localStorage.getData("captions");
+  //   if (storage != "") {
+  //     this.cachedCaptions = true;
+  //     // this.ngOnInit();
+  //     // this._localStorage.clearData();
+  //   } else {
+  //     this.cachedCaptions = false;
+  //   }
+  // }
+
+  // clearCaptionCache() {
+  //   this._localStorage.removeData("captions");
+  //   this.isThereCachedCaptions();
+  // }
 
   onMapReady(map: Map) {
     this.map = map;

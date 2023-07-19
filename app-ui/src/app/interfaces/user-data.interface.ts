@@ -1,12 +1,12 @@
 export class CaptionsInterface {
   caption?: string;
-  votes?: number;
+  // votes?: number;
+  creator: string;
   approved: boolean;
   id?: string;
-  captionIndex?: string;
-  creator: string;
-  username: string;
   location: string;
+  // captionIndex?: string;
+  username: string;
 }
 
 export class UserDataInterface {
