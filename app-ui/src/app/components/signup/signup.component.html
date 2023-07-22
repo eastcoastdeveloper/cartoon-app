@@ -1,4 +1,12 @@
 <div id="signup">
+  <div *ngIf="passwordInfo" class="password-popup">
+    <span>Password must contain the following:</span>
+    <span>&bull;&nbsp;at least 8 characters long</span>
+    <span>&bull;&nbsp;one numeric digit</span>
+    <span>&bull;&nbsp;one uppercase character</span>
+    <span>&bull;&nbsp;one lowercase character</span>
+    <span>&bull;&nbsp;one special character</span>
+  </div>
   <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
     <div *ngIf="userAlreadyRegisteredError" class="validation-error">
       User already registered. Please try again.
@@ -7,7 +15,7 @@
       Signup successful. Redirecting.
     </div>
     <!-- <div class="username">
-      <label class="form-label">Username</label>
+      <label class="form-label">Username</label>  
       <input
         type="text"
         formControlName="username"
@@ -43,21 +51,32 @@
 
     <div class="password-wrapper" (capsLock)="capsOn = $event">
       <label class="form-label">Password</label>
-      <input
-        [type]="showPassword ? 'text' : 'password'"
-        (ngModelChange)="passwordFieldChanged()"
-        type="password"
-        formControlName="password"
-        class="form-control"
-        [ngClass]="{ 'is-invalid': submitted && f['password'].errors }"
-      />
-      <div
-        class="show-password"
-        *ngIf="passwordVisibility"
-        (click)="togglePassword()"
-        [ngClass]="{ 'toggle-visibility': showPassword }"
-      >
-        <img src="../../../assets/show-password.png" />
+      <div class="password-info">
+        <input
+          [type]="showPassword ? 'text' : 'password'"
+          (blur)="onBlurEvent($event)"
+          (focus)="onFocusEvent($event)"
+          (ngModelChange)="passwordFieldChanged()"
+          type="password"
+          formControlName="password"
+          class="form-control"
+          [ngClass]="{ 'is-invalid': submitted && f['password'].errors }"
+        />
+        <div
+          (click)="togglePasswordInfo()"
+          [ngClass]="passwordInfo ? 'show-close' : 'show-info'"
+          class="toggle-popup"
+        >
+          <span>{{ passwordInfo ? "X" : "I" }}</span>
+        </div>
+        <!-- <div
+          class="show-password"
+          *ngIf="passwordVisibility"
+          (click)="togglePassword()"
+          [ngClass]="{ 'toggle-visibility': showPassword }"
+        >
+          <img src="../../../assets/show-password.png" />
+        </div> -->
       </div>
       <label *ngIf="capsOn" class="caps-warning">Caps Locked</label>
 
@@ -138,6 +157,17 @@
           Passwords must match
         </div>
       </div>
+    </div>
+
+    <div *ngIf="!passwordFieldFocus" class="generate-password">
+      <div class="optional-text">
+        <span></span>
+        <span>or</span>
+        <span></span>
+      </div>
+      <button (click)="generateCode()" class="register">
+        Generate Password
+      </button>
     </div>
 
     <div class="register-cancel">

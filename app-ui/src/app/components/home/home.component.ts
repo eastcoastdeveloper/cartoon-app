@@ -25,6 +25,8 @@ export class HomeComponent implements OnInit, OnDestroy {
   private destroy$: Subject<boolean> = new Subject<boolean>();
   captionsArray: CaptionsInterface[] = [];
   userIsAuthenticated = false;
+  // formSuccess: boolean;
+  // formError: boolean;
   captionsGroupIndex: number = 1;
   currentImage: string;
   mode: string = "create";
@@ -38,7 +40,8 @@ export class HomeComponent implements OnInit, OnDestroy {
   totalItems: number;
   manualURL: string;
   hover: boolean = false;
-  loggedIn: boolean = false;
+  // loggedIn: boolean;
+  elementTimeout = false;
   windowWidth?: number;
   toonIndex: number;
   user: IUser = {
@@ -63,6 +66,31 @@ export class HomeComponent implements OnInit, OnDestroy {
         Validators.maxLength(250),
       ]),
     });
+
+    // Form Submitted
+    // this._httpService.formSubmitted$.pipe(takeUntil(this.destroy$)).subscribe({
+    //   next: (val) => {
+    //     if (val) {
+    //       this.formSuccess = true;
+    //       this.formError = false;
+    //     } else {
+    //       this.formSuccess = false;
+    //       this.formError = true;
+    //     }
+    //     setTimeout(() => {
+    //       this.formSuccess = false;
+    //       this.formError = false;
+    //     }, 3500);
+    //     val ? (this.formSuccess = true) : (this.formError = true);
+    //     this.notifications.formSuccess = true;
+    //     val
+    //       ? (this.userNotification = true)
+    //       : (this.userNotification = false);
+    //     setTimeout(() => {
+    //       this.notifications.formSuccess = this.userNotification = false;
+    //     }, 5000);
+    //   },
+    // });
 
     // Subscribe to Window Width
     this._windowWidthService.currentWidth$
@@ -114,9 +142,9 @@ export class HomeComponent implements OnInit, OnDestroy {
 
     // Is User Authenticated?
     this.userIsAuthenticated = this._authService.getIsAuth();
+
     if (this.userIsAuthenticated) {
       this.reactiveForm.enable();
-      this.loggedIn = true;
     } else {
       this.reactiveForm.disable();
     }
@@ -126,10 +154,17 @@ export class HomeComponent implements OnInit, OnDestroy {
       .pipe(takeUntil(this.destroy$))
       .subscribe((isAuthenticated) => {
         this.userIsAuthenticated = isAuthenticated;
-        this.userIsAuthenticated
-          ? this.reactiveForm.enable()
-          : this.reactiveForm.reset(),
+        // if (this.userIsAuthenticated) {
+        //   this.reactiveForm.enable();
+        //   this.loggedIn = true;
+        //   setTimeout(() => {
+        //     this.elementTimeout = true;
+        //   }, 3000);
+        // }
+        if (!this.userIsAuthenticated) {
+          this.reactiveForm.reset();
           this.reactiveForm.disable();
+        }
       });
 
     const storage = this._localStorage.getData("captions");
@@ -148,12 +183,13 @@ export class HomeComponent implements OnInit, OnDestroy {
       });
 
     // Logged In
-    this._authService
-      .getAuthStatusListener()
-      .pipe(takeUntil(this.destroy$))
-      .subscribe((isAuthenticated) => {
-        this.loggedIn = isAuthenticated;
-      });
+    // this._authService
+    //   .getAuthStatusListener()
+    //   .pipe(takeUntil(this.destroy$))
+    //   .subscribe((isAuthenticated) => {
+    //     this.loggedIn = isAuthenticated;
+    //     console.log(this.loggedIn);
+    //   });
   }
 
   // Update Approved Caption

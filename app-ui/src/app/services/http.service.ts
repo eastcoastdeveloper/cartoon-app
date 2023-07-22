@@ -127,7 +127,6 @@ export class HttpService implements OnDestroy {
       .pipe(
         takeUntil(this.unsubscribe$),
         map((responseData) => {
-          console.log(responseData);
           if (null != responseData) {
             Object.keys(responseData).filter((currentVal, index) => {
               if (currentVal === "results") {
@@ -187,18 +186,6 @@ export class HttpService implements OnDestroy {
       )
       .pipe(takeUntil(this.unsubscribe$))
       .subscribe((data) => {
-        let obj = Object.values(data);
-        for (var i = 0; i < obj.length; i++) {
-          for (var j = 0; j < obj[i].captions.length; j++) {
-            if (obj[i].captions[j].approved) {
-              obj[i].captions = obj[i].captions.filter(
-                (item: any, index: number) => {
-                  return obj[i].captions[index].approved === false;
-                }
-              );
-            }
-          }
-        }
         this.adminResponseSubject$.next(data);
       });
   }
@@ -239,15 +226,10 @@ export class HttpService implements OnDestroy {
       captionReferenceID: captionReferenceID,
       flagged: flagged,
     };
-    console.log(data);
     this._http
       .put("/api/update/" + id, data)
       .pipe(takeUntil(this.unsubscribe$))
       .subscribe((response) => console.log(response));
-  }
-
-  flagCaption() {
-    console.log("caption flagged");
   }
 
   // Get Captions
@@ -286,7 +268,6 @@ export class HttpService implements OnDestroy {
       formData: formData,
       currentDataObject: this.currentDataObject,
     };
-    console.log(data);
     return this._http
       .post<IUser>("/api/form-submission", data)
       .pipe(
@@ -313,7 +294,6 @@ export class HttpService implements OnDestroy {
     return this._http
       .get<ProfileInterface>(`/api/profile/${id}`, httpOptions)
       .subscribe((item) => {
-        console.log(item);
         this.profileData$.next(item);
       });
   }

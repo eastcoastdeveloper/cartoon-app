@@ -3,6 +3,23 @@
 #signup {
   height: 100%;
   display: flex;
+  position: relative;
+  .password-popup {
+    position: absolute;
+    background-color: $skyBlue;
+    border: 1px solid $midnight;
+    font: normal 13px/21px sans-serif;
+    width: 230px;
+    border-radius: 4px;
+    padding: 10px;
+    margin: 0 auto;
+    right: 0;
+    left: 0;
+    top: 10px;
+    span {
+      display: block;
+    }
+  }
   form {
     .text-success {
       color: $white;
@@ -17,8 +34,33 @@
 
     margin: auto;
     min-width: 275px;
-    > div {
-      margin-bottom: 10px;
+    .password-wrapper {
+      label {
+        margin-top: 10px;
+      }
+      .password-info {
+        display: grid;
+        grid-template-columns: calc(100% - 30px) 30px;
+        margin-bottom: 10px;
+        .toggle-popup {
+          border-radius: 50%;
+          display: flex;
+          transform: scale(0.75);
+          border: 1px solid $midnight;
+          cursor: pointer;
+          span {
+            margin: auto;
+          }
+        }
+        .show-info {
+          background-color: $skyBlue;
+          color: $midnight;
+        }
+        .show-close {
+          background-color: $warningRed;
+          color: $white;
+        }
+      }
     }
     [type="submit"] {
       margin-top: 20px;
@@ -27,6 +69,34 @@
       display: flex;
       grid-column-gap: 15px;
       margin-top: 15px;
+    }
+
+    .generate-password {
+      .optional-text {
+        position: relative;
+        padding: 7px 0;
+        span:not(:nth-child(2)) {
+          width: 50px;
+          display: block;
+          height: 1px;
+          background-color: $midnight;
+          position: absolute;
+          top: 50%;
+          transform: translate(-50%, -50%);
+        }
+        span:first-child {
+          left: calc(50% - 40px);
+        }
+        span:nth-child(2) {
+          font: normal 13px sans-serif;
+          color: $midnight;
+          display: block;
+          text-align: center;
+        }
+        span:last-child {
+          right: calc(50% - 90px);
+        }
+      }
     }
   }
 }

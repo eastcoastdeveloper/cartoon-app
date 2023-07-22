@@ -16,8 +16,10 @@ export class SignupComponent implements OnInit, OnDestroy {
   private unsubscribe$ = new Subject<boolean>();
   passwordVisibility: boolean = false;
   emailAdress: string;
+  passwordInfo = false;
   username: string;
   password: string;
+  passwordFieldFocus = false;
   userAlreadyRegisteredError = false;
   userRegistered: boolean = false;
   showLocation: boolean = false;
@@ -29,7 +31,11 @@ export class SignupComponent implements OnInit, OnDestroy {
 
   submitted = false;
   registerForm!: FormGroup;
-  // private unsubscribe$:Subject<boolean> = new Subject<void>();
+
+  uppercase = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+  lowercase = "abcdefghijklmnopqrstuvwxyz";
+  numbers = "1234567890";
+  characters = "(?=.*[$@^!%*?&]";
 
   constructor(
     private _authService: AuthService,
@@ -40,20 +46,6 @@ export class SignupComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.registerForm = this.formBuilder.group(
       {
-        // title: ["", Validators.required],
-        // firstName: ["", Validators.required],
-        // lastName: ["", Validators.required],
-        // // validates date format yyyy-mm-dd
-        // dob: [
-        //   "",
-        //   [
-        //     Validators.required,
-        //     Validators.pattern(
-        //       /^\d{4}\-(0[1-9]|1[012])\-(0[1-9]|[12][0-9]|3[01])$/
-        //     ),
-        //   ],
-        // ],
-        // username: ["", [Validators.required]],
         email: ["", [Validators.required, Validators.email]],
         password: [
           "",
@@ -78,7 +70,6 @@ export class SignupComponent implements OnInit, OnDestroy {
           ],
         ],
         confirmPassword: ["", Validators.required],
-        // acceptTerms: [false, Validators.requiredTrue],
       },
       {
         validators: MustMatch("password", "confirmPassword"),
@@ -106,6 +97,45 @@ export class SignupComponent implements OnInit, OnDestroy {
           }
         },
       });
+  }
+
+  concatenateStrings(length: number, type: string) {
+    let result = "";
+    const charactersLength = type.length;
+    for (let i = 0; i < length; i++) {
+      result += type.charAt(Math.floor(Math.random() * charactersLength));
+    }
+
+    return result;
+  }
+
+  generateCode() {
+    this.registerForm.get("password")?.setValue("");
+    this.registerForm.get("confirmPassword")?.setValue("");
+    const str1 = this.concatenateStrings(2, this.uppercase);
+    const str2 = this.concatenateStrings(4, this.lowercase);
+    const str3 = this.concatenateStrings(2, this.numbers);
+    const str4 = this.concatenateStrings(2, this.characters);
+    const result = str1 + str2 + str3 + str4;
+    this.registerForm.get("password")?.setValue(result);
+    this.registerForm.get("confirmPassword")?.setValue(result);
+    this.passwordFieldFocus = true;
+  }
+
+  onBlurEvent(evt: any) {
+    this.passwordFieldFocus = false;
+    this.showPassword = false;
+  }
+
+  onFocusEvent(evt: any) {
+    this.passwordFieldFocus = true;
+    this.showPassword = true;
+  }
+
+  togglePasswordInfo() {
+    this.passwordInfo
+      ? (this.passwordInfo = false)
+      : (this.passwordInfo = true);
   }
 
   passwordFieldChanged() {

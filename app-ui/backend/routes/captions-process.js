@@ -12,7 +12,6 @@ function populateUI() {
 };
 
 function processQuery(req, res, flag, query, results, next) {
-    console.log(flag)
     if (flag === 'true') {
         CaptionData.findOne({
             itemIndex: query
@@ -38,7 +37,18 @@ function processQuery(req, res, flag, query, results, next) {
         CaptionData.find({
             "captions.approved": false
         }).then((doc) => {
-            console.log(doc)
+            for (var i = 0; i < doc.length; i++) {
+                for (var j = 0; j < doc[i].captions.length; j++) {
+                    if (doc[i].captions[j].approved) {
+                        doc[i].captions = doc[i].captions.filter(
+                            (item, index) => {
+                                return doc[i].captions[index].approved === false;
+                            }
+                        );
+                    }
+                }
+            }
+
             res.populateUI = doc;
             next();
         })

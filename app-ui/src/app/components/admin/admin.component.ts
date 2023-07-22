@@ -28,7 +28,6 @@ export class AdminComponent implements OnDestroy {
       .subscribe((val) => {
         if (val.captions === undefined) {
           this.dataArray = val;
-          console.log(this.dataArray);
         }
       });
     this._httpService.getUnapprovedCaptions();
@@ -93,6 +92,7 @@ export class AdminComponent implements OnDestroy {
       flagged
     );
     this.updateCacheAfterEditOrApprove(data, captionIndex, toonReference);
+    this.checkForPendingComments();
   }
 
   editCaption(toonReference: number, data: UserDataInterface, caption: any) {
@@ -120,7 +120,6 @@ export class AdminComponent implements OnDestroy {
         ? parsed[toonReference].captions.push(updatedObject)
         : "";
       this._localStorage.saveData("captions", JSON.stringify(parsed));
-      this._httpService.getUnapprovedCaptions();
     }
   }
 

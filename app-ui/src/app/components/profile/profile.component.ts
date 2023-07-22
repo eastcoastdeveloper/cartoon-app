@@ -40,7 +40,6 @@ export class ProfileComponent implements OnInit, OnDestroy {
 
   constructor(
     private _authService: AuthService,
-    // private _localStorage: LocalStorageService,
     private _http: HttpService,
     private _router: Router
   ) {}
