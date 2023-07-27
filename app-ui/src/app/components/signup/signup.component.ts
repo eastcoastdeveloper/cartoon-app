@@ -3,7 +3,7 @@ import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { AuthService } from "src/app/services/auth.service";
 import { MustMatch } from "./form-validators";
 import { Subject, takeUntil } from "rxjs";
-import { Router } from "@angular/router";
+import { ActivatedRoute, Router } from "@angular/router";
 import { generateUsername } from "friendly-username-generator";
 import { PasswordValidators } from "../home/password-validators";
 
@@ -14,6 +14,7 @@ import { PasswordValidators } from "../home/password-validators";
 })
 export class SignupComponent implements OnInit, OnDestroy {
   private unsubscribe$ = new Subject<boolean>();
+  resetPasswordObject: { email: string; password: string; username: string };
   passwordVisibility: boolean = false;
   emailAdress: string;
   passwordInfo = false;
@@ -25,25 +26,55 @@ export class SignupComponent implements OnInit, OnDestroy {
   showLocation: boolean = false;
   captions: [];
 
+  token: string;
+  id: string;
+
   confirm_password: string;
   showPassword: boolean = false;
   capsOn: any;
 
   submitted = false;
   registerForm!: FormGroup;
+  currentPage: string;
 
   uppercase = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
   lowercase = "abcdefghijklmnopqrstuvwxyz";
   numbers = "1234567890";
-  characters = "(?=.*[$@^!%*?&]";
+  characters = "?=.*[$@^!%*?&]";
 
   constructor(
     private _authService: AuthService,
     private formBuilder: FormBuilder,
+    private _activatedRoute: ActivatedRoute,
     private _router: Router
-  ) {}
+  ) {
+    if (this._router.url.includes("reset")) {
+      this.currentPage = "reset";
+      this._activatedRoute.params
+        .pipe(takeUntil(this.unsubscribe$))
+        .subscribe((val) => {
+          this.id = val["id"];
+          this.token = val["token"];
+        });
+    } else {
+      this.currentPage = "signup";
+    }
+  }
 
   ngOnInit(): void {
+    // console.log(this._router.url);
+    if (this.currentPage === "reset") {
+      this._authService.resetPassword$
+        .pipe(takeUntil(this.unsubscribe$))
+        .subscribe((val) => {
+          this.resetPasswordObject = val;
+        });
+      this._authService.resetPassword(this.id, this.token);
+    } else {
+      this.currentPage = "signup";
+    }
+    // console.log(this.currentPage);
+
     this.registerForm = this.formBuilder.group(
       {
         email: ["", [Validators.required, Validators.email]],
@@ -184,20 +215,38 @@ export class SignupComponent implements OnInit, OnDestroy {
 
   onSubmit() {
     this.submitted = true;
-    if (this.registerForm.invalid) {
-      return;
+    console.log(this.registerForm);
+
+    if (this.currentPage === "signup") {
+      if (this.registerForm.invalid) {
+        return;
+      }
+
+      this.username = generateUsername();
+      this.emailAdress = this.registerForm.value.email;
+      this.password = this.registerForm.value.password;
+      this._authService.createUser(
+        this.username,
+        this.emailAdress,
+        this.password,
+        this.showLocation,
+        this.captions
+      );
     }
 
-    this.username = generateUsername();
-    this.emailAdress = this.registerForm.value.email;
-    this.password = this.registerForm.value.password;
-    this._authService.createUser(
-      this.username,
-      this.emailAdress,
-      this.password,
-      this.showLocation,
-      this.captions
-    );
+    if (this.currentPage === "reset") {
+      if (
+        this.registerForm.controls["password"].status === "VALID" &&
+        this.registerForm.controls["confirmPassword"].status === "VALID"
+      ) {
+        console.log(this.password);
+        console.log(this.id);
+        console.log(this.token);
+        this.password = this.registerForm.value.password;
+        this._authService.updatePass(this.id, this.token, this.password);
+        this._router.navigateByUrl("/login");
+      }
+    }
   }
 
   onReset() {

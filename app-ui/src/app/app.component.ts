@@ -55,7 +55,6 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
         const storage = this._localStorage.getData("captions");
         if (storage != "") {
           let parsed = JSON.parse(storage);
-          console.log(parsed);
           this._httpService.totalItems$.next(parsed.length);
         }
       }
@@ -104,9 +103,8 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
       .subscribe((val) => {
         this.notifications.invalidURL = val;
         if (val) {
-          setTimeout(() => {
-            this.notifications.invalidURL = this.userNotification = false;
-          }, 5000);
+          this.notifications.invalidURL = this.userNotification = false;
+          setTimeout(() => {}, 5000);
         }
       });
 
@@ -119,9 +117,9 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
           val
             ? (this.userNotification = true)
             : (this.userNotification = false);
-          setTimeout(() => {
-            this.notifications.formSuccess = this.userNotification = false;
-          }, 5000);
+          // setTimeout(() => {
+          //   this.notifications.formSuccess = this.userNotification = false;
+          // }, 5000);
         },
       });
 

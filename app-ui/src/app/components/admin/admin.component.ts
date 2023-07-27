@@ -1,7 +1,14 @@
-import { Component, OnDestroy } from "@angular/core";
+import {
+  Component,
+  ElementRef,
+  OnDestroy,
+  OnInit,
+  ViewChild,
+} from "@angular/core";
 import { Router } from "@angular/router";
 import { Subject, takeUntil } from "rxjs";
 import { UserDataInterface } from "src/app/interfaces/user-data.interface";
+import { AuthService } from "src/app/services/auth.service";
 import { HttpService } from "src/app/services/http.service";
 import { LocalStorageService } from "src/app/services/local-storage.service";
 
@@ -10,16 +17,40 @@ import { LocalStorageService } from "src/app/services/local-storage.service";
   templateUrl: "./admin.component.html",
   styleUrls: ["./admin.component.scss"],
 })
-export class AdminComponent implements OnDestroy {
+export class AdminComponent implements OnInit, OnDestroy {
+  @ViewChild("otp", { static: false }) otp: ElementRef;
+  @ViewChild("email", { static: false }) email: ElementRef;
+  @ViewChild("passcode", { static: false }) passcode: ElementRef;
+
   private unsubscribe$ = new Subject<void>();
   dataArray: any | undefined;
   currentTab: string = "captions";
+  username: string | null;
+  alphanumeric: any;
+  userInput = false;
   constructor(
     private _httpService: HttpService,
+    private _authService: AuthService,
     private _router: Router,
     private _localStorage: LocalStorageService
   ) {
     this.checkForPendingComments();
+    this.username = this._authService.username$.value;
+
+    this.generateCode();
+    this.alphanumeric = setInterval(() => {
+      this.generateCode();
+    }, 900000);
+  }
+
+  ngOnInit(): void {
+    this._httpService.adminAccessResponse$
+      .pipe(takeUntil(this.unsubscribe$))
+      .subscribe((val) => {
+        val.message === "success"
+          ? (this.userInput = true)
+          : (this.userInput = false);
+      });
   }
 
   checkForPendingComments() {
@@ -31,6 +62,13 @@ export class AdminComponent implements OnDestroy {
         }
       });
     this._httpService.getUnapprovedCaptions();
+  }
+
+  onBlurEvent() {
+    const otp = this.otp.nativeElement.value;
+    const email = this.email.nativeElement.value;
+    const passcode = this.passcode.nativeElement.value;
+    this._httpService.compareValues(otp, email, passcode);
   }
 
   tabNavigation(name: string) {
@@ -123,7 +161,16 @@ export class AdminComponent implements OnDestroy {
     }
   }
 
+  generateCode() {
+    this._httpService.generateOTP(this.username);
+  }
+
+  exportCaptionData() {
+    console.log("captions...");
+  }
+
   ngOnDestroy(): void {
+    clearInterval(this.alphanumeric);
     this.unsubscribe$.next();
     this.unsubscribe$.complete();
   }

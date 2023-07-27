@@ -4,7 +4,7 @@ import {
   UntypedFormGroup,
   Validators,
 } from "@angular/forms";
-import { Subject, takeUntil } from "rxjs";
+import { Subject, takeUntil, tap } from "rxjs";
 import { emailValidator } from "src/app/directives/email-validator.directive";
 import { AuthService } from "src/app/services/auth.service";
 
@@ -20,6 +20,7 @@ export class ForgotPasswordComponent implements OnDestroy {
   emailSent: boolean = false;
   message: string;
   tokenExpired: boolean = false;
+  userDoesNotExist: boolean = false;
 
   constructor(private _authSerivce: AuthService) {}
 
@@ -35,11 +36,17 @@ export class ForgotPasswordComponent implements OnDestroy {
 
     this._authSerivce.emailMessage$
       .pipe(takeUntil(this.unsubscribe$))
-      .subscribe((val) => {
-        if (val.message != "") {
-          this.emailSent = true;
-          this.message = val.message;
-        }
+      .subscribe({
+        next: (val) => {
+          if (val.message === "User does not exist.") {
+            this.userDoesNotExist = true;
+            return;
+          }
+          if (val.message != "") {
+            this.message = val.message;
+            this.emailSent = true;
+          }
+        },
       });
 
     this._authSerivce.tokenExpired$
@@ -67,6 +74,7 @@ export class ForgotPasswordComponent implements OnDestroy {
 
   onFocusEvent(e: any) {
     this.tokenExpired = false;
+    this.userDoesNotExist = false;
   }
 
   ngOnDestroy(): void {

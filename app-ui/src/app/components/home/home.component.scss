@@ -156,6 +156,14 @@
         }
       }
 
+      .edit-caption {
+        position: relative;
+        button {
+          position: absolute;
+          bottom: 0;
+        }
+      }
+
       // .first-last {
       //   display: grid;
       //   grid-column-gap: 10px;

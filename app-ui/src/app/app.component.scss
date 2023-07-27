@@ -7,18 +7,23 @@
 
 .redirect-message {
   font: normal 14px sans-serif;
-  border: 2px solid $white;
   transition: all 0.25s;
   position: fixed;
   text-align: center;
-  padding: 20px 0;
+  padding: 6px 0 7px 0;
   color: $white;
   width: 300px;
   opacity: 0;
   z-index: 2;
-  top: 29px;
-  right: 10px;
-  border-radius: 6px;
+  top: 123.5px;
+  right: 0;
+  border-bottom-left-radius: 6px;
+  border-bottom-right-radius: 6px;
+  border-bottom: 1px solid $midnight;
+  border-left: 1px solid $midnight;
+  border-right: 1px solid $midnight;
+  left: 0;
+  margin: 0 auto;
 }
 
 .show-redirect-message {
@@ -28,17 +33,20 @@
 @keyframes redirectMessage {
   0%,
   100% {
-    opacity: 0;
-  }
-
-  5%,
-  95% {
     opacity: 1;
   }
+
+  // 5%,
+  // 95% {
+  //   opacity: 1;
+  // }
 }
 
 @media screen and (max-width: 768px) {
   .content {
     margin-top: 80px;
+  }
+  .redirect-message {
+    top: 57px;
   }
 }

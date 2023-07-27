@@ -16,6 +16,7 @@ import {
 } from "../interfaces/user-data.interface";
 import { LocalStorageService } from "./local-storage.service";
 import { ProfileInterface } from "../interfaces/profile.interface";
+import { AuthService } from "./auth.service";
 
 @Injectable({
   providedIn: "root",
@@ -35,6 +36,9 @@ export class HttpService implements OnDestroy {
   formSubmitted$ = new Subject<boolean>();
   adminResponse: UserDataInterface;
   profileData: ProfileInterface;
+  adminAccessResponse$ = new BehaviorSubject<{ message: string }>({
+    message: "",
+  });
   location$ = new BehaviorSubject<{ city: string; country: string }>({
     city: "",
     country: "",
@@ -65,6 +69,7 @@ export class HttpService implements OnDestroy {
 
   constructor(
     private _http: HttpClient,
+    private _authService: AuthService,
     private _localStorageService: LocalStorageService
   ) {}
 
@@ -232,6 +237,99 @@ export class HttpService implements OnDestroy {
       .subscribe((response) => console.log(response));
   }
 
+  generateOTP(id: string | null) {
+    const httpOptions = {
+      headers: new HttpHeaders(),
+    };
+
+    return this._http
+      .get<LocalStorageInterface>(
+        `/api/snapshot/generate?id=${id}`,
+        httpOptions
+      )
+      .pipe(takeUntil(this.unsubscribe$))
+      .subscribe();
+  }
+
+  // Compare OTP, email, and credentials user
+  compareValues(otp: string, email: string, passcode: string) {
+    console.log(passcode);
+    const httpOptions = {
+      headers: new HttpHeaders(),
+    };
+
+    return this._http
+      .get<{ message: string }>(
+        `/api/snapshot/compare?otp=${otp}&email=${email}&passcode=${passcode}`,
+        httpOptions
+      )
+      .pipe(takeUntil(this.unsubscribe$))
+      .subscribe((val) => {
+        this.adminAccessResponse$.next(val);
+      });
+  }
+
+  downloadFile(data: any, filename = "data") {
+    let arrHeader = ["username", "email", "location"];
+    let csvData = this.ConvertToCSV(data, arrHeader);
+    let blob = new Blob(["\ufeff" + csvData], {
+      type: "text/csv;charset=utf-8;",
+    });
+    let dwldLink = document.createElement("a");
+    let url = URL.createObjectURL(blob);
+    let isSafariBrowser =
+      navigator.userAgent.indexOf("Safari") != -1 &&
+      navigator.userAgent.indexOf("Chrome") == -1;
+    if (isSafariBrowser) {
+      //if Safari open in new window to save file with random filename.
+      dwldLink.setAttribute("target", "_blank");
+    }
+    dwldLink.setAttribute("href", url);
+    dwldLink.setAttribute("download", "users.csv");
+    dwldLink.style.visibility = "hidden";
+    document.body.appendChild(dwldLink);
+    dwldLink.click();
+    document.body.removeChild(dwldLink);
+  }
+
+  ConvertToCSV(objArray: string, headerList: string[]) {
+    let array = typeof objArray != "object" ? JSON.parse(objArray) : objArray;
+    let str = "";
+    // let row = "S.No,";
+
+    // let newHeaders = ["username", "email", "location"];
+
+    // for (let index in newHeaders) {
+    //   row += newHeaders[index] + ",";
+    // }
+    // row = row.slice(0, -1);
+    // str += row + "\r\n";
+    for (let i = 0; i < array.length; i++) {
+      let line = i + 1 + "";
+      for (let index in headerList) {
+        let head = headerList[index];
+        console.log(head);
+        console.log(array[i]);
+        line += "," + this.strRep(array[i][head]);
+      }
+      str += line + "\r\n";
+    }
+    return str;
+  }
+
+  strRep(data: string) {
+    if (typeof data == "string") {
+      let newData = data.replace(/,/g, " ");
+      return newData;
+    } else if (typeof data == "undefined") {
+      return "-";
+    } else if (typeof data == "number") {
+      return data;
+    } else {
+      return data;
+    }
+  }
+
   // Get Captions
   getTotal() {
     const httpOptions = {
@@ -281,6 +379,8 @@ export class HttpService implements OnDestroy {
           this.formSubmitted$.next(true);
         },
         error: (value) => {
+          console.log(value);
+          console.log(this._authService);
           this.formSubmitted$.next(false);
         },
       });

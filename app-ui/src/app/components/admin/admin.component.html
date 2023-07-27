@@ -1,4 +1,18 @@
-<div class="double-page-content">
+<div *ngIf="!userInput" class="admin">
+  <div class="mock-form">
+    <div>
+      <input #otp type="text" />
+    </div>
+    <div>
+      <input #email type="text" />
+    </div>
+    <div>
+      <input #passcode type="text" (blur)="onBlurEvent()" />
+    </div>
+  </div>
+</div>
+
+<div *ngIf="userInput" class="double-page-content">
   <div class="editing-nav-bar">
     <div class="nav-wrapper">
       <nav>
@@ -20,7 +34,8 @@
       </nav>
     </div>
   </div>
-  <div *ngIf="currentTab === 'captions'" id="commenting">
+
+  <div *ngIf="currentTab === 'captions'" id="captions">
     <div *ngFor="let data of dataArray; let i = index" class="repeating-group">
       <div class="group-layout">
         <div>
@@ -77,5 +92,19 @@
 
   <div *ngIf="currentTab === 'uploader'" id="image-uploader"></div>
 
-  <div *ngIf="currentTab === 'export'" id="export"></div>
+  <div *ngIf="currentTab === 'export'" id="export">
+    <div class="export-wrapper">
+      <div class="export-btn">
+        <button class="standard-btn" type="button">User Data</button>
+
+        <button
+          (click)="exportCaptionData()"
+          class="standard-btn"
+          type="button"
+        >
+          Caption Data
+        </button>
+      </div>
+    </div>
+  </div>
 </div>

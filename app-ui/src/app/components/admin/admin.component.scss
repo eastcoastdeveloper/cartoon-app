@@ -1,6 +1,23 @@
 @import "../../style/color";
 
-#commenting {
+.admin {
+  height: 100%;
+  display: flex;
+  .mock-form {
+    margin: auto;
+    > div {
+      height: 25px;
+      width: 200px;
+      background-color: $midnight;
+      border-radius: 4px;
+    }
+    > div:not(:last-child) {
+      margin-bottom: 10px;
+    }
+  }
+}
+
+#captions {
   padding: 55px 0 75px 0;
   .repeating-group:not(:last-child) {
     border-bottom: 1px solid $midnight;
@@ -78,7 +95,36 @@
   }
 }
 
+#export {
+  height: calc(100% - 75px);
+  background-color: $white;
+  border-radius: 4px;
+  padding: 10px;
+  box-sizing: border-box;
+  position: relative;
+  top: 55px;
+  .export-wrapper {
+    .export-btn {
+      display: grid;
+      grid-template-columns: repeat(2, 120px);
+      grid-column-gap: 10px;
+    }
+  }
+  .standard-btn {
+    width: 120px;
+  }
+}
+
 @media screen and (max-width: 992px) {
+  #export {
+    height: calc(100% - 70px);
+    top: 40px;
+    .export-wrapper {
+      .export-btn {
+        justify-content: center;
+      }
+    }
+  }
   .double-page-content {
     margin: 0 20px;
     max-width: none;
@@ -97,7 +143,7 @@
       }
     }
   }
-  #commenting {
+  #captions {
     .repeating-group {
       .group-layout {
         grid-template-columns: calc(100% - 0px);
@@ -152,13 +198,13 @@
       top: 57px;
     }
   }
-  #commenting {
+  #captions {
     padding-top: 30px;
   }
 }
 
 @media screen and (max-width: 400px) {
-  #commenting {
+  #captions {
     .repeating-group {
       .group-layout {
         .data-wrapper {

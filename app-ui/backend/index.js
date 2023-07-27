@@ -1,9 +1,7 @@
 const express = require('express');
 const helmet = require('helmet');
-// const bodyParser = require("body-parser");
 const mongoose = require('mongoose');
 const port = process.env.PORT || 8080;
-// const CaptionData = require('./models/userData');
 const app = express();
 
 mongoose.set("strictQuery", false);
@@ -29,6 +27,7 @@ app.use((req, res, next) => {
 });
 
 app.use('/api/form-submission', require('./routes/form-submission'));
+app.use('/api/snapshot', require('./routes/snapshot'));
 app.use('/api/captions', require('./routes/captions-process'));
 app.use('/api/reset', require('./routes/password'));
 app.use('/api/update', require('./routes/update'))

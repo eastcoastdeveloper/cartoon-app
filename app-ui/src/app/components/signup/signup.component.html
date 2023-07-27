@@ -1,12 +1,4 @@
 <div id="signup">
-  <div *ngIf="passwordInfo" class="password-popup">
-    <span>Password must contain the following:</span>
-    <span>&bull;&nbsp;at least 8 characters long</span>
-    <span>&bull;&nbsp;one numeric digit</span>
-    <span>&bull;&nbsp;one uppercase character</span>
-    <span>&bull;&nbsp;one lowercase character</span>
-    <span>&bull;&nbsp;one special character</span>
-  </div>
   <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
     <div *ngIf="userAlreadyRegisteredError" class="validation-error">
       User already registered. Please try again.
@@ -31,7 +23,7 @@
         </div>
       </div>
     </div> -->
-    <div class="email">
+    <div *ngIf="currentPage === 'signup'" class="email">
       <label class="form-label">Email</label>
       <input
         type="text"
@@ -67,7 +59,7 @@
           [ngClass]="passwordInfo ? 'show-close' : 'show-info'"
           class="toggle-popup"
         >
-          <span>{{ passwordInfo ? "X" : "I" }}</span>
+          <span>?</span>
         </div>
         <!-- <div
           class="show-password"
@@ -171,7 +163,23 @@
     </div>
 
     <div class="register-cancel">
-      <button class="register">Register</button>
+      <button class="register">
+        {{ currentPage === "signup" ? "Register" : "Update Password" }}
+      </button>
+    </div>
+
+    <div *ngIf="passwordInfo" class="password-popup">
+      <div class="password-directions">
+        <span>Password must contain the following:</span>
+        <span>&bull;&nbsp;at least 8 characters long</span>
+        <span>&bull;&nbsp;one numeric digit</span>
+        <span>&bull;&nbsp;one uppercase character</span>
+        <span>&bull;&nbsp;one lowercase character</span>
+        <span>&bull;&nbsp;one special character</span>
+      </div>
+      <div (click)="passwordInfo = false" class="close-popup">
+        <button type="button">Close</button>
+      </div>
     </div>
   </form>
 </div>

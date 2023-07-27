@@ -11,11 +11,11 @@ router.post('/forgot', (req, res, next) => {
    
   User.findOne({ email: email }).then((user) => {
     if (!user) {
-        return res.status(401).json({
-            message: "User not registered"
-          });
+      return res.status(401).json({
+        message: "User not registered"
+      });
     }
-      
+    
     if (user) {
       const secret = JWT_SECRET + user.password;
       const payload = {

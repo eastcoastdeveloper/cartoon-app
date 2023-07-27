@@ -1,0 +1,116 @@
+#signup,
+#reset {
+  height: 100%;
+  display: flex;
+  .password-popup {
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.8);
+    width: 100%;
+    display: flex;
+    position: absolute;
+    box-sizing: border-box;
+    font: normal 13px/21px sans-serif;
+    border-radius: 4px;
+    padding: 10px;
+    top: 0;
+    .password-directions {
+      background-color: $skyBlue;
+      margin: auto;
+      padding: 10px;
+      border-radius: 4px;
+      span {
+        display: block;
+      }
+    }
+    .close-popup {
+      transform: translateY(calc(50% + 75px));
+      border: 1px solid $white;
+      border-radius: 4px;
+      position: absolute;
+      margin: 0 auto;
+      top: 50%;
+      left: 0;
+      right: 0;
+      width: 90px;
+    }
+  }
+  form {
+    position: relative;
+    .text-success {
+      color: $white;
+      margin: 5px 0;
+      background-color: $editGreen;
+      font: normal 14px sans-serif;
+      text-align: center;
+      border-radius: 3px;
+      padding: 4px;
+    }
+
+    margin: auto;
+    min-width: 275px;
+    .password-wrapper {
+      label {
+        margin-top: 10px;
+      }
+      .password-info {
+        display: grid;
+        grid-template-columns: calc(100% - 30px) 30px;
+        margin-bottom: 10px;
+        .toggle-popup {
+          border-radius: 50%;
+          display: flex;
+          transform: scale(0.75);
+          border: 1px solid $midnight;
+          cursor: pointer;
+          span {
+            margin: auto;
+          }
+        }
+        .show-info {
+          background-color: $skyBlue;
+          color: $midnight;
+        }
+        .show-close {
+          background-color: $warningRed;
+          color: $white;
+        }
+      }
+    }
+    [type="submit"] {
+      margin-top: 20px;
+    }
+    .register-cancel {
+      display: flex;
+      grid-column-gap: 15px;
+      margin-top: 15px;
+    }
+
+    .generate-password {
+      .optional-text {
+        position: relative;
+        padding: 7px 0;
+        span:not(:nth-child(2)) {
+          width: 50px;
+          display: block;
+          height: 1px;
+          background-color: $midnight;
+          position: absolute;
+          top: 50%;
+          transform: translate(-50%, -50%);
+        }
+        span:first-child {
+          left: calc(50% - 40px);
+        }
+        span:nth-child(2) {
+          font: normal 13px sans-serif;
+          color: $midnight;
+          display: block;
+          text-align: center;
+        }
+        span:last-child {
+          right: calc(50% - 90px);
+        }
+      }
+    }
+  }
+}

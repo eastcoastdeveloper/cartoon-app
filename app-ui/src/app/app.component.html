@@ -1,6 +1,6 @@
 <div
   *ngIf="notifications.invalidURL"
-  [style.background-color]="userNotification ? 'rgb(51,201,72)' : '#b33a3a'"
+  [style.background-color]="userNotification ? '#70ba6d' : '#b33a3a'"
   [ngClass]="{
     'show-redirect-message element-shadow': notifications.invalidURL
   }"
@@ -11,9 +11,9 @@
 
 <div
   *ngIf="notifications.formSuccess"
-  [style.background-color]="userNotification ? 'rgb(51,201,72)' : '#b33a3a'"
+  [style.background-color]="userNotification ? '#70ba6d' : '#b33a3a'"
   [ngClass]="{
-    'show-redirect-message element-shadow': notifications.formSuccess
+    'show-redirect-message': notifications.formSuccess
   }"
   class="redirect-message"
 >
@@ -26,7 +26,7 @@
 
 <!-- <div
   *ngIf="notifications.registration"
-  [style.background-color]="userNotification ? 'rgb(51,201,72)' : '#b33a3a'"
+  [style.background-color]="userNotification ? '#70ba6d' : '#b33a3a'"
   [ngClass]="{
     'show-redirect-message element-shadow': notifications.registration
   }"

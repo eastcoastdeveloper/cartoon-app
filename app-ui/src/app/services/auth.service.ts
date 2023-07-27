@@ -77,7 +77,6 @@ export class AuthService implements OnDestroy {
       username: username,
       email: email,
       password: password,
-      // showLocation: showLocation,
       captions: [],
     };
     this._http
@@ -241,8 +240,13 @@ export class AuthService implements OnDestroy {
     return this._http
       .post<{ message: string }>("api/reset/forgot", body)
       .pipe(takeUntil(this.unsubscribe$))
-      .subscribe((obj) => {
-        this.emailMessage$.next(obj);
+      .subscribe({
+        next: (obj) => {
+          this.emailMessage$.next(obj);
+        },
+        error: (err) => {
+          this.emailMessage$.next({ message: "User does not exist." });
+        },
       });
   }
 

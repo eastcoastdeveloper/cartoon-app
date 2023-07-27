@@ -6,7 +6,7 @@ import { SignupComponent } from "./components/signup/signup.component";
 import { AdminComponent } from "./components/admin/admin.component";
 import { AuthGuard } from "./guards/auth.guard";
 import { ProfileComponent } from "./components/profile/profile.component";
-import { ResetPasswordComponent } from "./components/reset-password/reset-password.component";
+// import { ResetPasswordComponent } from "./components/reset-password/reset-password.component";
 import { ForgotPasswordComponent } from "./components/forgot-password/forgot-password.component";
 
 const routes: Routes = [
@@ -29,7 +29,7 @@ const routes: Routes = [
   },
   {
     path: "reset-password/:id/:token",
-    component: ResetPasswordComponent,
+    component: SignupComponent,
   },
   {
     path: "signup",
@@ -65,7 +65,7 @@ export const routingComponents = [
   HomeComponent,
   SignupComponent,
   LoginComponent,
-  ResetPasswordComponent,
+  // ResetPasswordComponent,
   ForgotPasswordComponent,
   AdminComponent,
   ProfileComponent,
