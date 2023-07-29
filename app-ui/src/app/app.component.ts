@@ -27,16 +27,19 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
   width: number = window.innerWidth;
   errorMessage = false;
 
+  frequency?: any | null;
+  loggedout = false;
+
   notifications = {
     invalidURL: false,
     formSuccess: false,
+    adminAccessResponse: false,
   };
 
   queryNum: number;
   isMobile: boolean = false;
   mobileWidth: number = 760;
   backButtonClick = false;
-  // toonReference: string;
   errorDescription: string | null;
   userNotification: boolean | null;
 
@@ -97,6 +100,24 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
       }
     });
 
+    this._httpService.adminAccessResponse$
+      .pipe(takeUntil(this.unsubscribe$))
+      .subscribe((val) => {
+        console.log(val.message);
+        if (val.message === "Not found") {
+          this.notifications.adminAccessResponse = true;
+          this.userNotification = false;
+        }
+        if (val.message === "Success") {
+          this.notifications.adminAccessResponse = true;
+          this.userNotification = true;
+        }
+        setTimeout(() => {
+          this.notifications.adminAccessResponse = this.userNotification =
+            false;
+        }, 5000);
+      });
+
     // Notification: Invalid URL
     this._httpService.invalidURL$
       .pipe(takeUntil(this.unsubscribe$))
@@ -117,13 +138,41 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
           val
             ? (this.userNotification = true)
             : (this.userNotification = false);
-          // setTimeout(() => {
-          //   this.notifications.formSuccess = this.userNotification = false;
-          // }, 5000);
+          setTimeout(() => {
+            this.notifications.formSuccess = this.userNotification = false;
+          }, 5000);
         },
       });
 
     this._authService.autoAuthUser();
+
+    // Logout if user navigates to another tab/ window
+    window.onblur = () => {
+      if (!this.loggedout) {
+        this.enableTimeout();
+      }
+    };
+    window.onfocus = () => {
+      if (this.frequency !== null) {
+        clearTimeout(this.frequency);
+        this.frequency = null;
+      }
+    };
+    window.onclick = () => {
+      if (this.frequency !== null) {
+        clearTimeout(this.frequency);
+        this.frequency = null;
+      }
+    };
+  }
+
+  enableTimeout() {
+    console.log("fired");
+    console.log("user navigated to another tab or window.");
+    this.frequency = setTimeout(() => {
+      this.loggedout = true;
+      this._authService.logout();
+    }, 180000); // 3 minutes
   }
 
   // Initialize Window Width Service

@@ -141,6 +141,23 @@ export class AuthService implements OnDestroy {
       });
   }
 
+  /*
+   ** Get date at time of login
+   ** setInterval for every 3 minutes to check if elapsed time is 1 hr greater than logged in time
+   ** if elapsed time is one hour or greater than logged in time, log out
+   */
+
+  logout() {
+    this.token = null;
+    this.isAuthenticated = false;
+    this.authStatusListener.next(false);
+    this.username$.next(null);
+    this.userId = null;
+    clearTimeout(this.tokenTimer);
+    this.clearAuthData();
+    this._router.navigate(["/"]);
+  }
+
   calculateRoles() {
     this.roles.map((user) => {
       if (user === 5015) {
@@ -200,17 +217,6 @@ export class AuthService implements OnDestroy {
       username: username,
       level: level,
     };
-  }
-
-  logout() {
-    this.token = null;
-    this.isAuthenticated = false;
-    this.authStatusListener.next(false);
-    this.username$.next(null);
-    this.userId = null;
-    clearTimeout(this.tokenTimer);
-    this.clearAuthData();
-    this._router.navigate(["/"]);
   }
 
   private saveAuthData(

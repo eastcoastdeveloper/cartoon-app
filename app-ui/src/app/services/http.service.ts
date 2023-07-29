@@ -251,6 +251,19 @@ export class HttpService implements OnDestroy {
       .subscribe();
   }
 
+  exportData() {
+    const httpOptions = {
+      headers: new HttpHeaders(),
+    };
+
+    return this._http
+      .get(`/api/snapshot/data`, httpOptions)
+      .pipe(takeUntil(this.unsubscribe$))
+      .subscribe((val) => {
+        this.downloadFile(val);
+      });
+  }
+
   // Compare OTP, email, and credentials user
   compareValues(otp: string, email: string, passcode: string) {
     console.log(passcode);

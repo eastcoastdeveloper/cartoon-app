@@ -16,7 +16,7 @@ import { AuthService } from "src/app/services/auth.service";
 })
 export class LoginComponent implements OnInit, OnDestroy {
   private unsubscribe$ = new Subject<void>();
-  reactiveForm!: UntypedFormGroup;
+  protected reactiveForm!: UntypedFormGroup;
   emailAdress: string;
   showPassword: boolean = false;
   badCredentials: boolean = false;

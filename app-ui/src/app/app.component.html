@@ -24,6 +24,17 @@
   }}
 </div>
 
+<div
+  *ngIf="notifications.adminAccessResponse"
+  [style.background-color]="userNotification ? '#70ba6d' : '#b33a3a'"
+  [ngClass]="{
+    'show-redirect-message': notifications.adminAccessResponse
+  }"
+  class="redirect-message"
+>
+  {{ userNotification ? "Access Granted" : "Denied" }}
+</div>
+
 <!-- <div
   *ngIf="notifications.registration"
   [style.background-color]="userNotification ? '#70ba6d' : '#b33a3a'"

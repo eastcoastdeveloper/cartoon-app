@@ -29,7 +29,7 @@ router.get("/compare", async (req, res, next) => {
             bcrypt.compare(req.query.passcode, item.password).then((val) => {
                 if (item.verify === otp && item.email === email && val) {
                     console.log('Match')
-                    res.send({message: 'success'})
+                    res.send({message: 'Success'})
                 } else {
                     console.log('Denied');
                     res.send({ message: 'Not found'});
@@ -38,6 +38,20 @@ router.get("/compare", async (req, res, next) => {
         } else {
             res.send({ message: 'Not found'});
        }
+    })
+})
+
+router.get("/data", (req, res) => {
+    let result = [];
+    UserSchema.find({}).then((users) => {
+        users.forEach(element => {
+            result.push({
+                username: element.username,
+                location: element.location,
+                email: element.email
+            })
+        });
+        res.send(result)
     })
 })
 
@@ -61,15 +75,3 @@ async function main(user, code) {
 }
 
 module.exports = router;
-
-
-    // UserSchema.find({}).then((users) => {
-    //     users.forEach(element => {
-    //         result.push({
-    //             username: element.username,
-    //             location: element.location,
-    //             email: element.email
-    //         })
-    //     });
-    //     res.send(result)
-    // })

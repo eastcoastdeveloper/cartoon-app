@@ -1,4 +1,4 @@
-import { Component, OnDestroy } from "@angular/core";
+import { Component, ElementRef, OnDestroy, ViewChild } from "@angular/core";
 import {
   UntypedFormControl,
   UntypedFormGroup,
@@ -14,7 +14,9 @@ import { AuthService } from "src/app/services/auth.service";
   styleUrls: ["./forgot-password.component.scss"],
 })
 export class ForgotPasswordComponent implements OnDestroy {
+  @ViewChild("otpEntry", { static: false }) otpEntry: ElementRef;
   private unsubscribe$ = new Subject<void>();
+  otp: string;
   reactiveForm!: UntypedFormGroup;
   emailAdress: string;
   emailSent: boolean = false;
@@ -54,6 +56,17 @@ export class ForgotPasswordComponent implements OnDestroy {
       .subscribe((val) => {
         this.tokenExpired = val;
       });
+
+    this.otp = this.generateOTP(6);
+  }
+
+  generateOTP(limit: number) {
+    var digits = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ!@#$%^&*()";
+    let OTP = "";
+    for (let i = 0; i < limit; i++) {
+      OTP += digits[Math.floor(Math.random() * 46)];
+    }
+    return OTP;
   }
 
   get email() {
@@ -61,7 +74,10 @@ export class ForgotPasswordComponent implements OnDestroy {
   }
 
   public validate(): void {
-    if (this.reactiveForm.invalid) {
+    if (
+      this.reactiveForm.invalid &&
+      this.otp === this.otpEntry.nativeElement.innerText
+    ) {
       for (const control of Object.keys(this.reactiveForm.controls)) {
         this.reactiveForm.controls[control].markAsTouched();
       }

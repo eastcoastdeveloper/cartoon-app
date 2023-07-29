@@ -34,7 +34,7 @@ export class SignupComponent implements OnInit, OnDestroy {
   capsOn: any;
 
   submitted = false;
-  registerForm!: FormGroup;
+  protected registerForm!: FormGroup;
   currentPage: string;
 
   uppercase = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";

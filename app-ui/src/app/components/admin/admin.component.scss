@@ -95,36 +95,7 @@
   }
 }
 
-#export {
-  height: calc(100% - 75px);
-  background-color: $white;
-  border-radius: 4px;
-  padding: 10px;
-  box-sizing: border-box;
-  position: relative;
-  top: 55px;
-  .export-wrapper {
-    .export-btn {
-      display: grid;
-      grid-template-columns: repeat(2, 120px);
-      grid-column-gap: 10px;
-    }
-  }
-  .standard-btn {
-    width: 120px;
-  }
-}
-
 @media screen and (max-width: 992px) {
-  #export {
-    height: calc(100% - 70px);
-    top: 40px;
-    .export-wrapper {
-      .export-btn {
-        justify-content: center;
-      }
-    }
-  }
   .double-page-content {
     margin: 0 20px;
     max-width: none;

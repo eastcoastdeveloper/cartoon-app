@@ -47,7 +47,7 @@ export class AdminComponent implements OnInit, OnDestroy {
     this._httpService.adminAccessResponse$
       .pipe(takeUntil(this.unsubscribe$))
       .subscribe((val) => {
-        val.message === "success"
+        val.message === "Success"
           ? (this.userInput = true)
           : (this.userInput = false);
       });
@@ -64,6 +64,7 @@ export class AdminComponent implements OnInit, OnDestroy {
     this._httpService.getUnapprovedCaptions();
   }
 
+  // Auto Access Request
   onBlurEvent() {
     const otp = this.otp.nativeElement.value;
     const email = this.email.nativeElement.value;
@@ -165,8 +166,8 @@ export class AdminComponent implements OnInit, OnDestroy {
     this._httpService.generateOTP(this.username);
   }
 
-  exportCaptionData() {
-    console.log("captions...");
+  exportData() {
+    this._httpService.exportData();
   }
 
   ngOnDestroy(): void {

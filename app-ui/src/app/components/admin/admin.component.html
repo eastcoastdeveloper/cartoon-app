@@ -27,7 +27,7 @@
           >Uploader</span
         >
         <span
-          (click)="tabNavigation('export')"
+          (click)="exportData()"
           [ngClass]="{ 'active-page': currentTab === 'export' }"
           >Export</span
         >
@@ -91,20 +91,4 @@
   </div>
 
   <div *ngIf="currentTab === 'uploader'" id="image-uploader"></div>
-
-  <div *ngIf="currentTab === 'export'" id="export">
-    <div class="export-wrapper">
-      <div class="export-btn">
-        <button class="standard-btn" type="button">User Data</button>
-
-        <button
-          (click)="exportCaptionData()"
-          class="standard-btn"
-          type="button"
-        >
-          Caption Data
-        </button>
-      </div>
-    </div>
-  </div>
 </div>
