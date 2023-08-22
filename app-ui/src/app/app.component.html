@@ -53,4 +53,38 @@
   </div>
   <app-loader></app-loader>
 </main>
+<div [ngClass]="{ 'show-menu': showMenu }" class="mobile-menu">
+  <nav>
+    <span
+      (click)="closeMobileMenu()"
+      *ngIf="!userIsAuthenticated"
+      routerLink="/signup"
+      >Signup</span
+    >
+    <span
+      (click)="closeMobileMenu()"
+      *ngIf="!userIsAuthenticated"
+      routerLink="/login"
+      >Login</span
+    >
+    <span
+      (click)="closeMobileMenu()"
+      *ngIf="userIsAuthenticated && hasRole"
+      routerLink="/admin"
+      >Admin</span
+    >
+    <span
+      (click)="closeMobileMenu()"
+      *ngIf="userIsAuthenticated && !hasRole"
+      routerLink="/profile"
+      >Profile</span
+    >
+    <span
+      (click)="closeMobileMenu()"
+      *ngIf="userIsAuthenticated"
+      (click)="onLogout()"
+      >Logout</span
+    >
+  </nav>
+</div>
 <app-footer></app-footer>

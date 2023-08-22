@@ -1,7 +1,8 @@
-import { Component, OnDestroy, OnInit } from "@angular/core";
+import { DOCUMENT } from "@angular/common";
+import { Component, Inject, OnDestroy, OnInit, Renderer2 } from "@angular/core";
 import { Subject, takeUntil } from "rxjs";
 import { AuthService } from "src/app/services/auth.service";
-import { WindowWidthService } from "src/app/services/window-width.service";
+import { GlobalFunctionsService } from "src/app/services/global-functions.service";
 
 @Component({
   selector: "app-header",
@@ -13,13 +14,16 @@ export class HeaderComponent implements OnInit, OnDestroy {
   userIsAuthenticated = false;
   windowWidth?: number;
   hasRole = false;
+  menuOpen: boolean | null;
   default: true;
 
   constructor(
-    private _windowWidthService: WindowWidthService,
+    @Inject(DOCUMENT) private document: Document,
+    private _renderer2: Renderer2,
+    private _globalFunctionService: GlobalFunctionsService,
     private _authService: AuthService
   ) {
-    this._windowWidthService.currentWidth$
+    this._globalFunctionService.currentWidth$
       .pipe(takeUntil(this.destroy$))
       .subscribe((val) => {
         this.windowWidth = val;
@@ -39,10 +43,34 @@ export class HeaderComponent implements OnInit, OnDestroy {
       .subscribe((user: boolean) => {
         this.hasRole = user;
       });
+
+    this._globalFunctionService.menuToggle$
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((val) => {
+        this.menuOpen = val;
+      });
   }
 
   onLogout() {
     this._authService.logout();
+  }
+
+  toggleMobileMenu() {
+    if (this.menuOpen === true) {
+      this.menuOpen = false;
+      this._renderer2.removeStyle(this.document.body, "overflow");
+    } else {
+      this._renderer2.setStyle(this.document.body, "overflow", "hidden");
+      this.menuOpen = true;
+    }
+
+    this._globalFunctionService.toggleMobileMenu(this.menuOpen);
+  }
+
+  closeMobileMenu() {
+    this.menuOpen = false;
+    this._globalFunctionService.toggleMobileMenu(false);
+    this._renderer2.removeStyle(this.document.body, "overflow");
   }
 
   ngOnDestroy(): void {

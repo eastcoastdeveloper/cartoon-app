@@ -6,23 +6,6 @@
     <div *ngIf="userRegistered" class="notification">
       Signup successful. Redirecting.
     </div>
-    <!-- <div class="username">
-      <label class="form-label">Username</label>  
-      <input
-        type="text"
-        formControlName="username"
-        class="form-control"
-        [ngClass]="{ 'is-invalid': submitted && f['username'].errors }"
-      />
-      <div *ngIf="submitted && f['username'].errors" class="invalid-feedback">
-        <div *ngIf="f['username'].errors['username']" class="validation-error">
-          Email is required
-        </div>
-        <div *ngIf="f['username'].errors['required']" class="validation-error">
-          Please enter a username
-        </div>
-      </div>
-    </div> -->
     <div *ngIf="currentPage === 'signup'" class="email">
       <label class="form-label">Email</label>
       <input
@@ -61,14 +44,6 @@
         >
           <span>?</span>
         </div>
-        <!-- <div
-          class="show-password"
-          *ngIf="passwordVisibility"
-          (click)="togglePassword()"
-          [ngClass]="{ 'toggle-visibility': showPassword }"
-        >
-          <img src="../../../assets/show-password.png" />
-        </div> -->
       </div>
       <label *ngIf="capsOn" class="caps-warning">Caps Locked</label>
 

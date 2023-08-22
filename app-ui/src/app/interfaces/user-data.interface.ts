@@ -1,11 +1,9 @@
 export class CaptionsInterface {
   caption?: string;
-  // votes?: number;
   creator: string;
   approved: boolean;
   id?: string;
   location: string;
-  // captionIndex?: string;
   username: string;
 }
 

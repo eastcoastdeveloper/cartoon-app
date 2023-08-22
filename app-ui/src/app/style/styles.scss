@@ -116,7 +116,8 @@ body {
 }
 
 main {
-  height: calc(100vh - 170px);
+  position: relative;
+  height: calc(100vh - 121px);
 }
 
 ol,
@@ -175,7 +176,7 @@ input {
     box-shadow: 2px 1px 5px 3px rgb(0 0 0 / 25%);
     padding: 5px;
     width: calc(100% - 10px);
-    top: 123px;
+    top: 74px;
     left: 0;
     position: fixed;
     .nav-wrapper {
@@ -233,16 +234,16 @@ input {
 
 .password-wrapper {
   position: relative;
-  .show-password {
-    width: 20px;
-    position: absolute;
-    cursor: pointer;
-    right: 40px;
-    top: 24px;
-    img {
-      width: 100%;
-    }
-  }
+  // .show-password {
+  //   width: 20px;
+  //   position: absolute;
+  //   cursor: pointer;
+  //   right: 40px;
+  //   top: 24px;
+  //   img {
+  //     width: 100%;
+  //   }
+  // }
 }
 
 .toggle-visibility {
@@ -280,7 +281,7 @@ input {
 @media screen and (max-width: 992px) {
   .double-page-content {
     margin: 0 20px;
-    padding-top: 15px;
+    // padding-top: 15px;
     .editing-nav-bar {
       .nav-wrapper {
         margin: 0 13px;
@@ -294,5 +295,9 @@ input {
     .editing-nav-bar {
       top: 56px;
     }
+  }
+  main {
+    height: calc(100vh - 89px);
+    margin-top: 42px;
   }
 }

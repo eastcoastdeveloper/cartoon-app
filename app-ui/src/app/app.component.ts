@@ -1,5 +1,14 @@
-import { AfterViewInit, Component, OnDestroy, OnInit } from "@angular/core";
-import { WindowWidthService } from "./services/window-width.service";
+import {
+  AfterViewInit,
+  Component,
+  ElementRef,
+  Inject,
+  OnDestroy,
+  OnInit,
+  Renderer2,
+  ViewChild,
+} from "@angular/core";
+import { GlobalFunctionsService } from "./services/global-functions.service";
 import {
   ActivatedRoute,
   NavigationEnd,
@@ -7,7 +16,7 @@ import {
   Router,
 } from "@angular/router";
 import { Subject, takeUntil } from "rxjs";
-import { LocationStrategy } from "@angular/common";
+import { DOCUMENT, LocationStrategy } from "@angular/common";
 import { LocalStorageService } from "./services/local-storage.service";
 import { HttpService } from "./services/http.service";
 import { AuthService } from "./services/auth.service";
@@ -23,12 +32,16 @@ import { AuthService } from "./services/auth.service";
 export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
   history: { num: number }[] = [];
   private unsubscribe$ = new Subject<void>();
+  userIsAuthenticated = false;
+  hasRole = false;
   height: number = window.innerWidth;
   width: number = window.innerWidth;
   errorMessage = false;
 
   frequency?: any | null;
+  inactiveTimer: any;
   loggedout = false;
+  elapsedTime = 0;
 
   notifications = {
     invalidURL: false,
@@ -38,13 +51,16 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
 
   queryNum: number;
   isMobile: boolean = false;
+  showMenu: boolean;
   mobileWidth: number = 760;
   backButtonClick = false;
   errorDescription: string | null;
   userNotification: boolean | null;
 
   constructor(
-    private _windowWidthService: WindowWidthService,
+    @Inject(DOCUMENT) private document: Document,
+    private _renderer2: Renderer2,
+    private _globalFunctionsService: GlobalFunctionsService,
     private _localStorage: LocalStorageService,
     private _activatedRoute: ActivatedRoute,
     private _location: LocationStrategy,
@@ -103,7 +119,6 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
     this._httpService.adminAccessResponse$
       .pipe(takeUntil(this.unsubscribe$))
       .subscribe((val) => {
-        console.log(val.message);
         if (val.message === "Not found") {
           this.notifications.adminAccessResponse = true;
           this.userNotification = false;
@@ -149,35 +164,80 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
     // Logout if user navigates to another tab/ window
     window.onblur = () => {
       if (!this.loggedout) {
-        this.enableTimeout();
+        this.userInactiveLogout();
       }
     };
     window.onfocus = () => {
-      if (this.frequency !== null) {
-        clearTimeout(this.frequency);
-        this.frequency = null;
+      if (this.inactiveTimer !== null) {
+        clearTimeout(this.inactiveTimer);
+        this.inactiveTimer = null;
       }
     };
     window.onclick = () => {
-      if (this.frequency !== null) {
-        clearTimeout(this.frequency);
-        this.frequency = null;
+      if (this.inactiveTimer !== null) {
+        clearTimeout(this.inactiveTimer);
+        this.inactiveTimer = null;
       }
     };
+
+    // Logout if user is inactive for five minutes
+    window.onfocus = () => {
+      this.elapsedTime = 0;
+    };
+    window.onclick = () => {
+      this.elapsedTime = 0;
+    };
+
+    let frequency = setInterval(() => {
+      this.elapsedTime++;
+      if (this.elapsedTime > 300) {
+        clearInterval(frequency);
+        this._authService.logout();
+        this._router.navigateByUrl("/login");
+      }
+    }, 1000);
+
+    this._globalFunctionsService.menuToggle$
+      .pipe(takeUntil(this.unsubscribe$))
+      .subscribe((val) => {
+        this.showMenu = val;
+      });
+
+    this.userIsAuthenticated = this._authService.getIsAuth();
+    this._authService
+      .getAuthStatusListener()
+      .pipe(takeUntil(this.unsubscribe$))
+      .subscribe((isAuthenticated) => {
+        this.userIsAuthenticated = isAuthenticated;
+      });
+    this._authService.hasRoleListener$
+      .pipe(takeUntil(this.unsubscribe$))
+      .subscribe((user: boolean) => {
+        this.hasRole = user;
+      });
   }
 
-  enableTimeout() {
-    console.log("fired");
-    console.log("user navigated to another tab or window.");
-    this.frequency = setTimeout(() => {
+  // Auto logout after three minutes due to navigating to another tab or application
+  userInactiveLogout() {
+    this.inactiveTimer = setTimeout(() => {
       this.loggedout = true;
       this._authService.logout();
+      this._router.navigateByUrl("/login");
     }, 180000); // 3 minutes
+  }
+
+  closeMobileMenu() {
+    this._renderer2.removeStyle(this.document.body, "overflow");
+    this._globalFunctionsService.toggleMobileMenu(false);
+  }
+
+  onLogout() {
+    this._authService.logout();
   }
 
   // Initialize Window Width Service
   ngAfterViewInit() {
-    this._windowWidthService.changeValue(window.innerWidth);
+    this._globalFunctionsService.changeValue(window.innerWidth);
   }
 
   preventBackButton() {
@@ -192,7 +252,7 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
     this.width = event.target.innerWidth;
     this.height = event.target.innerHeight;
     this.isMobile = this.width < this.mobileWidth;
-    this._windowWidthService.changeValue(this.width);
+    this._globalFunctionsService.changeValue(this.width);
   }
 
   ngOnDestroy(): void {

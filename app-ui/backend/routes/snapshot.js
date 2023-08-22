@@ -7,37 +7,53 @@ const bcrypt = require('bcrypt');
 
 router.get("/generate", async (req, res, next) => {
     const result = [];
-    let uuid = otpGenerator.generate(10, { upperCaseAlphabets: true, specialChars: false });
+    let uuid = otpGenerator.generate(10, {
+        upperCaseAlphabets: true,
+        specialChars: false
+    });
     const username = req.query.id;
     let user;
 
-    await UserSchema.findOneAndUpdate({ username: username }, { $set: { verify: uuid } }).then((val) => {
+    await UserSchema.findOneAndUpdate({
+        username: username
+    }, {
+        $set: {
+            verify: uuid
+        }
+    }).then((val) => {
         user = val;
     })
 
-    main(user, uuid).catch(e => console.log(e))    
+    aNotification(user, uuid).catch(e => console.log(e))
     res.send()
 })
 
 router.get("/compare", async (req, res, next) => {
-    console.log(req);
     const otp = req.query.otp;
     const email = req.query.email;
 
-    await UserSchema.findOne({ email: email }).then((item) => {
+    await UserSchema.findOne({
+        email: email
+    }).then((item) => {
         if (null != item) {
             bcrypt.compare(req.query.passcode, item.password).then((val) => {
                 if (item.verify === otp && item.email === email && val) {
-                    console.log('Match')
-                    res.send({message: 'Success'})
+                    aAccess(item);
+                    res.send({
+                        message: 'Success'
+                    })
                 } else {
                     console.log('Denied');
-                    res.send({ message: 'Not found'});
+                    res.send({
+                        message: 'Not found'
+                    });
                 }
             })
         } else {
-            res.send({ message: 'Not found'});
-       }
+            res.send({
+                message: 'Not found'
+            });
+        }
     })
 })
 
@@ -55,7 +71,7 @@ router.get("/data", (req, res) => {
     })
 })
 
-async function main(user, code) {
+function mailSettings() {
     const transporter = nodemailer.createTransport({
         host: 'smtp.gmail.com',
         port: 465,
@@ -65,8 +81,22 @@ async function main(user, code) {
             pass: 'hdnsjetpitoalkbh'
         }
     })
+    return transporter
+}
 
-    const info = await transporter.sendMail({
+async function aAccess(user) {
+    const config = mailSettings();
+    const info = await config.sendMail({
+        from: 'Cartoon Caption Contest <cartoon.caption.reset@gmail.com>',
+        to: user.email,
+        subject: 'Admin Notification',
+        html: `The admin route was accessed successfully.`
+    })
+}
+
+async function aNotification(user, code) {
+    const config = mailSettings();
+    const info = await config.sendMail({
         from: 'Cartoon Caption Contest <cartoon.caption.reset@gmail.com>',
         to: user.email,
         subject: 'Admin Notification',

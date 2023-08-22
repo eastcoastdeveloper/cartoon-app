@@ -1,9 +1,12 @@
 <header>
-  <div class="logo-tagline" routerLink="/">
-    <img *ngIf="windowWidth! > 768" src="../../../assets/logo.png" />
-    <div>Clever Cartoon Caption Contest</div>
+  <div (click)="closeMobileMenu()" class="logo" routerLink="/">
+    <img *ngIf="windowWidth! > 768" src="../../../assets/logo_desktop.png" />
+    <img *ngIf="windowWidth! < 769" src="../../../assets/logo_mobile.png" />
   </div>
-  <nav [ngClass]="userIsAuthenticated ? 'default-layout' : 'admin-layout'">
+  <nav
+    *ngIf="windowWidth! > 600"
+    [ngClass]="userIsAuthenticated ? 'default-layout' : 'admin-layout'"
+  >
     <span *ngIf="!userIsAuthenticated" routerLink="/signup">Signup</span>
     <span *ngIf="!userIsAuthenticated" routerLink="/login">Login</span>
     <span *ngIf="userIsAuthenticated && hasRole" routerLink="/admin"
@@ -14,4 +17,16 @@
     >
     <span *ngIf="userIsAuthenticated" (click)="onLogout()">Logout</span>
   </nav>
+  <div *ngIf="windowWidth! < 601" class="mobile-menu-controls">
+    <img
+      *ngIf="!menuOpen"
+      (click)="toggleMobileMenu()"
+      src="../../../assets/mobile-menu-burger.png"
+    />
+    <img
+      *ngIf="menuOpen"
+      (click)="toggleMobileMenu()"
+      src="../../../assets/mobile-menu-close.png"
+    />
+  </div>
 </header>

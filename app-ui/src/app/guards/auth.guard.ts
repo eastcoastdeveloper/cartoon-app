@@ -17,7 +17,6 @@ export class AuthGuard {
   ): boolean | Observable<boolean> | Promise<boolean> {
     const isAuth = this._authService.hasRoleListener$.getValue();
     if (!isAuth) {
-      // this._router.navigate(["/login"]);
       this._authService.logout();
     }
     return isAuth;

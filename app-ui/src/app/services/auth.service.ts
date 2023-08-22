@@ -7,7 +7,6 @@ import {
   Subject,
   catchError,
   takeUntil,
-  tap,
   throwError,
 } from "rxjs";
 import { Router } from "@angular/router";
@@ -201,10 +200,10 @@ export class AuthService implements OnDestroy {
   }
 
   private getAuthData() {
-    const token = this._localStorage.getData("token");
-    const expirationDate = this._localStorage.getData("expiration");
-    const userId = this._localStorage.getData("userId");
-    const username = this._localStorage.getData("username");
+    const token = this._localStorage.getData("tkn");
+    const expirationDate = this._localStorage.getData("exp");
+    const userId = this._localStorage.getData("refId");
+    const username = this._localStorage.getData("uref");
     const level = this._localStorage.getData("level");
 
     if (!token || !expirationDate) {
@@ -226,18 +225,18 @@ export class AuthService implements OnDestroy {
     username: string,
     userLevel: string
   ) {
-    this._localStorage.saveData("token", token);
-    this._localStorage.saveData("expiration", expirationDate.toISOString());
-    this._localStorage.saveData("userId", userId);
-    this._localStorage.saveData("username", username);
+    this._localStorage.saveData("tkn", token);
+    this._localStorage.saveData("exp", expirationDate.toISOString());
+    this._localStorage.saveData("refId", userId);
+    this._localStorage.saveData("uref", username);
     this._localStorage.saveData("level", userLevel);
   }
 
   private clearAuthData() {
-    this._localStorage.removeData("token");
-    this._localStorage.removeData("expiration");
-    this._localStorage.removeData("userId");
-    this._localStorage.removeData("username");
+    this._localStorage.removeData("tkn");
+    this._localStorage.removeData("exp");
+    this._localStorage.removeData("refId");
+    this._localStorage.removeData("uref");
     this._localStorage.removeData("level");
   }
 

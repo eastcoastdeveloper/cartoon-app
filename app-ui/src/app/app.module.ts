@@ -47,6 +47,7 @@ import { LeafletModule } from "@asymmetrik/ngx-leaflet";
       useClass: AuthInterceptor,
       multi: true,
     },
+    { provide: "Window", useValue: window },
   ],
   bootstrap: [AppComponent],
 })

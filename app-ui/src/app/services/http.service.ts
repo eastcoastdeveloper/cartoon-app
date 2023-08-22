@@ -23,10 +23,6 @@ import { AuthService } from "./auth.service";
 })
 export class HttpService implements OnDestroy {
   private unsubscribe$: Subject<boolean> = new Subject<boolean>();
-  userLocation$ = new BehaviorSubject<{ city: string; country: string }>({
-    city: "",
-    country: "",
-  });
   invalidURL$ = new BehaviorSubject<boolean>(false);
   totalItems$ = new BehaviorSubject<number>(0);
   storageObject: LocalStorageInterface | null;
@@ -124,6 +120,8 @@ export class HttpService implements OnDestroy {
       headers: new HttpHeaders(),
     };
 
+    !toonReference ? (toonReference = this.generateRandomNumber()) : "";
+
     return this._http
       .get<UserDataInterface[]>(
         `/api/captions/?toonReference=${toonReference}&flag=true`,
@@ -143,9 +141,7 @@ export class HttpService implements OnDestroy {
                 }
                 // Redirect if URL does not exist
                 if (this.cartoonDataObject === null) {
-                  const randomNumber = Math.floor(
-                    Math.random() * this.totalItems$.value
-                  );
+                  const randomNumber = this.generateRandomNumber();
                   this.invalidURL$.next(true);
                   this.captionsCacheCheck(randomNumber);
                   setTimeout(() => {
@@ -160,6 +156,10 @@ export class HttpService implements OnDestroy {
       .subscribe(() => {
         this.responseSubject$.next(this.cartoonDataObject);
       });
+  }
+
+  generateRandomNumber() {
+    return Math.floor(Math.random() * this.totalItems$.value);
   }
 
   getCoordinates(lat: number, long: number) {
@@ -266,7 +266,6 @@ export class HttpService implements OnDestroy {
 
   // Compare OTP, email, and credentials user
   compareValues(otp: string, email: string, passcode: string) {
-    console.log(passcode);
     const httpOptions = {
       headers: new HttpHeaders(),
     };
@@ -321,8 +320,6 @@ export class HttpService implements OnDestroy {
       let line = i + 1 + "";
       for (let index in headerList) {
         let head = headerList[index];
-        console.log(head);
-        console.log(array[i]);
         line += "," + this.strRep(array[i][head]);
       }
       str += line + "\r\n";

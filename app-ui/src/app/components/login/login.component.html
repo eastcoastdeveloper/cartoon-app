@@ -46,6 +46,8 @@
         <label for="password">Password</label>
         <input
           [type]="showPassword ? 'text' : 'password'"
+          (blur)="onBlurPasswordEvent($event)"
+          (focus)="onFocusPasswordEvent($event)"
           (ngModelChange)="passwordFieldChanged()"
           tabindex="2"
           type="password"
@@ -58,14 +60,6 @@
           maxlength="250"
           class="form-control form-control-sm"
         />
-        <div
-          class="show-password"
-          *ngIf="passwordVisibility"
-          (click)="togglePassword()"
-          [ngClass]="{ 'toggle-visibility': showPassword }"
-        >
-          <img src="../../../assets/show-password.png" />
-        </div>
         <label *ngIf="capsOn" class="caps-warning">Caps Locked</label>
       </div>
       <button type="submit" tabindex="3" (click)="validate()">Login</button>

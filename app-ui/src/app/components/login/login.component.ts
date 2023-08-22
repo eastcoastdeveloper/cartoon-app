@@ -17,6 +17,7 @@ import { AuthService } from "src/app/services/auth.service";
 export class LoginComponent implements OnInit, OnDestroy {
   private unsubscribe$ = new Subject<void>();
   protected reactiveForm!: UntypedFormGroup;
+  passwordFieldFocus = false;
   emailAdress: string;
   showPassword: boolean = false;
   badCredentials: boolean = false;
@@ -48,8 +49,14 @@ export class LoginComponent implements OnInit, OnDestroy {
       });
   }
 
-  togglePassword() {
-    this.showPassword = !this.showPassword;
+  onBlurPasswordEvent(evt: any) {
+    this.passwordFieldFocus = false;
+    this.showPassword = false;
+  }
+
+  onFocusPasswordEvent(evt: any) {
+    this.passwordFieldFocus = true;
+    this.showPassword = true;
   }
 
   onFocusEvent(e: any) {

@@ -1,7 +1,7 @@
 import { Component, OnDestroy, OnInit } from "@angular/core";
 import { Subject, takeUntil } from "rxjs";
 import { HttpService } from "src/app/services/http.service";
-import { WindowWidthService } from "src/app/services/window-width.service";
+import { GlobalFunctionsService } from "src/app/services/global-functions.service";
 import {
   UntypedFormControl,
   UntypedFormGroup,
@@ -25,8 +25,6 @@ export class HomeComponent implements OnInit, OnDestroy {
   private destroy$: Subject<boolean> = new Subject<boolean>();
   captionsArray: CaptionsInterface[] = [];
   userIsAuthenticated = false;
-  // formSuccess: boolean;
-  // formError: boolean;
   captionsGroupIndex: number = 1;
   currentImage: string;
   mode: string = "create";
@@ -40,8 +38,6 @@ export class HomeComponent implements OnInit, OnDestroy {
   totalItems: number;
   manualURL: string;
   hover: boolean = false;
-  // loggedIn: boolean;
-  elementTimeout = false;
   windowWidth?: number;
   toonIndex: number;
   user: IUser = {
@@ -50,7 +46,7 @@ export class HomeComponent implements OnInit, OnDestroy {
   };
 
   constructor(
-    private _windowWidthService: WindowWidthService,
+    private _globalFunctionsService: GlobalFunctionsService,
     private _authService: AuthService,
     private _activateRoute: ActivatedRoute,
     private _localStorage: LocalStorageService,
@@ -67,33 +63,8 @@ export class HomeComponent implements OnInit, OnDestroy {
       ]),
     });
 
-    // Form Submitted
-    // this._httpService.formSubmitted$.pipe(takeUntil(this.destroy$)).subscribe({
-    //   next: (val) => {
-    //     if (val) {
-    //       this.formSuccess = true;
-    //       this.formError = false;
-    //     } else {
-    //       this.formSuccess = false;
-    //       this.formError = true;
-    //     }
-    //     setTimeout(() => {
-    //       this.formSuccess = false;
-    //       this.formError = false;
-    //     }, 3500);
-    //     val ? (this.formSuccess = true) : (this.formError = true);
-    //     this.notifications.formSuccess = true;
-    //     val
-    //       ? (this.userNotification = true)
-    //       : (this.userNotification = false);
-    //     setTimeout(() => {
-    //       this.notifications.formSuccess = this.userNotification = false;
-    //     }, 5000);
-    //   },
-    // });
-
     // Subscribe to Window Width
-    this._windowWidthService.currentWidth$
+    this._globalFunctionsService.currentWidth$
       .pipe(takeUntil(this.destroy$))
       .subscribe((val) => {
         this.windowWidth = val;
@@ -154,13 +125,6 @@ export class HomeComponent implements OnInit, OnDestroy {
       .pipe(takeUntil(this.destroy$))
       .subscribe((isAuthenticated) => {
         this.userIsAuthenticated = isAuthenticated;
-        // if (this.userIsAuthenticated) {
-        //   this.reactiveForm.enable();
-        //   this.loggedIn = true;
-        //   setTimeout(() => {
-        //     this.elementTimeout = true;
-        //   }, 3000);
-        // }
         if (!this.userIsAuthenticated) {
           this.reactiveForm.reset();
           this.reactiveForm.disable();
@@ -181,15 +145,6 @@ export class HomeComponent implements OnInit, OnDestroy {
       .subscribe((val) => {
         this.totalItems = val;
       });
-
-    // Logged In
-    // this._authService
-    //   .getAuthStatusListener()
-    //   .pipe(takeUntil(this.destroy$))
-    //   .subscribe((isAuthenticated) => {
-    //     this.loggedIn = isAuthenticated;
-    //     console.log(this.loggedIn);
-    //   });
   }
 
   // Update Approved Caption

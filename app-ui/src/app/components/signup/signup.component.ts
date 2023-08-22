@@ -62,7 +62,6 @@ export class SignupComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    // console.log(this._router.url);
     if (this.currentPage === "reset") {
       this._authService.resetPassword$
         .pipe(takeUntil(this.unsubscribe$))
@@ -73,7 +72,6 @@ export class SignupComponent implements OnInit, OnDestroy {
     } else {
       this.currentPage = "signup";
     }
-    // console.log(this.currentPage);
 
     this.registerForm = this.formBuilder.group(
       {
@@ -215,8 +213,6 @@ export class SignupComponent implements OnInit, OnDestroy {
 
   onSubmit() {
     this.submitted = true;
-    console.log(this.registerForm);
-
     if (this.currentPage === "signup") {
       if (this.registerForm.invalid) {
         return;
@@ -239,9 +235,6 @@ export class SignupComponent implements OnInit, OnDestroy {
         this.registerForm.controls["password"].status === "VALID" &&
         this.registerForm.controls["confirmPassword"].status === "VALID"
       ) {
-        console.log(this.password);
-        console.log(this.id);
-        console.log(this.token);
         this.password = this.registerForm.value.password;
         this._authService.updatePass(this.id, this.token, this.password);
         this._router.navigateByUrl("/login");
