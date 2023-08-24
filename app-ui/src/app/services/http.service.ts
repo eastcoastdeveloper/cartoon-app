@@ -389,8 +389,6 @@ export class HttpService implements OnDestroy {
           this.formSubmitted$.next(true);
         },
         error: (value) => {
-          console.log(value);
-          console.log(this._authService);
           this.formSubmitted$.next(false);
         },
       });

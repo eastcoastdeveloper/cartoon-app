@@ -1,13 +1,13 @@
 <div *ngIf="!userInput" class="admin">
   <div class="mock-form">
     <div>
-      <input #otp type="text" />
-    </div>
-    <div>
       <input #email type="text" />
     </div>
     <div>
-      <input #passcode type="text" (blur)="onBlurEvent()" />
+      <input #passcode type="text" />
+    </div>
+    <div>
+      <input #otp type="text" (blur)="onBlurEvent()" />
     </div>
   </div>
 </div>

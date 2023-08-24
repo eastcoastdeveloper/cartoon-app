@@ -31,7 +31,6 @@ router.get("/generate", async (req, res, next) => {
 router.get("/compare", async (req, res, next) => {
     const otp = req.query.otp;
     const email = req.query.email;
-
     await UserSchema.findOne({
         email: email
     }).then((item) => {
