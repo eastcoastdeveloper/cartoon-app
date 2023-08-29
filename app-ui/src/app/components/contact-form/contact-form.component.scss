@@ -1,0 +1,15 @@
+@import "../../style/color.scss";
+@import "../../style/signup-reset.scss";
+
+.message {
+  margin-top: 10px;
+}
+
+.confirmation {
+  margin: auto;
+  font: normal 14px sans-serif;
+  background-color: $white;
+  padding: 10px;
+  border: 1px solid $midnight;
+  border-radius: 4px;
+}

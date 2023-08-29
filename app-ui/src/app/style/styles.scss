@@ -158,7 +158,8 @@ label {
   display: block;
   margin-bottom: 3px;
 }
-input {
+input,
+textarea {
   padding: 5px;
   font-size: 14px;
   border: 1px solid $midnight;
@@ -264,7 +265,6 @@ input {
   border-radius: 3px;
   font: normal 14px sans-serif;
   text-align: center;
-  max-width: 330px;
   margin: 5px 0;
   color: $white;
   padding: 4px;

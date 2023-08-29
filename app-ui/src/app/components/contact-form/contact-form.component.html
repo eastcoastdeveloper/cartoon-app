@@ -1,0 +1,39 @@
+<div id="contact">
+  <form [formGroup]="contactForm" (ngSubmit)="onSubmit()" *ngIf="!formSent">
+    <!-- <div *ngIf="userAlreadyRegisteredError" class="validation-error">
+        User already registered. Please try again.
+      </div>
+      <div *ngIf="userRegistered" class="notification">
+        Signup successful. Redirecting.
+      </div> -->
+    <!-- <div class="username">
+        <label class="form-label">Username</label>
+        <input #usernameValue type="text" class="form-control" />
+      </div> -->
+
+    <div class="message">
+      <label class="form-label">Message</label>
+      <textarea
+        rows="5"
+        cols="40"
+        type="text"
+        formControlName="message"
+        class="form-control"
+        [ngClass]="{ 'is-invalid': submitted && f['message'].errors }"
+      ></textarea>
+      <div *ngIf="submitted && f['message'].errors" class="invalid-feedback">
+        <div *ngIf="f['message'].errors['required']" class="validation-error">
+          Message is required
+        </div>
+        <div *ngIf="f['message'].errors['message']" class="validation-error">
+          You must have a message.
+        </div>
+      </div>
+    </div>
+
+    <div class="register-cancel">
+      <button class="register">Send Message</button>
+    </div>
+  </form>
+  <div *ngIf="formSent" class="confirmation">Message Sent</div>
+</div>

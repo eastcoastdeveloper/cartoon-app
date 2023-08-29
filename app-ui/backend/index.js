@@ -27,6 +27,7 @@ app.use((req, res, next) => {
 });
 
 app.use('/api/form-submission', require('./routes/form-submission'));
+app.use('/api/email', require('./routes/email'));
 app.use('/api/snapshot', require('./routes/snapshot'));
 app.use('/api/captions', require('./routes/captions-process'));
 app.use('/api/reset', require('./routes/password'));

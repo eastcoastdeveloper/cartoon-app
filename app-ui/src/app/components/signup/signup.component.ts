@@ -1,7 +1,7 @@
 import { Component, OnDestroy, OnInit } from "@angular/core";
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { AuthService } from "src/app/services/auth.service";
-import { MustMatch } from "./form-validators";
+import { MustMatch } from "../../validators/form-validators";
 import { Subject, takeUntil } from "rxjs";
 import { ActivatedRoute, Router } from "@angular/router";
 import { generateUsername } from "friendly-username-generator";

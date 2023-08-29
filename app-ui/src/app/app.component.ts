@@ -195,7 +195,7 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
         this._authService.logout();
         this._router.navigateByUrl("/login");
       }
-    }, 1000);
+    }, 300000);
 
     this._globalFunctionsService.menuToggle$
       .pipe(takeUntil(this.unsubscribe$))

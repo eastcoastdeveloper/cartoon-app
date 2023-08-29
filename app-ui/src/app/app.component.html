@@ -78,6 +78,13 @@
       routerLink="/profile"
       >Profile</span
     >
+
+    <span
+      (click)="closeMobileMenu()"
+      *ngIf="userIsAuthenticated && !hasRole"
+      routerLink="/contact"
+      >Contact</span
+    >
     <span
       (click)="closeMobileMenu()"
       *ngIf="userIsAuthenticated"

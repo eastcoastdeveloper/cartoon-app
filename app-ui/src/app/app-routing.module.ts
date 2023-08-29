@@ -7,6 +7,7 @@ import { AdminComponent } from "./components/admin/admin.component";
 import { AuthGuard } from "./guards/auth.guard";
 import { ProfileComponent } from "./components/profile/profile.component";
 import { ForgotPasswordComponent } from "./components/forgot-password/forgot-password.component";
+import { ContactFormComponent } from "./components/contact-form/contact-form.component";
 
 const routes: Routes = [
   {
@@ -48,6 +49,10 @@ const routes: Routes = [
     component: ProfileComponent,
   },
   {
+    path: "contact",
+    component: ContactFormComponent,
+  },
+  {
     path: "**",
     redirectTo: "caption-contest",
   },
@@ -67,4 +72,5 @@ export const routingComponents = [
   ForgotPasswordComponent,
   AdminComponent,
   ProfileComponent,
+  ContactFormComponent,
 ];

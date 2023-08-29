@@ -15,6 +15,10 @@
     <span *ngIf="userIsAuthenticated && !hasRole" routerLink="/profile"
       >Profile</span
     >
+
+    <span *ngIf="userIsAuthenticated && !hasRole" routerLink="/contact"
+      >Contact</span
+    >
     <span *ngIf="userIsAuthenticated" (click)="onLogout()">Logout</span>
   </nav>
   <div *ngIf="windowWidth! < 601" class="mobile-menu-controls">
