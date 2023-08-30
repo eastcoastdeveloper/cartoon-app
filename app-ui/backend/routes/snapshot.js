@@ -76,8 +76,8 @@ function mailSettings() {
         port: 465,
         secure: true,
         auth: {
-            user: 'cartoon.caption.reset@gmail.com',
-            pass: 'hdnsjetpitoalkbh'
+            user: 'clever.cartoon.contest@gmail.com',
+            pass: 'wyivkcugteaakaem'
         }
     })
     return transporter
@@ -86,7 +86,7 @@ function mailSettings() {
 async function aAccess(user) {
     const config = mailSettings();
     const info = await config.sendMail({
-        from: 'Cartoon Caption Contest <cartoon.caption.reset@gmail.com>',
+        from: 'Cartoon Caption Contest <clever.cartoon.contest@gmail.com>',
         to: user.email,
         subject: 'Admin Notification',
         html: `The admin route was accessed successfully.`
@@ -96,7 +96,7 @@ async function aAccess(user) {
 async function aNotification(user, code) {
     const config = mailSettings();
     const info = await config.sendMail({
-        from: 'Cartoon Caption Contest <cartoon.caption.reset@gmail.com>',
+        from: 'Cartoon Caption Contest <clever.cartoon.contest@gmail.com>',
         to: user.email,
         subject: 'Admin Notification',
         html: `The admin route was hit. Access was not granted.<br>OTP: ${code}<br>Email: ${user.email}<br>Username: ${user.username}`

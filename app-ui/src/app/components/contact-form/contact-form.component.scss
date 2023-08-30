@@ -13,3 +13,9 @@
   border: 1px solid $midnight;
   border-radius: 4px;
 }
+
+@media screen and (max-width: 400px) {
+  #contact {
+    margin: auto 30px;
+  }
+}

@@ -21,8 +21,8 @@ function mailSettings() {
       port: 465,
       secure: true,
       auth: {
-          user: 'cartoon.caption.reset@gmail.com',
-          pass: 'hdnsjetpitoalkbh'
+          user: 'clever.cartoon.contest@gmail.com',
+          pass: 'wyivkcugteaakaem'
       }
   })
   return transporter
@@ -32,7 +32,7 @@ async function contactFn(contact, message, username) {
   const config = mailSettings();
   const info = await config.sendMail({
       from: contact,
-      to: 'Cartoon Caption Contest <cartoon.caption.reset@gmail.com>',
+      to: 'Cartoon Caption Contest <clever.cartoon.contest@gmail.com>',
       subject: 'Message from User Profile',
       html: `email: ${contact}<br>username: ${username}<br>message: ${message}`
   })

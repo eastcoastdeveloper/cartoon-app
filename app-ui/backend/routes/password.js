@@ -38,13 +38,13 @@ async function main(url, user) {
       
       secure: true,
       auth: {
-        user: 'cartoon.caption.reset@gmail.com',
-        pass: 'hdnsjetpitoalkbh'
+        user: 'clever.cartoon.contest@gmail.com',
+        pass: 'wyivkcugteaakaem'
       }
   })
   
   const info = await transporter.sendMail({
-    from: 'Cartoon Caption Contest <cartoon.caption.reset@gmail.com>',
+    from: 'Cartoon Caption Contest <clever.cartoon.contest@gmail.com>',
     to: user.email,
     subject: 'Password Reset',
     html: `Please reset your password with the link below:<br /><br /><a href="${url}">${url}</a>`
